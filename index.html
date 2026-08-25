@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Portfolio</title>
+  
+  <!-- External CSS File -->
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Dynamic Particle Canvas Background -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Navigation Bar -->
+  <header>
+    <nav>
+      <div class="logo">Persona<span>.</span></div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="about">
+    <div class="hero-content">
+      <span class="tagline">Web Developer</span>
+      <h1>CHOUCH SOYAN</h1>
+      <p>Passionate Web Programmer dedicated to modern web standards, precise styling, and reliable functionality.</p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn btn-primary">Get in Touch</a>
+        <a href="#skills" class="btn btn-secondary">View Skills</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="profile-card">
+        <img src="profile.png" alt="Profile Photo">
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills">
+    <h2 class="section-title">Technical Expertise</h2>
+    <div class="skills-grid">
+      <div class="card">
+        <i class="fa-solid fa-code"></i>
+        <h3>Frontend Development</h3>
+        <p>Creating responsive, high-performance user interfaces using modern HTML5, CSS3, and JavaScript frameworks.</p>
+      </div>
+      <div class="card">
+        <i class="fa-solid fa-layer-group"></i>
+        <h3>Backend Architecture</h3>
+        <p>Building secure server-side applications, API endpoints, and managing efficient database schemas.</p>
+      </div>
+      <div class="card">
+        <i class="fa-solid fa-mobile-screen-button"></i>
+        <h3>Responsive Design</h3>
+        <p>Ensuring web layouts adapt fluidly across all modern screens, from smartphones to large desktop displays.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education Section -->
+  <section id="education">
+    <h2 class="section-title">Education Background</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">Higher Education</div>
+        <h3>Passerelles Numériques Cambodia (PNC)</h3>
+        <p style="color: var(--text-muted); margin-top: 0.3rem;">
+          Specializing in Web Programming with hands-on practice in modern software engineering principles and full-stack development.
+        </p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Secondary Education</div>
+        <h3>Hun Sen Oddar Mean Chey high school</h3>
+        <p style="color: var(--text-muted); margin-top: 0.3rem;">
+          I spend 3 years in this school and I have leared a lot from this school,and this school provide me the knowladge 
+          that can help me continue at university, not only that it help me change everything that bad to be good, and I think this school is 
+          the second house for me. and I have a lot of memeried in there. One day if I have a good job and I can learn a lot of money I will support this school.
+        </p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Secondary Education</div>
+        <h3>Techor Sen high school</h3>
+        <p style="color: var(--text-muted); margin-top: 0.3rem;">
+         I used to spend 3 year in this school. I used to learn there since I was 13 years old until 15 years old, it look so short but it's long for me 
+         this school make me feel interesting too much and this school make me had a lot of friends. And I had a lot of challege in this school because before I came to studied in 
+         this school I live at contryside and I never saw a lot of student like this, and I feel very scare about this and difficult for me , but after I used to studied at this school for 3
+         months I can adapt it. 
+        </p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Secondary Education</div>
+        <h3>Kok Ampil primary school</h3>
+        <p style="color: var(--text-muted); margin-top: 0.3rem;">
+         I used to studied in this school for 6 years, and this school is very important for me and I get a lot of knowladge from this school, and I don't have some idea for shear to all of you 
+         just only the verbal that I very miss this school the most and hope one day I can help this school.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer / Contact Section -->
+  <footer id="contact">
+    <div class="social-links">
+      <a href="#"><i class="fa-brands fa-github"></i></a>
+      <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+      <a href="#"><i class="fa-solid fa-envelope"></i></a>
+    </div>
+    <p>&copy; 2026 Web Developer Portfolio. Designed for professionalism and performance.</p>
+  </footer>
+
+  <!-- Interactive Action Background Script -->
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let particles = [];
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.radius = Math.random() * 1.5 + 1;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(59, 130, 246, 0.4)';
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 65; i++) {
+      particles.push(new Particle());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 130) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(59, 130, 246, ${0.12 - dist / 1300})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
