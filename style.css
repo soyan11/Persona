@@ -83,7 +83,16 @@ nav {
 .nav-links a:hover {
   color: var(--text-main);
 }
-
+/* Hero Title with Floating Movement */
+.hero-content h1 {
+  font-size: 3rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  
+  /* Enables continuous up-and-down floating movement */
+  animation: floatMovement 4s ease-in-out infinite;
+  display: inline-block; /* Required for transform animations on headings */
+}
 /* Hero Section */
 .hero {
   min-height: 100vh;
@@ -112,11 +121,67 @@ nav {
   margin-bottom: 1.5rem;
   border: 1px solid rgba(59, 130, 246, 0.2);
 }
+/* Continuous Floating Animation & 3D Tilt */
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px; /* Enables 3D Space */
+}
 
-.hero-content h1 {
-  font-size: 3rem;
-  line-height: 1.2;
-  margin-bottom: 1rem;
+.profile-card {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  border-radius: 20px;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+
+  /* Floating Animation Enabled */
+  animation: floatMovement 4s ease-in-out infinite;
+  transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.profile-card-inner {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.profile-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: grayscale(15%) contrast(105%);
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+/* Hover Action: Glows and Zooms Inside */
+.profile-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
+}
+
+.profile-card:hover img {
+  filter: grayscale(0%);
+  transform: scale(1.06);
+}
+
+/* Continuous Up-and-Down Floating Movement Keyframes */
+@keyframes floatMovement {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(1.5deg); /* Moves up and slightly tilts */
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
 }
 
 .hero-content p {
@@ -163,35 +228,68 @@ nav {
   transform: translateY(-2px);
 }
 
+/* Continuous Floating Animation & 3D Tilt */
 .hero-image {
   flex: 1;
   display: flex;
   justify-content: center;
+  align-items: center;
+  perspective: 1000px; /* Enables 3D Space */
 }
 
 .profile-card {
   position: relative;
   width: 100%;
   max-width: 360px;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--card-border);
+  border-radius: 20px;
   background: var(--card-bg);
+  border: 2px solid var(--card-border);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+
+  /* Floating Animation Enabled */
+  animation: floatMovement 4s ease-in-out infinite;
+  transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.profile-card-inner {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
 }
 
 .profile-card img {
   width: 100%;
   height: auto;
   display: block;
-  filter: grayscale(20%) contrast(105%);
-  transition: var(--transition);
+  filter: grayscale(15%) contrast(105%);
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+/* Hover Action: Glows and Zooms Inside */
+.profile-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
 }
 
 .profile-card:hover img {
-  filter: grayscale(0%) contrast(100%);
+  filter: grayscale(0%);
+  transform: scale(1.06);
 }
 
+/* Continuous Up-and-Down Floating Movement Keyframes */
+@keyframes floatMovement {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(1.5deg); /* Moves up and slightly tilts */
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
 /* General Layout Sections */
 section {
   padding: 5rem 2rem;
@@ -215,6 +313,84 @@ section {
   height: 3px;
   background: var(--accent);
   border-radius: 2px;
+}
+
+/* Vehicle Cards (Cars and Motorbikes) */
+.car-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.car-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: var(--transition);
+}
+
+.car-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.2);
+}
+
+.car-image-box {
+  position: relative;
+  overflow: hidden;
+}
+
+.car-image-box img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.car-card:hover .car-image-box img {
+  transform: scale(1.08);
+}
+
+.car-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.car-details {
+  padding: 1.5rem;
+}
+
+.car-details h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.4rem;
+}
+
+.car-details p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.car-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.btn-sm {
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
 }
 
 /* Skills Grid */
@@ -285,6 +461,41 @@ section {
   color: var(--accent);
   margin-bottom: 0.2rem;
   font-weight: 600;
+}
+
+/* Contact Grid */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.contact-info, .contact-form-box {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.info-item-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-item i {
+  font-size: 1.6rem;
+  color: var(--accent);
 }
 
 /* Footer */
