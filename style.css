@@ -24,7 +24,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Dynamic Background Canvas */
+/* Background Canvas */
 #bg-canvas {
   position: fixed;
   top: 0;
@@ -78,21 +78,14 @@ nav {
   font-size: 0.95rem;
   font-weight: 500;
   transition: var(--transition);
+  display: inline-block;
 }
 
 .nav-links a:hover {
   color: var(--text-main);
+  transform: translateY(-2px);
 }
-/* Hero Title with Floating Movement */
-.hero-content h1 {
-  font-size: 3rem;
-  line-height: 1.2;
-  margin-bottom: 1rem;
-  
-  /* Enables continuous up-and-down floating movement */
-  animation: floatMovement 4s ease-in-out infinite;
-  display: inline-block; /* Required for transform animations on headings */
-}
+
 /* Hero Section */
 .hero {
   min-height: 100vh;
@@ -121,67 +114,12 @@ nav {
   margin-bottom: 1.5rem;
   border: 1px solid rgba(59, 130, 246, 0.2);
 }
-/* Continuous Floating Animation & 3D Tilt */
-.hero-image {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 1000px; /* Enables 3D Space */
-}
 
-.profile-card {
-  position: relative;
-  width: 100%;
-  max-width: 360px;
-  border-radius: 20px;
-  background: var(--card-bg);
-  border: 2px solid var(--card-border);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-
-  /* Floating Animation Enabled */
-  animation: floatMovement 4s ease-in-out infinite;
-  transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  transform-style: preserve-3d;
-}
-
-.profile-card-inner {
-  position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-}
-
-.profile-card img {
-  width: 100%;
-  height: auto;
-  display: block;
-  filter: grayscale(15%) contrast(105%);
-  transition: transform 0.5s ease, filter 0.5s ease;
-}
-
-/* Hover Action: Glows and Zooms Inside */
-.profile-card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
-}
-
-.profile-card:hover img {
-  filter: grayscale(0%);
-  transform: scale(1.06);
-}
-
-/* Continuous Up-and-Down Floating Movement Keyframes */
-@keyframes floatMovement {
-  0% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-15px) rotate(1.5deg); /* Moves up and slightly tilts */
-  }
-  100% {
-    transform: translateY(0px) rotate(0deg);
-  }
+.hero-content h1 {
+  font-size: 3rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  display: inline-block;
 }
 
 .hero-content p {
@@ -213,8 +151,8 @@ nav {
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(59, 130, 246, 0.4);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
 }
 
 .btn-secondary {
@@ -225,16 +163,14 @@ nav {
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
 }
 
-/* Continuous Floating Animation & 3D Tilt */
 .hero-image {
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
-  perspective: 1000px; /* Enables 3D Space */
+  perspective: 1000px;
 }
 
 .profile-card {
@@ -246,11 +182,8 @@ nav {
   border: 2px solid var(--card-border);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   cursor: pointer;
-
-  /* Floating Animation Enabled */
-  animation: floatMovement 4s ease-in-out infinite;
-  transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   transform-style: preserve-3d;
+  transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .profile-card-inner {
@@ -267,7 +200,6 @@ nav {
   transition: transform 0.5s ease, filter 0.5s ease;
 }
 
-/* Hover Action: Glows and Zooms Inside */
 .profile-card:hover {
   border-color: var(--accent);
   box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
@@ -278,19 +210,7 @@ nav {
   transform: scale(1.06);
 }
 
-/* Continuous Up-and-Down Floating Movement Keyframes */
-@keyframes floatMovement {
-  0% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-15px) rotate(1.5deg); /* Moves up and slightly tilts */
-  }
-  100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-}
-/* General Layout Sections */
+/* Sections */
 section {
   padding: 5rem 2rem;
   max-width: 1100px;
@@ -315,7 +235,7 @@ section {
   border-radius: 2px;
 }
 
-/* Vehicle Cards (Cars and Motorbikes) */
+/* Vehicle Cards */
 .car-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -332,9 +252,9 @@ section {
 }
 
 .car-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.2);
+  transform: translateY(-8px) scale(1.01);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.25);
 }
 
 .car-image-box {
@@ -393,7 +313,7 @@ section {
   font-size: 0.85rem;
 }
 
-/* Skills Grid */
+/* Skills Section */
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -410,15 +330,21 @@ section {
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(59, 130, 246, 0.3);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transform: translateY(-8px);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
 }
 
 .card i {
   font-size: 2rem;
   color: var(--accent);
   margin-bottom: 1rem;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.card:hover i {
+  transform: scale(1.15) rotate(5deg);
 }
 
 .card h3 {
@@ -431,7 +357,7 @@ section {
   font-size: 0.95rem;
 }
 
-/* Timeline / Education Section */
+/* Timeline */
 .timeline {
   position: relative;
   border-left: 2px solid var(--card-border);
@@ -442,6 +368,11 @@ section {
 .timeline-item {
   position: relative;
   margin-bottom: 2.5rem;
+  transition: transform 0.3s ease;
+}
+
+.timeline-item:hover {
+  transform: translateX(6px);
 }
 
 .timeline-item::before {
@@ -454,6 +385,7 @@ section {
   border-radius: 50%;
   background: var(--accent);
   border: 3px solid var(--bg-dark);
+  box-shadow: 0 0 10px var(--accent);
 }
 
 .timeline-date {
@@ -463,7 +395,7 @@ section {
   font-weight: 600;
 }
 
-/* Contact Grid */
+/* Contact Section */
 .contact-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -479,6 +411,11 @@ section {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transition: var(--transition);
+}
+
+.contact-info:hover, .contact-form-box:hover {
+  border-color: rgba(59, 130, 246, 0.4);
 }
 
 .info-item-link {
@@ -518,10 +455,62 @@ footer {
   color: var(--text-muted);
   font-size: 1.2rem;
   transition: var(--transition);
+  display: inline-block;
 }
 
 .social-links a:hover {
   color: var(--accent);
+  transform: translateY(-4px) scale(1.1);
+}
+
+/* --- CONTINUOUS FLOATING ANIMATIONS --- */
+
+.float-anim-1 {
+  animation: floatUp 4s ease-in-out infinite;
+}
+
+.float-anim-2 {
+  animation: floatUp 4.5s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.float-anim-3 {
+  animation: floatUp 5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.float-anim-4 {
+  animation: floatUp 4.2s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Pulsing Telegram Button Action */
+.pulse-btn {
+  animation: pulseGlow 2.5s infinite;
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
 }
 
 /* Responsive Styling */
