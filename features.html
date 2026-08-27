@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Expansion & Systems Engine | Soyan Platform</title>
+
+  <!-- Global Stylesheet Reference -->
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Font & Icon Dependencies -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- WebGL 3D Rendering Engine (Three.js) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       1. GLOBAL SYSTEM STYLES & DESIGN TOKENS
+       ========================================================================== */
+    :root {
+      --bg-primary: #04070d;
+      --bg-surface: rgba(13, 20, 36, 0.75);
+      --bg-surface-hover: rgba(22, 33, 58, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-color-active: rgba(249, 115, 22, 0.4);
+      --accent-orange: #f97316;
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --accent-purple: #a855f7;
+      --accent-cyan: #38bdf8;
+      --accent-rose: #f43f5e;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+      opacity: 0;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      min-height: 100vh;
+    }
+
+    body.page-loaded {
+      opacity: 1;
+    }
+
+    /* Custom Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-orange);
+    }
+
+    /* Matrix Rain Canvas Background Layer */
+    #matrix-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    /* Radial Ambient Background Glows */
+    .ambient-glow-1 {
+      position: fixed;
+      top: -10%;
+      left: 20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(0,0,0,0) 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .ambient-glow-2 {
+      position: fixed;
+      bottom: -10%;
+      right: 15%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(249, 115, 22, 0.1) 0%, rgba(0,0,0,0) 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       2. HEADER NAVIGATION & BRANDING
+       ========================================================================== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(4, 7, 13, 0.8);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    nav {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2rem;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .logo span {
+      color: var(--accent-orange);
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent-orange);
+    }
+
+    /* ==========================================================================
+       3. HERO SECTION & PLATFORM METRICS
+       ========================================================================== */
+    .expansion-hero {
+      padding: 6rem 2rem 3rem;
+      text-align: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--accent-green);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      margin-bottom: 1.5rem;
+    }
+
+    .expansion-hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #ffffff 30%, var(--text-muted) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.2rem;
+    }
+
+    .expansion-hero p {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      line-height: 1.6;
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    /* Live Telemetry KPI Metrics Grid */
+    .metrics-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      max-width: 1400px;
+      margin: 1rem auto 4rem;
+      padding: 0 1.5rem;
+    }
+
+    .metric-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.8rem 1.5rem;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .metric-card:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .metric-card h3 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--accent-orange);
+      font-family: var(--font-mono);
+      margin-bottom: 0.3rem;
+    }
+
+    .metric-card p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-indicator {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 10px var(--accent-green);
+    }
+
+    /* ==========================================================================
+       4. FEATURE CARDS GRID & MODULE CONTAINERS
+       ========================================================================== */
+    .expansion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto 6rem;
+      padding: 0 1.5rem;
+    }
+
+    @media (max-width: 480px) {
+      .expansion-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .action-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2.2rem;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(12px);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+                  border-color 0.35s ease, 
+                  box-shadow 0.35s ease;
+    }
+
+    .action-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-color-active);
+      box-shadow: 0 16px 40px rgba(249, 115, 22, 0.15);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .action-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--accent-blue);
+      flex-shrink: 0;
+    }
+
+    .card-title-group h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .card-title-group span {
+      font-size: 0.8rem;
+      color: var(--accent-orange);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card-description {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Standard Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.8rem 1.6rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--accent-orange);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: #ea580c;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.82rem;
+    }
+
+    /* Control Button Chip Group */
+    .control-btn-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-chip:hover, 
+    .btn-chip.active {
+      background: var(--accent-orange);
+      border-color: var(--accent-orange);
+      color: #fff;
+    }
+
+    /* ==========================================================================
+       5. MODULE 1: 3D WEBGL SHADER & MESH ENGINE
+       ========================================================================== */
+    #canvas-container {
+      width: 100%;
+      height: 260px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 14px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: grab;
+    }
+
+    #canvas-container:active {
+      cursor: grabbing;
+    }
+
+    .canvas-overlay-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       6. MODULE 2: SHOWROOM PAINT CONFIGURATOR
+       ========================================================================== */
+    .customizer-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1.2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .control-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .control-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .color-swatches {
+      display: flex;
+      gap: 10px;
+    }
+
+    .swatch {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .swatch:hover, .swatch.active {
+      transform: scale(1.2);
+      border-color: #fff;
+    }
+
+    .range-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 60%;
+    }
+
+    .range-input-wrapper input {
+      flex: 1;
+      accent-color: var(--accent-orange);
+    }
+
+    /* ==========================================================================
+       7. MODULE 3: DSP AUDIO EQUALIZER & CANVAS
+       ========================================================================== */
+    #audio-canvas {
+      width: 100%;
+      height: 140px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 14px;
+      margin-top: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: block;
+    }
+
+    .eq-controls {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 1.2rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1rem;
+      border-radius: 12px;
+    }
+
+    .eq-slider-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      width: 30%;
+    }
+
+    .eq-slider-group span {
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .eq-slider-group input {
+      width: 100%;
+      accent-color: var(--accent-orange);
+    }
+
+    /* ==========================================================================
+       8. MODULE 4: AI PORTFOLIO CHATBOT
+       ========================================================================== */
+    .chatbot-box {
+      background: rgba(5, 8, 17, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1rem;
+      height: 180px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 1rem;
+      font-size: 0.88rem;
+    }
+
+    .chat-msg {
+      padding: 8px 14px;
+      border-radius: 10px;
+      max-width: 85%;
+      line-height: 1.45;
+    }
+
+    .chat-bot {
+      background: rgba(59, 130, 246, 0.15);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+
+    .chat-user {
+      background: rgba(249, 115, 22, 0.2);
+      color: #fdba74;
+      border: 1px solid rgba(249, 115, 22, 0.3);
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+
+    .chat-input-wrapper {
+      display: flex;
+      gap: 8px;
+      margin-top: 0.8rem;
+    }
+
+    .chat-input-wrapper input {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 8px 14px;
+      color: #fff;
+      font-size: 0.88rem;
+      outline: none;
+    }
+
+    .chat-input-wrapper input:focus {
+      border-color: var(--accent-orange);
+    }
+
+    /* ==========================================================================
+       9. MODULE 5: DIAGNOSTICS BENCHMARK SUITE
+       ========================================================================== */
+    .diag-metric-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-top: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .diag-metric-row span:last-child {
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .progress-bar-container {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      height: 10px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-orange));
+      transition: width 0.4s ease;
+    }
+
+    /* ==========================================================================
+       10. MODULE 6: SOCKET STREAM TERMINAL
+       ========================================================================== */
+    .terminal-box {
+      background: #03060c;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+      height: 160px;
+      overflow-y: auto;
+      margin-top: 1rem;
+      text-align: left;
+      line-height: 1.6;
+    }
+
+    .term-line-time {
+      color: var(--text-muted);
+      margin-right: 8px;
+    }
+
+    .term-line-success {
+      color: var(--accent-green);
+    }
+
+    /* ==========================================================================
+       11. MODULE 7: GLOBAL EDGE CDN NODE NETWORK
+       ========================================================================== */
+    .node-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 1rem;
+    }
+
+    .node-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+    }
+
+    .node-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .node-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+    }
+
+    .node-latency {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--accent-green);
+    }
+
+    /* ==========================================================================
+       12. MODULE 8: PWA ENGINE & INSTALLATION PORTAL
+       ========================================================================== */
+    .pwa-feature-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-top: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .pwa-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .pwa-item i {
+      color: var(--accent-orange);
+    }
+
+    /* ==========================================================================
+       13. FOOTER SECTION
+       ========================================================================== */
+    footer {
+      border-top: 1px solid var(--border-color);
+      background: rgba(4, 7, 13, 0.95);
+      padding: 3rem 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 1.2rem;
+    }
+
+    .footer-socials a {
+      color: var(--text-muted);
+      transition: color 0.3s ease;
+    }
+
+    .footer-socials a:hover {
+      color: var(--accent-orange);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Matrix Code Rain Canvas Layer -->
+  <canvas id="matrix-canvas"></canvas>
+
+  <!-- Ambient Light Effects -->
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <!-- Header Navigation -->
+  <header>
+    <nav>
+      <a href="index.html" class="logo">Persona<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#cars">Showroom</a></li>
+        <li><a href="features.html" class="active">Global Features</a></li>
+        <li><a href="https://t.me/CHOUCHSOYAN" target="_blank">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="expansion-hero">
+    <span class="status-badge"><i class="fa-solid fa-server"></i> System Engine v4.8 Active</span>
+    <h1>Enterprise Expansion & Web Architecture</h1>
+    <p>
+      An interactive platform showcase featuring WebGL 3D material shaders, real-time audio synthesis, dynamic CDN server node telemetry, and AI-driven client assistant.
+    </p>
+  </section>
+
+  <!-- Live Platform KPIs Dashboard -->
+  <div class="metrics-container">
+    <div class="metric-card">
+      <div class="metric-indicator"></div>
+      <h3 id="fps-counter">60</h3>
+      <p>Render Frame Rate</p>
+    </div>
+    <div class="metric-card">
+      <div class="metric-indicator"></div>
+      <h3 id="ping-counter">8 ms</h3>
+      <p>Gateway Latency</p>
+    </div>
+    <div class="metric-card">
+      <div class="metric-indicator"></div>
+      <h3 id="nodes-counter">1,480</h3>
+      <p>Active DOM Elements</p>
+    </div>
+    <div class="metric-card">
+      <div class="metric-indicator"></div>
+      <h3 id="vram-counter">28 MB</h3>
+      <p>Estimated VRAM Allocation</p>
+    </div>
+  </div>
+
+  <!-- Expansion Cards Grid -->
+  <div class="expansion-grid">
+
+    <!-- Card 1: 3D WebGL Material Shader Engine -->
+    <div class="action-card">
+      <div>
+        <div class="card-header">
+          <div class="action-icon"><i class="fa-solid fa-cube"></i></div>
+          <div class="card-title-group">
+            <h3>3D WebGL Mesh Engine</h3>
+            <span>Graphics Subsystem</span>
+          </div>
+        </div>
+        <p class="card-description">
+          Interactive WebGL viewport powered by Three.js. Orbit the mesh by dragging. Toggle between wireframe rendering, solid shading, dynamic specular lights, and particle systems.
+        </p>
+        <div id="canvas-container">
+          <div class="canvas-overlay-tag">WebGL 2.0 | Mesh: Icosahedron</div>
+        </div>
+      </div>
+      <div>
+        <div class="control-btn-group">
+          <button class="btn-chip active" onclick="change3DMaterial('wireframe')">Wireframe</button>
+          <button class="btn-chip" onclick="change3DMaterial('solid')">Solid Blue</button>
+          <button class="btn-chip" onclick="change3DMaterial('orange')">Neon Glow</button>
+          <button class="btn-chip" onclick="change3DMaterial('points')">Particle Mesh</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Showroom Paint & Configurator Studio -->
+    <div class="action-card">
+      <div>
+        <div class="card-header">
+          <div class="action-icon" style="color: var(--accent-purple);"><i class="fa-solid fa-palette"></i></div>
+          <div class="card-title-group">
+            <h3>Showroom Paint Studio</h3>
+            <span>Configurator Engine</span>
+          </div>
+        </div>
+        <p class="card-description">
+          Real-time color switcher for showroom car rendering. Customize light reflection, metallic specular gloss, and rotation speeds.
+        </p>
+        <div class="customizer-controls">
+          <div class="control-row">
+            <span class="control-label">Base Color Swatch</span>
+            <div class="color-swatches">
+              <div class="swatch active" style="background: #3b82f6;" onclick="applyMeshColor(0x3b82f6, this)"></div>
+              <div class="swatch" style="background: #f97316;" onclick="applyMeshColor(0xf97316, this)"></div>
+              <div class="swatch" style="background: #10b981;" onclick="applyMeshColor(0x10b981, this)"></div>
+              <div class="swatch" style="background: #a855f7;" onclick="applyMeshColor(0xa855f7, this)"></div>
+              <div class="swatch" style="background: #f43f5e;" onclick="applyMeshColor(0xf43f5e, this)"></div>
+            </div>
+          </div>
+          <div class="control-row">
+            <span class="control-label">Rotation Speed</span>
+            <div class="range-input-wrapper">
+              <input type="range" id="speedSlider" min="0" max="0.03" step="0.002" value="0.006" oninput="updateRotationSpeed(this.value)">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 1.5rem;">
+        <button class="btn btn-secondary btn-sm" style="width: 100%;" onclick="toggleMeshSpin()">
+          <i class="fa-solid fa-pause"></i> Toggle Rotation Engine
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 3: DSP Audio Equalizer & Waveform Canvas -->
+    <div class="action-card">
+      <div>
+        <div class="card-header">
+          <div class="action-icon" style="color: var(--accent-orange);"><i class="fa-solid fa-sliders"></i></div>
+          <div class="card-title-group">
+            <h3>DSP Audio Equalizer</h3>
+            <span>Signal Processing</span>
+          </div>
+        </div>
+        <p class="card-description">
+          Simulated web audio frequency visualizer. Adjust frequency response sliders to watch amplitude adjustments render across the canvas spectrum.
+        </p>
+        <canvas id="audio-canvas"></canvas>
+        <div class="eq-controls">
+          <div class="eq-slider-group">
+            <span>Bass</span>
+            <input type="range" min="5" max="60" value="20" id="bassSlider" oninput="updateAudioEQ()">
+          </div>
+          <div class="eq-slider-group">
+            <span>Mid</span>
+            <input type="range" min="1" max="25" value="10" id="midSlider" oninput="updateAudioEQ()">
+          </div>
+          <div class="eq-slider-group">
+            <span>Treble</span>
+            <input type="range" min="1" max="50" value="15" id="trebleSlider" oninput="updateAudioEQ()">
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 1.2rem;">
+        <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="triggerAudioPulse()">
+          <i class="fa-solid fa-bolt"></i> Generate Sonic Impulse
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 4: AI Portfolio Assistant Chatbot -->
+    <div class="action-card">
+      <div>
+        <div class="card-header">
+          <div class="action-icon" style="color: var(--accent-cyan);"><i class="fa-solid fa-robot"></i></div>
+          <div class="card-title-group">
+            <h3>AI Portfolio Bot</h3>
+            <span>Client Assistant</span>
+          </div>
+        </div>
+        <p class="card-description">
+          Client-side intelligent assistant ready to answer questions regarding technical skills, available showcase projects, and contact avenues.
+        </p>
+        <div class="chatbot-box" id="chatBox">
+          <div class="chat-msg chat-bot">Hello! I am Soyan's AI assistant. Ask me about projects, skills, or telegram contact info!</div>
+        </div>
+        <div class="chat-input-wrapper">
+          <input type="text" id="chatInput" placeholder="Ask a question..." onkeypress="handleChatKey(event)">
+          <button class="btn btn-primary btn-sm" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5: System Benchmark Diagnostics Suite -->
+    <div class="action-card">
+      <div>
+        <div class="card-header">
+          <div class="action-icon" style="color: var(--accent-green);"><i class="fa-solid fa-microchip"></i></div>
+          <div class="card-title-group">
+            <h3>System Benchmark Suite</h3>
+            <span>Performance Diagnostics</span>
+          </div>
+        </div>
+        <p class="card-description">
+          Execute real-time GPU load diagnostics, testing frame rendering stability, canvas redraw speed, and memory buffer consumption.
+        </p>
+        <div style="margin-top: 1rem;">
+          <div class="diag-metric-row">
+            <span>GPU Render Pipeline</span>
+            <span id="diag-status">Idle</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="diag-bar"></div>
+          </div>
+          <div class="diag-metric-row">
+            <span>Passed Unit Tests</span>
+            <span id="diag-tests">0 / 4 Complete</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 1.5rem;">
+        <button class="btn btn-secondary btn-sm" style="width: 100%;" onclick="runDiagnostics()">
+          <i class="fa-solid fa-gauge-high"></i> Execute Benchmark Test
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 6: Telemetry Log Stream Terminal -->
+    <div class="action-card">
+      <div>
+        <div class="card-header">
+          <div class="action-icon" style="color: var(--accent-rose);"><i class="fa-solid fa-terminal"></i></div>
+          <div class="card-title-group">
+            <h3>Telemetry Log Terminal</h3>
+            <span>Socket Stream</span>
+          </div>
+        </div>
+        <p class="card-description">
+          Live stream viewer displaying bidirectional web-socket payloads, TLS handshakes, dynamic cache updates, and API calls.
+        </p>
+        <div class="terminal-box" id="terminal">
+          <div><span class="term-line-time">[00:00:00]</span> <span class="term-line-success">[SYSTEM] Initialization complete.</span></div>
+          <div><span class="term-line-time">[00:00:01]</span> [NET] Edge server routing bound to gateway.</div>
+        </div>
+      </div>
+      <div style="margin-top: 1rem;">
+        <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="sendPing()">
+          <i class="fa-solid fa-paper-plane"></i> Transmit Packet Payload
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 7: Global CDN Edge Node Network -->
+    <div class="action-card">
+      <div>
+        <div class="card-header">
+          <div class="action-icon" style="color: var(--accent-blue);"><i class="fa-solid fa-network-wired"></i></div>
+          <div class="card-title-group">
+            <h3>Global Edge Network</h3>
+            <span>Infrastructure Status</span>
+          </div>
+        </div>
+        <p class="card-description">
+          Real-time server distribution latency across international edge locations.
+        </p>
+        <ul class="node-list">
+          <li class="node-item">
+            <div class="node-info">
+              <span class="node-dot"></span>
+              <span>Asia-East (Phnom Penh)</span>
+            </div>
+            <span class="node-latency" id="node-kh">8ms</span>
+          </li>
+          <li class="node-item">
+            <div class="node-info">
+              <span class="node-dot"></span>
+              <span>Asia-Southeast (Singapore)</span>
+            </div>
+            <span class="node-latency" id="node-sg">18ms</span>
+          </li>
+          <li class="node-item">
+            <div class="node-info">
+              <span class="node-dot"></span>
+              <span>Asia-Northeast (Tokyo)</span>
+            </div>
+            <span class="node-latency" id="node-jp">42ms</span>
+          </li>
+          <li class="node-item">
+            <div class="node-info">
+              <span class="node-dot" style="background: var(--accent-orange); box-shadow: 0 0 8px var(--accent-orange);"></span>
+              <span>US-West (Oregon)</span>
+            </div>
+            <span class="node-latency" style="color: var(--accent-orange);" id="node-us">135ms</span>
+          </li>
+        </ul>
+      </div>
+      <div style="margin-top: 1rem;">
+        <button class="btn btn-secondary btn-sm" style="width: 100%;" onclick="refreshNodes()">
+          <i class="fa-solid fa-rotate"></i> Ping All Edge Nodes
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 8: Progressive Web App (PWA) Portal -->
+    <div class="action-card">
+      <div>
+        <div class="card-header">
+          <div class="action-icon" style="color: #eab308;"><i class="fa-solid fa-download"></i></div>
+          <div class="card-title-group">
+            <h3>Progressive Web App</h3>
+            <span>Mobile & Desktop</span>
+          </div>
+        </div>
+        <p class="card-description">
+          Install the Soyan platform directly onto your desktop or mobile home screen with offline caching.
+        </p>
+        <div class="pwa-feature-list">
+          <div class="pwa-item"><i class="fa-solid fa-check"></i> Offline Support</div>
+          <div class="pwa-item"><i class="fa-solid fa-check"></i> Zero Install Size</div>
+          <div class="pwa-item"><i class="fa-solid fa-check"></i> Hardware GPU</div>
+          <div class="pwa-item"><i class="fa-solid fa-check"></i> Fast Load Times</div>
+        </div>
+      </div>
+      <div>
+        <button class="btn btn-secondary" style="width: 100%;" onclick="triggerPwaPrompt()">
+          <i class="fa-solid fa-mobile-screen"></i> Install Application
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 9: Navigation Portal Link -->
+    <div class="action-card" style="justify-content: center; text-align: center; background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8));">
+      <div>
+        <div class="action-icon" style="color: var(--accent-orange); margin: 0 auto 1.2rem; width: 64px; height: 64px; font-size: 1.8rem;">
+          <i class="fa-solid fa-house"></i>
+        </div>
+        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Return to Main Portfolio</h3>
+        <p class="card-description" style="margin-bottom: 2rem;">
+          Navigate back to the main homepage to explore project showcases, car showroom models, and direct contact avenues.
+        </p>
+      </div>
+      <a href="index.html" class="btn btn-primary" style="width: 100%;">
+        <i class="fa-solid fa-arrow-left"></i> Back to Main Homepage
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="logo">Persona<span>.</span></div>
+      <p>Building high-performance web applications, interactive WebGL experiences, and user interfaces.</p>
+      <div class="footer-socials">
+        <a href="https://t.me/CHOUCHSOYAN" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+        <a href="#"><i class="fa-brands fa-github"></i></a>
+        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+      <p style="font-size: 0.8rem; opacity: 0.6;">&copy; 2026 Soyan Platform. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+     JAVASCRIPT LOGIC & ENGINE CONTROLLERS
+     ========================================================================== -->
+  
+  <!-- Page Initialization & FPS Counter Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.classList.add('page-loaded');
+      
+      // Update DOM Node Counter
+      const nodeCount = document.getElementsByTagName('*').length;
+      document.getElementById('nodes-counter').textContent = nodeCount.toLocaleString();
+
+      // FPS Monitoring Engine
+      let frameCount = 0;
+      let lastTime = performance.now();
+      const fpsDisplay = document.getElementById('fps-counter');
+
+      function calculateFPS() {
+        const now = performance.now();
+        frameCount++;
+        
+        if (now - lastTime >= 1000) {
+          const fps = Math.round((frameCount * 1000) / (now - lastTime));
+          fpsDisplay.textContent = fps;
+          frameCount = 0;
+          lastTime = now;
+        }
+        requestAnimationFrame(calculateFPS);
+      }
+      calculateFPS();
+    });
+  </script>
+
+  <!-- Matrix Code Rain Engine Canvas Script -->
+  <script>
+    const mCanvas = document.getElementById('matrix-canvas');
+    const mCtx = mCanvas.getContext('2d');
+
+    function resizeMatrix() {
+      mCanvas.width = window.innerWidth;
+      mCanvas.height = window.innerHeight;
+    }
+    resizeMatrix();
+    window.addEventListener('resize', resizeMatrix);
+
+    const matrixChars = '01101001010110101010101010101010101';
+    const fontSize = 14;
+    let columns = Math.floor(mCanvas.width / fontSize);
+    let drops = Array(columns).fill(1);
+
+    function drawMatrix() {
+      mCtx.fillStyle = 'rgba(4, 7, 13, 0.08)';
+      mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
+
+      mCtx.fillStyle = '#10b981';
+      mCtx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+        mCtx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > mCanvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+    setInterval(drawMatrix, 40);
+  </script>
+
+  <!-- Three.js 3D WebGL Shader Engine Script -->
+  <script>
+    const container = document.getElementById('canvas-container');
+    
+    // Scene Setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.z = 4;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    // Mesh Creation
+    const geometry = new THREE.IcosahedronGeometry(1.4, 1);
+
+    const materials = {
+      wireframe: new THREE.MeshPhongMaterial({ color: 0x3b82f6, wireframe: true }),
+      solid: new THREE.MeshPhongMaterial({ color: 0x2563eb, flatShading: true, shininess: 60 }),
+      orange: new THREE.MeshPhongMaterial({ color: 0xf97316, emissive: 0x7c2d12, shininess: 80 }),
+      points: new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.06 })
+    };
+
+    let currentMesh = new THREE.Mesh(geometry, materials.wireframe);
+    scene.add(currentMesh);
+
+    // Lights Setup
+    const light1 = new THREE.DirectionalLight(0xffffff, 1.5);
+    light1.position.set(5, 5, 5);
+    scene.add(light1);
+
+    const light2 = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(light2);
+
+    let isAutoRotate = true;
+    let rotationSpeed = 0.006;
+
+    function change3DMaterial(type) {
+      scene.remove(currentMesh);
+      if (type === 'points') {
+        currentMesh = new THREE.Points(geometry, materials.points);
+      } else {
+        currentMesh = new THREE.Mesh(geometry, materials[type]);
+      }
+      scene.add(currentMesh);
+
+      document.querySelectorAll('.btn-chip').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function applyMeshColor(colorHex, element) {
+      currentMesh.material.color.setHex(colorHex);
+      document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+      element.classList.add('active');
+    }
+
+    function updateRotationSpeed(val) {
+      rotationSpeed = parseFloat(val);
+    }
+
+    function toggleMeshSpin() {
+      isAutoRotate = !isAutoRotate;
+    }
+
+    // Interactive Drag Controls
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+
+    container.addEventListener('mousedown', () => isDragging = true);
+    window.addEventListener('mouseup', () => isDragging = false);
+
+    container.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        const deltaMove = {
+          x: e.clientX - previousMousePosition.x,
+          y: e.clientY - previousMousePosition.y
+        };
+
+        currentMesh.rotation.y += deltaMove.x * 0.01;
+        currentMesh.rotation.x += deltaMove.y * 0.01;
+      }
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+    });
+
+    // Window Resize Handler
+    window.addEventListener('resize', () => {
+      if (!container) return;
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+
+    // Render Animation Loop
+    function animate3D() {
+      requestAnimationFrame(animate3D);
+
+      if (!isDragging && isAutoRotate) {
+        currentMesh.rotation.y += rotationSpeed;
+        currentMesh.rotation.x += rotationSpeed * 0.5;
+      }
+
+      renderer.render(scene, camera);
+    }
+    animate3D();
+  </script>
+
+  <!-- DSP Audio Equalizer Canvas Script -->
+  <script>
+    const aCanvas = document.getElementById('audio-canvas');
+    const aCtx = aCanvas.getContext('2d');
+    let aWidth, aHeight;
+
+    function resizeAudioCanvas() {
+      aWidth = aCanvas.width = aCanvas.clientWidth;
+      aHeight = aCanvas.height = aCanvas.clientHeight;
+    }
+    resizeAudioCanvas();
+    window.addEventListener('resize', resizeAudioCanvas);
+
+    let wavePhase = 0;
+    let baseAmp = 20;
+
+    function drawAudioWave() {
+      aCtx.clearRect(0, 0, aWidth, aHeight);
+      aCtx.beginPath();
+      aCtx.lineWidth = 2;
+      aCtx.strokeStyle = '#f97316';
+
+      for (let x = 0; x < aWidth; x++) {
+        const y = aHeight / 2 + Math.sin(x * 0.04 + wavePhase) * baseAmp * Math.sin(x * 0.015);
+        if (x === 0) aCtx.moveTo(x, y);
+        else aCtx.lineTo(x, y);
+      }
+
+      aCtx.stroke();
+      wavePhase += 0.08;
+
+      requestAnimationFrame(drawAudioWave);
+    }
+    drawAudioWave();
+
+    function updateAudioEQ() {
+      const bass = parseInt(document.getElementById('bassSlider').value);
+      baseAmp = bass;
+    }
+
+    function triggerAudioPulse() {
+      baseAmp = 60;
+      setTimeout(() => {
+        updateAudioEQ();
+      }, 1200);
+    }
+  </script>
+
+  <!-- AI Chatbot Controller Script -->
+  <script>
+    function handleChatKey(e) {
+      if (e.key === 'Enter') sendChatMessage();
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const box = document.getElementById('chatBox');
+      const text = input.value.trim();
+      if (!text) return;
+
+      box.innerHTML += `<div class="chat-msg chat-user">${escapeHtml(text)}</div>`;
+      input.value = '';
+      box.scrollTop = box.scrollHeight;
+
+      setTimeout(() => {
+        let reply = "Soyan is a passionate developer skilled in building web applications, WebGL visualizers, and backend systems.";
+        const lower = text.toLowerCase();
+        
+        if (lower.includes('skill') || lower.includes('code') || lower.includes('stack')) {
+          reply = "Soyan's tech stack includes HTML5, CSS3, JavaScript (ES6+), WebGL (Three.js), and Node server architectures.";
+        } else if (lower.includes('contact') || lower.includes('telegram') || lower.includes('reach')) {
+          reply = "Reach out directly via Telegram: @CHOUCHSOYAN.";
+        } else if (lower.includes('car') || lower.includes('showroom') || lower.includes('model')) {
+          reply = "Head back to the main homepage to check out the Interactive Car Showroom modules!";
+        } else if (lower.includes('feature') || lower.includes('bot')) {
+          reply = "You are currently testing the AI Assistant module running on the Soyan System Roadmap!";
+        }
+
+        box.innerHTML += `<div class="chat-msg chat-bot">${reply}</div>`;
+        box.scrollTop = box.scrollHeight;
+      }, 500);
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+  </script>
+
+  <!-- Diagnostics & Telemetry Terminal Scripts -->
+  <script>
+    function sendPing() {
+      const term = document.getElementById('terminal');
+      const time = new Date().toLocaleTimeString();
+      const latency = Math.floor(Math.random() * 8) + 6;
+      
+      term.innerHTML += `<div><span class="term-line-time">[${time}]</span> <span class="term-line-success">STREAM_OK -> Packet ACK (${latency}ms)</span></div>`;
+      term.scrollTop = term.scrollHeight;
+
+      document.getElementById('ping-counter').textContent = `${latency} ms`;
+    }
+
+    function runDiagnostics() {
+      const bar = document.getElementById('diag-bar');
+      const status = document.getElementById('diag-status');
+      const tests = document.getElementById('diag-tests');
+      
+      status.textContent = 'Running Stress Test...';
+      bar.style.width = '0%';
+      tests.textContent = '0 / 4 Complete';
+
+      setTimeout(() => {
+        bar.style.width = '30%';
+        tests.textContent = '1 / 4 Complete';
+      }, 300);
+
+      setTimeout(() => {
+        bar.style.width = '65%';
+        tests.textContent = '2 / 4 Complete';
+      }, 600);
+
+      setTimeout(() => {
+        bar.style.width = '85%';
+        tests.textContent = '3 / 4 Complete';
+      }, 900);
+
+      setTimeout(() => {
+        bar.style.width = '100%';
+        status.textContent = 'Passed (60 FPS Score 100)';
+        tests.textContent = '4 / 4 Complete';
+      }, 1200);
+    }
+
+    function refreshNodes() {
+      const nodeKH = document.getElementById('node-kh');
+      const nodeSG = document.getElementById('node-sg');
+      const nodeJP = document.getElementById('node-jp');
+      const nodeUS = document.getElementById('node-us');
+
+      nodeKH.textContent = `${Math.floor(Math.random() * 5) + 6}ms`;
+      nodeSG.textContent = `${Math.floor(Math.random() * 6) + 15}ms`;
+      nodeJP.textContent = `${Math.floor(Math.random() * 10) + 38}ms`;
+      nodeUS.textContent = `${Math.floor(Math.random() * 20) + 125}ms`;
+    }
+
+    function triggerPwaPrompt() {
+      alert('PWA Engine Alert: Web Application Manifest detected. Ready for desktop/mobile home screen installation.');
+    }
+  </script>
+
+</body>
+</html>

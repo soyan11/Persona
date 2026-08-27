@@ -12,6 +12,69 @@
 
   <!-- External CSS -->
   <link rel="stylesheet" href="./style.css">
+ 
+
+  <!-- Custom Override Styles for Profile & Welcome Overlay -->
+  <style>
+    /* PROFILE IMAGE ONLY - EXACT FIT RECTANGLE BORDER */
+    .profile-card {
+      position: relative;
+      display: inline-block;
+      width: 280px;
+      height: 280px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 4px;
+      background: linear-gradient(135deg, #3b82f6, #a855f7, #f97316, #3b82f6);
+      background-size: 300% 300%;
+      animation: profileBorderGlow 4s ease infinite;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .profile-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.8);
+    }
+
+    @keyframes profileBorderGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .profile-card-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .profile-card-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+    }
+
+    .profile-card-inner img.img-fade-out {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+  </style>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,36 +92,18 @@
   <div class="bg-orb orb-1"></div>
   <div class="bg-orb orb-2"></div>
 
-  <!-- Fullscreen Login Page Portal Overlay -->
+  <!-- Fullscreen Welcome Page Portal Overlay -->
   <div id="welcome-overlay">
     <canvas id="dust-canvas"></canvas>
 
     <div class="welcome-card" id="actionCard">
-      <div class="logo" style="font-size: 2rem; margin-bottom: 0.5rem; font-weight: 700;">Persona<span style="color: #f97316;">.</span></div>
-      <h2>Login Portal</h2>
-      <p>Enter your account details to access the dashboard & portfolio.</p>
+      <div class="logo" style="font-size: 2rem; margin-bottom: 0.5rem; font-weight: 700;">Welcome<span style="color: #f97316;">.</span></div>
+      <h2>Who is soyan?</h2>
+      <p style="margin-bottom: 1.5rem;">If you want to know about me just click start</p>
       
-      <form onsubmit="event.preventDefault(); enterSite();">
-        <div class="login-input-group">
-          <label>Username or Email</label>
-          <div class="login-input-box">
-            <i class="fa-solid fa-user"></i>
-            <input type="text" placeholder="soyan.dev@example.com" value="Soyan_Developer" required>
-          </div>
-        </div>
-
-        <div class="login-input-group">
-          <label>Password</label>
-          <div class="login-input-box">
-            <i class="fa-solid fa-lock"></i>
-            <input type="password" placeholder="••••••••" value="12345678" required>
-          </div>
-        </div>
-
-        <button type="submit" class="start-btn">
-          Access Portfolio <i class="fa-solid fa-right-to-bracket" style="margin-left: 8px;"></i>
-        </button>
-      </form>
+      <button type="button" class="start-btn" onclick="enterSite()">
+        Start <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+      </button>
     </div>
   </div>
 
@@ -73,14 +118,14 @@
       Your browser does not support HTML5 video.
     </video>
     <div class="nav-overlay"></div>
-
+    
     <nav>
       <div class="logo">Persona<span>.</span></div>
       <ul class="nav-links">
-        <li><a href="#about" data-i18n="nav_about">About</a></li>
-        <li><a href="#cars" data-i18n="nav_cars">Car Showroom</a></li>
-        <li><a href="#motorbikes" data-i18n="nav_bikes">Motorbikes</a></li>
+       
+        <li><a href="features.html">Globalfeatures</a></li>
         <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
+        <a href="pricing.html" >Portfolio</a>
         <li><a href="#education" data-i18n="nav_education">Education</a></li>
         <li><a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" data-i18n="nav_contact">Contact</a></li>
       </ul>
@@ -363,7 +408,7 @@
     document.addEventListener('DOMContentLoaded', startAutoSwap);
   </script>
 
-  <!-- Script to dismiss Welcome/Login Screen -->
+  <!-- Script to dismiss Welcome Screen -->
   <script>
     function enterSite() {
       const overlay = document.getElementById('welcome-overlay');
@@ -468,6 +513,8 @@
 
     const translations = {
       en: {
+        nav_Portfolio:"Portfolio",
+        nav_Globalfeatures:"Globalfeatures",
         nav_about: "About",
         nav_cars: "Car Showroom",
         nav_bikes: "Motorbikes",
@@ -520,6 +567,8 @@
         footer_text: "© 2026 Web Developer Portfolio. Designed for professionalism and performance."
       },
       km: {
+        nav_Portfolio:"ផលប័ត្រ",
+        nav_GlobalFeatures:"លក្ខណៈពិសេសសកល",
         nav_about: "អំពីខ្ញុំ",
         nav_cars: "ហាងលក់រថយន្ត",
         nav_bikes: "ម៉ូតូ",

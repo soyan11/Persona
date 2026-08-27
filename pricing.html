@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio | Social Media Specialist</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --bg-dark: #070a12;
+      --card-bg: rgba(20, 28, 48, 0.65);
+      --card-hover: rgba(30, 42, 70, 0.85);
+      --accent-pink: #ec4899;
+      --accent-purple: #8b5cf6;
+      --accent-cyan: #06b6d4;
+      --accent-glow: rgba(236, 72, 153, 0.45);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.12);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', 'Kantumruy Pro', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Mouse Trail Canvas */
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* Scroll Animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px) scale(0.98);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand-logo {
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fff, var(--text-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-logo i { 
+      color: var(--accent-pink); 
+      -webkit-text-fill-color: initial; 
+      animation: spin-icon 8s linear infinite;
+    }
+
+    @keyframes spin-icon {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a:hover, nav a.active { color: var(--text-main); }
+
+    nav a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple));
+      border-radius: 2px;
+      animation: pulse-line 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-line {
+      0%, 100% { opacity: 0.5; transform: scaleX(0.8); }
+      50% { opacity: 1; transform: scaleX(1); }
+    }
+
+    .lang-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .lang-btn:hover {
+      background: rgba(236, 72, 153, 0.2);
+      border-color: var(--accent-pink);
+      transform: translateY(-2px);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    /* Moving Social Ticker Banner */
+    .ticker-wrap {
+      width: 100%;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 0.5rem 0;
+      margin-bottom: 2rem;
+      white-space: nowrap;
+    }
+
+    .ticker {
+      display: inline-block;
+      animation: tickerAnimation 25s linear infinite;
+    }
+
+    .ticker-item {
+      display: inline-block;
+      padding: 0 2rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .ticker-item span { color: var(--accent-pink); }
+
+    @keyframes tickerAnimation {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
+    }
+
+    /* Page Header */
+    .header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .header h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      background: linear-gradient(270deg, var(--accent-pink), var(--accent-purple), var(--accent-cyan));
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.5rem;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .header p { color: var(--text-muted); font-size: 1.1rem; }
+
+    /* Filter Buttons */
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.6rem 1.4rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 6px 20px var(--accent-glow);
+      transform: scale(1.08);
+    }
+
+    /* Portfolio Cards Grid */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+      perspective: 1000px;
+    }
+
+    .case-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.8rem;
+      backdrop-filter: blur(12px);
+      transition: transform 0.2s ease-out, box-shadow 0.3s ease, background 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+    }
+
+    /* Dynamic Cursor Light Glow effect */
+    .case-card::after {
+      content: '';
+      position: absolute;
+      top: var(--mouse-y, -100px);
+      left: var(--mouse-x, -100px);
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .case-card:hover::after { opacity: 1; }
+
+    .case-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple), var(--accent-cyan));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .case-card:hover {
+      background: var(--card-hover);
+      border-color: rgba(236, 72, 153, 0.5);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 20px rgba(236, 72, 153, 0.2);
+    }
+
+    .case-card:hover::before { opacity: 1; }
+
+    .tag {
+      display: inline-block;
+      background: rgba(236, 72, 153, 0.15);
+      border: 1px solid rgba(236, 72, 153, 0.3);
+      color: var(--accent-pink);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 1rem;
+      align-self: flex-start;
+      transition: transform 0.3s ease;
+    }
+
+    .case-card:hover .tag { transform: scale(1.05); }
+
+    .case-card h3 { font-size: 1.4rem; margin-bottom: 0.6rem; color: #fff; }
+    .case-card p { color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1.5rem; flex-grow: 1; }
+
+    /* Animated Metrics & Progress Bars */
+    .metrics-container {
+      background: rgba(10, 15, 26, 0.6);
+      padding: 1.2rem;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .metric-item { margin-bottom: 0.8rem; }
+    .metric-item:last-child { margin-bottom: 0; }
+
+    .metric-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.3rem;
+      font-size: 0.85rem;
+    }
+
+    .metric-header span:last-child {
+      color: var(--accent-pink);
+      font-weight: 700;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple));
+      border-radius: 10px;
+      transition: width 1.5s cubic-bezier(0.1, 0.5, 0.1, 1);
+    }
+
+    /* Dynamic Buttons */
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.8rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-action i { transition: transform 0.3s ease; }
+
+    .btn-action:hover {
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+
+    .btn-action:hover i { transform: translateX(6px); }
+
+    /* Collapsible Interactive FAQ Section */
+    .faq-section {
+      margin: 4rem 0;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+    }
+
+    .faq-section h2 { text-align: center; margin-bottom: 1.5rem; font-size: 1.8rem; }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+
+    .faq-item:last-child { border-bottom: none; }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .faq-question:hover { color: var(--accent-pink); }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      transition: max-height 0.4s ease-out, padding 0.3s ease;
+      padding-top: 0;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 120px;
+      padding-top: 0.8rem;
+    }
+
+    .faq-item.active .faq-question i {
+      transform: rotate(180deg);
+      color: var(--accent-pink);
+    }
+
+    .faq-question i { transition: transform 0.3s ease; }
+
+    /* Action Banner */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(139, 92, 246, 0.15));
+      border: 1px solid rgba(236, 72, 153, 0.3);
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner h2 { font-size: 2rem; margin-bottom: 0.8rem; }
+    .cta-banner p { color: var(--text-muted); max-width: 600px; margin: 0 auto 1.8rem; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+      color: #fff;
+      padding: 0.9rem 2rem;
+      border-radius: 30px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 10px 20px var(--accent-glow);
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      animation: pulse-button 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse-button {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4); }
+      50% { box-shadow: 0 0 0 16px rgba(236, 72, 153, 0); }
+    }
+
+    /* Modal Popup */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .modal-content {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      max-width: 600px;
+      width: 100%;
+      padding: 2.5rem;
+      position: relative;
+      transform: scale(0.8) translateY(30px);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    }
+
+    .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+
+    .modal-close {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .modal-close:hover { color: #fff; transform: rotate(90deg); }
+    .modal-body h3 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .modal-body p { color: var(--text-muted); margin-bottom: 1.5rem; }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .details-item h4 { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+    .details-item p { color: #fff; margin-bottom: 0; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <!-- Particle Interactive Canvas Background -->
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="container">
+    <!-- Navbar -->
+    <nav class="reveal active">
+      <div class="brand-logo" data-i18n="brandLogo"><i class="fa-solid fa-arrows-spin"></i> Social Growth</div>
+      <div class="nav-right">
+        <div>
+          <a href="index.html" data-i18n="navHome">Home</a>
+          <a href="portfolio.html" class="active" data-i18n="navPortfolio">Portfolio</a>
+        </div>
+        <button class="lang-btn" id="langToggle">
+          <i class="fa-solid fa-globe"></i>
+          <span id="langLabel">ភាសាខ្មែរ</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Continuous Scrolling Social Ticker -->
+    <div class="ticker-wrap reveal">
+      <div class="ticker">
+        <div class="ticker-item">🚀 Latest Campaign: <span>+12.4K Instagram Growth</span></div>
+        <div class="ticker-item">⚡ TikTok Viral Video: <span>1.2M Views</span></div>
+        <div class="ticker-item">🎯 Lead Generation: <span>140+ B2B Leads</span></div>
+        <div class="ticker-item">📈 Sales Boost: <span>+$18.5K ROI</span></div>
+        <div class="ticker-item">🚀 Latest Campaign: <span>+12.4K Instagram Growth</span></div>
+        <div class="ticker-item">⚡ TikTok Viral Video: <span>1.2M Views</span></div>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header reveal">
+      <h1 data-i18n="headerTitle">Featured Work & Results</h1>
+      <p data-i18n="headerSubtitle">Data-driven social media campaigns engineered for high engagement and conversions.</p>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="filters reveal">
+      <button class="filter-btn active" data-filter="all" data-i18n="filterAll">All Projects</button>
+      <button class="filter-btn" data-filter="ecommerce" data-i18n="filterEcom">E-Commerce</button>
+      <button class="filter-btn" data-filter="local" data-i18n="filterLocal">Local Business</button>
+      <button class="filter-btn" data-filter="b2b" data-i18n="filterB2b">B2B SaaS</button>
+    </div>
+
+    <!-- Portfolio Cards Grid -->
+    <div class="portfolio-grid">
+      <!-- Case Study 1 -->
+      <div class="case-card reveal" data-category="ecommerce" data-id="c1">
+        <div>
+          <span class="tag" data-i18n="c1Tag">E-Commerce Brand</span>
+          <h3 data-i18n="c1Title">Instagram Scale Up</h3>
+          <p data-i18n="c1CardDesc">Grew an organic community through targeted short-form reels and interactive audience engagement strategies.</p>
+        </div>
+        <div>
+          <div class="metrics-container">
+            <div class="metric-item">
+              <div class="metric-header"><span data-i18n="c1m1">Followers Gained:</span> <span>+12.4K</span></div>
+              <div class="progress-bar"><div class="progress-fill" data-progress="85%"></div></div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-header"><span data-i18n="c1m2">Engagement Rate:</span> <span>+340%</span></div>
+              <div class="progress-bar"><div class="progress-fill" data-progress="92%"></div></div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-header"><span data-i18n="c1m3">Sales Revenue:</span> <span>+$18.5K</span></div>
+              <div class="progress-bar"><div class="progress-fill" data-progress="78%"></div></div>
+            </div>
+          </div>
+          <button class="btn-action open-modal"><span data-i18n="btnView">View Case Study</span> <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Case Study 2 -->
+      <div class="case-card reveal" data-category="local" data-id="c2">
+        <div>
+          <span class="tag" data-i18n="c2Tag">Local Business</span>
+          <h3 data-i18n="c2Title">TikTok Viral Campaign</h3>
+          <p data-i18n="c2CardDesc">Created localized user-generated content that brought foot traffic directly to the physical storefront.</p>
+        </div>
+        <div>
+          <div class="metrics-container">
+            <div class="metric-item">
+              <div class="metric-header"><span data-i18n="c2m1">Video Views:</span> <span>1.2M</span></div>
+              <div class="progress-bar"><div class="progress-fill" data-progress="96%"></div></div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-header"><span data-i18n="c2m2">Profile Visits:</span> <span>45K</span></div>
+              <div class="progress-bar"><div class="progress-fill" data-progress="70%"></div></div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-header"><span data-i18n="c2m3">Store Foot Traffic:</span> <span>+85%</span></div>
+              <div class="progress-bar"><div class="progress-fill" data-progress="88%"></div></div>
+            </div>
+          </div>
+          <button class="btn-action open-modal"><span data-i18n="btnView">View Case Study</span> <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Case Study 3 -->
+      <div class="case-card reveal" data-category="b2b" data-id="c3">
+        <div>
+          <span class="tag" data-i18n="c3Tag">B2B SaaS</span>
+          <h3 data-i18n="c3Title">LinkedIn Lead Gen</h3>
+          <p data-i18n="c3CardDesc">Positioned company founders as thought leaders with consistent value-first graphic posts and detailed guides.</p>
+        </div>
+        <div>
+          <div class="metrics-container">
+            <div class="metric-item">
+              <div class="metric-header"><span data-i18n="c3m1">Post Impressions:</span> <span>250K</span></div>
+              <div class="progress-bar"><div class="progress-fill" data-progress="80%"></div></div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-header"><span data-i18n="c3m2">Qualified Leads:</span> <span>140+</span></div>
+              <div class="progress-bar"><div class="progress-fill" data-progress="75%"></div></div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-header"><span data-i18n="c3m3">Conversion Rate:</span> <span>4.2%</span></div>
+              <div class="progress-bar"><div class="progress-fill" data-progress="65%"></div></div>
+            </div>
+          </div>
+          <button class="btn-action open-modal"><span data-i18n="btnView">View Case Study</span> <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Animated Accordion Interactive FAQ Section -->
+    <div class="faq-section reveal">
+      <h2 data-i18n="faqHeading">Frequently Asked Questions</h2>
+      <div class="faq-item">
+        <div class="faq-question"><span data-i18n="faqQ1">How long before seeing results?</span> <i class="fa-solid fa-chevron-down"></i></div>
+        <div class="faq-answer" data-i18n="faqA1">Most organic campaigns show strong dynamic traction within the first 30 to 60 days of consistent content execution.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question"><span data-i18n="faqQ2">Do you create original video content?</span> <i class="fa-solid fa-chevron-down"></i></div>
+        <div class="faq-answer" data-i18n="faqA2">Yes! From script writing and visual editing to sound design and thumbnail generation, we cover full content production.</div>
+      </div>
+    </div>
+
+    <!-- Magnetic CTA Banner -->
+    <div class="cta-banner reveal">
+      <h2 data-i18n="ctaTitle">Ready to Scale Your Brand?</h2>
+      <p data-i18n="ctaDesc">Let's build a customized social media strategy engineered specifically to drive measurable growth for your business.</p>
+      <a href="mailto:hello@example.com" class="btn-primary magnetic-btn"><i class="fa-solid fa-paper-plane"></i> <span data-i18n="ctaBtn">Book a Growth Call</span></a>
+    </div>
+  </div>
+
+  <!-- Modal Popup Overlay -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-body">
+        <span class="tag" id="modalTag">Category</span>
+        <h3 id="modalTitle">Project Title</h3>
+        <p id="modalDesc">Project description goes here...</p>
+        
+        <div class="details-grid">
+          <div class="details-item">
+            <h4 data-i18n="modalCoreStrat">Core Strategy</h4>
+            <p id="modalStrategy">Strategy</p>
+          </div>
+          <div class="details-item">
+            <h4 data-i18n="modalTimeframe">Timeframe</h4>
+            <p id="modalDuration">Duration</p>
+          </div>
+        </div>
+
+        <a href="mailto:hello@example.com" class="btn-action" style="background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple)); color: white; border: none;">
+          <span data-i18n="modalRequestBtn">Request Similar Strategy</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Translations Data
+    const translations = {
+      en: {
+        navHome: "Home",
+        navPortfolio: "Portfolio",
+        headerTitle: "Featured Work & Results",
+        headerSubtitle: "Data-driven social media campaigns engineered for high engagement and conversions.",
+        filterAll: "All Projects",
+        filterEcom: "E-Commerce",
+        filterLocal: "Local Business",
+        filterB2b: "B2B SaaS",
+        
+        c1Tag: "E-Commerce Brand",
+        c1Title: "Instagram Scale Up",
+        c1CardDesc: "Grew an organic community through targeted short-form reels and interactive audience engagement strategies.",
+        c1ModalDesc: "Architected a 90-day organic video strategy focusing on trending sounds and high-retention storytelling hooks.",
+        c1Strategy: "Short-Form Video Strategy",
+        c1Duration: "3 Months",
+        c1m1: "Followers Gained:",
+        c1m2: "Engagement Rate:",
+        c1m3: "Sales Revenue:",
+
+        c2Tag: "Local Business",
+        c2Title: "TikTok Viral Campaign",
+        c2CardDesc: "Created localized user-generated content that brought foot traffic directly to the physical storefront.",
+        c2ModalDesc: "Leveraged geotargeted user-generated content and local influencer partnerships to drive physical foot traffic.",
+        c2Strategy: "Geotargeted UGC & Influencers",
+        c2Duration: "1 Month",
+        c2m1: "Video Views:",
+        c2m2: "Profile Visits:",
+        c2m3: "Store Foot Traffic:",
+
+        c3Tag: "B2B SaaS",
+        c3Title: "LinkedIn Lead Gen",
+        c3CardDesc: "Positioned company founders as thought leaders with consistent value-first graphic posts and detailed guides.",
+        c3ModalDesc: "Positioned key executive leadership team as industry experts using high-converting text carousels and industry insights.",
+        c3Strategy: "Thought Leadership & Carousels",
+        c3Duration: "6 Months",
+        c3m1: "Post Impressions:",
+        c3m2: "Qualified Leads:",
+        c3m3: "Conversion Rate:",
+
+        btnView: "View Case Study",
+        faqHeading: "Frequently Asked Questions",
+        faqQ1: "How long before seeing results?",
+        faqA1: "Most organic campaigns show strong dynamic traction within the first 30 to 60 days of consistent content execution.",
+        faqQ2: "Do you create original video content?",
+        faqA2: "Yes! From script writing and visual editing to sound design and thumbnail generation, we cover full content production.",
+        ctaTitle: "Ready to Scale Your Brand?",
+        ctaDesc: "Let's build a customized social media strategy engineered specifically to drive measurable growth for your business.",
+        ctaBtn: "Book a Growth Call",
+        
+        modalCoreStrat: "Core Strategy",
+        modalTimeframe: "Timeframe",
+        modalRequestBtn: "Request Similar Strategy"
+      },
+      km: {
+        navHome: "ទំព័រដើម",
+        navPortfolio: "ស្នាដៃ និងគម្រោង",
+        headerTitle: "ស្នាដៃឆ្នើម និងលទ្ធផល",
+        headerSubtitle: "យុទ្ធនាការបណ្តាញសង្គមផ្អែកលើទិន្នន័យជាក់ស្តែង ដើម្បីបង្កើនអន្តរកម្ម និងការលក់។",
+        filterAll: "គម្រោងទាំងអស់",
+        filterEcom: "ពាណិជ្ជកម្មអេឡិចត្រូនិក",
+        filterLocal: "អាជីវកម្មក្នុងស្រុក",
+        filterB2b: "B2B SaaS",
+
+        c1Tag: "ម៉ាកផលិតផល អ៊ីខមមើស",
+        c1Title: "ការរីកចម្រើនលើ Instagram",
+        c1CardDesc: "បង្កើតសហគមន៍តាមរយៈ Reel ខ្លីៗ និងយុទ្ធសាស្ត្របង្កើនអន្តរកម្មជាមួយអតិថិជន។",
+        c1ModalDesc: "រៀបចំយុទ្ធសាស្ត្រវីដេអូរយៈពេល ៩០ ថ្ងៃ ដោយផ្អែកលើទិដ្ឋភាពពេញនិយម និងការនិយាយរៀបរាប់ទាក់ទាញចិត្ត។",
+        c1Strategy: "យុទ្ធសាស្ត្រវីដេអូខ្លី",
+        c1Duration: "៣ ខែ",
+        c1m1: "អ្នកតាមដានបន្ថែម:",
+        c1m2: "អត្រាអន្តរកម្ម (Engagement):",
+        c1m3: "ចំណូលពីការលក់:",
+
+        c2Tag: "អាជីវកម្មក្នុងស្រុក",
+        c2Title: "យុទ្ធនាការវីដេអូ TikTok វីរ៉ាល់",
+        c2CardDesc: "បង្កើតមាតិកាស្របតាមតំបន់ដែលទាក់ទាញអតិថិជនឱ្យមកហាងផ្ទាល់។",
+        c2ModalDesc: "ប្រើប្រាស់មាតិកាដែលបង្កើតដោយអ្នកប្រើប្រាស់ក្នុងតំបន់ និងដៃគូ Influencer ក្នុងស្រុកដើម្បីទាក់ទាញអតិថិជន។",
+        c2Strategy: "មាតិកា UGC និង Influencer ក្នុងស្រុក",
+        c2Duration: "១ ខែ",
+        c2m1: "ចំនួនមើលវីដេអូ:",
+        c2m2: "ចំនួនចូលមើល Profile:",
+        c2m3: "អតិថិជនចូលហាងផ្ទាល់:",
+
+        c3Tag: " B2B SaaS",
+        c3Title: "ការស្វែងរកអតិថិជនលើ LinkedIn",
+        c3CardDesc: "បង្កើតស្ថាបនិកក្រុមហ៊ុនឱ្យក្លាយជាអ្នកដឹកនាំគំនិតតាមរយៈប្រកាសដែលមានតម្លៃខ្ពស់។",
+        c3ModalDesc: "ពង្រឹងក្រុមអ្នកដឹកនាំឱ្យក្លាយជាអ្នកជំនាញក្នុងឧស្សាហកម្មតាមរយៈការចែករំលែកចំណេះដឹង និងព័ត៌មានស៊ីជម្រៅ។",
+        c3Strategy: "ការបង្កើតប្រជាប្រិយភាព និងស្លាយចែករំលែក",
+        c3Duration: "៦ ខែ",
+        c3m1: "ចំនួនអ្នកបានឃើញ (Impressions):",
+        c3m2: "អតិថិជនដែលមានសក្ដានុពល:",
+        c3m3: "អត្រាបំលែងការលក់ (Conversion):",
+
+        btnView: "មើលលម្អិត",
+        faqHeading: "សំណួរដែលសួរញឹកញាប់",
+        faqQ1: "តើត្រូវចំណាយពេលយូរប៉ុណ្ណាទើបឃើញលទ្ធផល?",
+        faqA1: "យុទ្ធនាការភាគច្រើនចាប់ផ្តើមបង្ហាញលទ្ធផលវិជ្ជមាន និងការកើនឡើងច្បាស់លាស់ក្នុងរយៈពេល ៣០ ទៅ ៦០ ថ្ងៃដំបូង។",
+        faqQ2: "តើអ្នកមានផលិតវីដេអូដើមដោយផ្ទាល់ដែរឬទេ?",
+        faqA2: "បាទ/ចាស! ចាប់តាំងពីការសរសេរអត្ថបទ វីដេអូ កាត់ត រហូតដល់ការឌីហ្សាញរូបភាពគម្រប។",
+        ctaTitle: "ត្រៀមខ្លួនពង្រីកអាជីវកម្មរបស់អ្នកហើយឬនៅ?",
+        ctaDesc: "តោះរៀបចំយុទ្ធសាស្ត្របណ្តាញសង្គមផ្ទាល់ខ្លួន ដើម្បីជំរុញការរីកចម្រើនពិតប្រាកដសម្រាប់អាជីវកម្មរបស់អ្នក។",
+        ctaBtn: "កក់ការពិភាក្សា",
+
+        modalCoreStrat: "យុទ្ធសាស្ត្រចម្បង",
+        modalTimeframe: "រយៈពេល",
+        modalRequestBtn: "ស្នើសុំយុទ្ធសាស្ត្រស្រដៀងគ្នានេះ"
+      }
+    };
+
+    let currentLang = 'en';
+
+    // Toggle Language Function
+    const langToggleBtn = document.getElementById('langToggle');
+    const langLabel = document.getElementById('langLabel');
+
+    const setLanguage = (lang) => {
+      currentLang = lang;
+      langLabel.innerText = lang === 'en' ? 'ភាសាខ្មែរ' : 'English';
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+          el.innerText = translations[lang][key];
+        }
+      });
+    };
+
+    langToggleBtn.addEventListener('click', () => {
+      setLanguage(currentLang === 'en' ? 'km' : 'en');
+    });
+
+    // Category Filtering with Smooth Animations
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const caseCards = document.querySelectorAll('.case-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filterValue = btn.getAttribute('data-filter');
+
+        caseCards.forEach(card => {
+          if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+            card.style.display = 'flex';
+            setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'scale(1)'; }, 50);
+          } else {
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.8)';
+            setTimeout(() => card.style.display = 'none', 300);
+          }
+        });
+      });
+    });
+
+    // Scroll Reveal & Animated Bar Filling Trigger
+    const revealOnScroll = () => {
+      const reveals = document.querySelectorAll('.reveal');
+      const windowHeight = window.innerHeight;
+
+      reveals.forEach(reveal => {
+        const revealTop = reveal.getBoundingClientRect().top;
+        if (revealTop < windowHeight - 80) {
+          reveal.classList.add('active');
+          
+          // Animate progress bars inside visible cards
+          const fills = reveal.querySelectorAll('.progress-fill');
+          fills.forEach(fill => {
+            fill.style.width = fill.getAttribute('data-progress');
+          });
+        }
+      });
+    };
+
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('DOMContentLoaded', revealOnScroll);
+
+    // Dynamic Mouse Tracking Spotlight on Cards
+    caseCards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+
+        const rotateX = -((y - rect.height / 2) / 12);
+        const rotateY = (x - rect.width / 2) / 12;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+      });
+    });
+
+    // Magnetic Button Effect
+    const magneticBtns = document.querySelectorAll('.magnetic-btn');
+    magneticBtns.forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) scale(1.05)`;
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'translate(0px, 0px) scale(1)';
+      });
+    });
+
+    // Interactive Accordion / FAQ Handler
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      item.querySelector('.faq-question').addEventListener('click', () => {
+        faqItems.forEach(i => { if (i !== item) i.classList.remove('active'); });
+        item.classList.toggle('active');
+      });
+    });
+
+    // Popup Modal Handler
+    const modal = document.getElementById('modal');
+    const modalClose = document.getElementById('modalClose');
+    const openModalBtns = document.querySelectorAll('.open-modal');
+
+    openModalBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const card = e.target.closest('.case-card');
+        const id = card.getAttribute('data-id');
+        
+        document.getElementById('modalTag').innerText = translations[currentLang][`${id}Tag`];
+        document.getElementById('modalTitle').innerText = translations[currentLang][`${id}Title`];
+        document.getElementById('modalDesc').innerText = translations[currentLang][`${id}ModalDesc`];
+        document.getElementById('modalStrategy').innerText = translations[currentLang][`${id}Strategy`];
+        document.getElementById('modalDuration').innerText = translations[currentLang][`${id}Duration`];
+
+        modal.classList.add('active');
+      });
+    });
+
+    modalClose.addEventListener('click', () => modal.classList.remove('active'));
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('active');
+    });
+
+    // Interactive Particle Canvas with Cursor Trail Effect
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null };
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      for (let i = 0; i < 2; i++) {
+        particles.push(new TrailParticle(mouse.x, mouse.y));
+      }
+    });
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class TrailParticle {
+      constructor(x, y) {
+        this.x = x || Math.random() * canvas.width;
+        this.y = y || Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = (Math.random() - 0.5) * 1.5;
+        this.speedY = (Math.random() - 0.5) * 1.5;
+        this.color = Math.random() > 0.5 ? '#ec4899' : '#8b5cf6';
+        this.alpha = 1;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.alpha -= 0.015;
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = Math.max(this.alpha, 0);
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    // Populate Initial Particles
+    for (let i = 0; i < 30; i++) {
+      particles.push(new TrailParticle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+
+        if (particles[i].alpha <= 0) {
+          particles.splice(i, 1);
+          i--;
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+
+    animateParticles();
+  </script>
+</body>
+</html>
