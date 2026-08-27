@@ -16,144 +16,191 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 
 <body>
 
+  <!-- Ambient Background Glowing Lights -->
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+
+  <!-- Fullscreen Login Page Portal Overlay -->
+  <div id="welcome-overlay">
+    <canvas id="dust-canvas"></canvas>
+
+    <div class="welcome-card" id="actionCard">
+      <div class="logo" style="font-size: 2rem; margin-bottom: 0.5rem; font-weight: 700;">Persona<span style="color: #f97316;">.</span></div>
+      <h2>Login Portal</h2>
+      <p>Enter your account details to access the dashboard & portfolio.</p>
+      
+      <form onsubmit="event.preventDefault(); enterSite();">
+        <div class="login-input-group">
+          <label>Username or Email</label>
+          <div class="login-input-box">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" placeholder="soyan.dev@example.com" value="Soyan_Developer" required>
+          </div>
+        </div>
+
+        <div class="login-input-group">
+          <label>Password</label>
+          <div class="login-input-box">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" placeholder="••••••••" value="12345678" required>
+          </div>
+        </div>
+
+        <button type="submit" class="start-btn">
+          Access Portfolio <i class="fa-solid fa-right-to-bracket" style="margin-left: 8px;"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- Dynamic Particle Canvas Background -->
   <canvas id="bg-canvas"></canvas>
 
-  <!-- Navigation Bar -->
+  <!-- Navigation Bar with Video Background & Lightning Border -->
   <header>
+    <!-- Video element covering only the navbar header -->
+    <video class="nav-video-bg" autoplay loop muted playsinline>
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-network-nodes-in-motion-41559-large.mp4" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+    <div class="nav-overlay"></div>
+
     <nav>
       <div class="logo">Persona<span>.</span></div>
       <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#cars">Car Showroom</a></li>
-        <li><a href="#motorbikes">Motorbikes</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer">Contact</a></li>
+        <li><a href="#about" data-i18n="nav_about">About</a></li>
+        <li><a href="#cars" data-i18n="nav_cars">Car Showroom</a></li>
+        <li><a href="#motorbikes" data-i18n="nav_bikes">Motorbikes</a></li>
+        <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
+        <li><a href="#education" data-i18n="nav_education">Education</a></li>
+        <li><a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" data-i18n="nav_contact">Contact</a></li>
       </ul>
+
+      <div class="nav-controls">
+        <button id="theme-toggle-btn" class="ctrl-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+          <i id="theme-icon" class="fa-solid fa-moon"></i>
+        </button>
+        <button id="lang-toggle-btn" class="ctrl-btn" onclick="toggleLanguage()">
+          <i class="fa-solid fa-globe"></i> <span id="lang-label">ខ្មែរ</span>
+        </button>
+      </div>
     </nav>
   </header>
 
   <!-- Hero Section -->
   <section class="hero" id="about">
     <div class="hero-content">
-      <span class="tagline float-anim-1">Web Programming</span>
-      <h1 class="float-anim-2">CHOUCH SOYAN</h1>
-      <p class="float-anim-3">Passionate Web Programmer dedicated to modern web standards, precise styling, and reliable functionality.</p>
+      <span class="tagline float-anim-1" data-i18n="hero_tagline">Web Developer</span>
+      <h1 class="float-anim-2" data-i18n="hero_name" style="cursor: pointer; user-select: none;">CHOUCH SOYAN</h1>
+      <p class="float-anim-3" data-i18n="hero_description">Passionate Web Programmer dedicated to modern web standards, precise styling, and reliable functionality.</p>
       <div class="hero-buttons float-anim-4">
-        <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Get in Touch</a>
-        <a href="#skills" class="btn btn-secondary">View Skills</a>
+        <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-i18n="btn_touch">Get in Touch</a>
+        <a href="#skills" class="btn btn-secondary" data-i18n="btn_skills">View Skills</a>
       </div>
     </div>
     <div class="hero-image">
       <div class="profile-card float-anim-1" id="profileCard">
         <div class="profile-card-inner">
-          <img src="profile.png" alt="Profile Photo">
+          <img id="profile-img" src="profile.png" alt="Profile Photo">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Modern Car Business Section -->
+  <!-- Modern Car Section -->
   <section id="cars">
-    <h2 class="section-title float-anim-2">My dream cars</h2>
-    <div class="car-grid">
-      <!-- Car 1 -->
+    <h2 class="section-title float-anim-2" data-i18n="section_cars">My dream cars</h2>
+    <div class="car-grid auto-swap-grid" id="carGrid">
       <div class="car-card float-anim-1">
         <div class="car-image-box">
-          <span class="car-badge">Electric</span>
+          <span class="car-badge" data-i18n="badge_electric">Electric</span>
           <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80" alt="Modern Electric Sedan">
         </div>
         <div class="car-details">
           <h3>Apex Vision E1</h3>
-          <p>Full autonomous capability, dual-motor AWD with 450-mile electric range.</p>
+          <p data-i18n="car1_desc">Full autonomous capability, dual-motor AWD with 450-mile electric range.</p>
           <div class="car-price">$89,900</div>
-          <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Inquire Now</a>
+          <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" data-i18n="btn_inquire">Inquire Now</a>
         </div>
       </div>
 
-      <!-- Car 2 -->
       <div class="car-card float-anim-3">
         <div class="car-image-box">
-          <span class="car-badge">Hybrid</span>
+          <span class="car-badge" data-i18n="badge_hybrid">Hybrid</span>
           <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80" alt="Luxury Sports Car">
         </div>
         <div class="car-details">
           <h3>Vanguard GT-S</h3>
-          <p>Twin-turbo hybrid powertrain producing 670 HP with custom leather interior.</p>
+          <p data-i18n="car2_desc">Twin-turbo hybrid powertrain producing 670 HP with custom leather interior.</p>
           <div class="car-price">$125,000</div>
-          <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Inquire Now</a>
+          <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" data-i18n="btn_inquire">Inquire Now</a>
         </div>
       </div>
 
-      <!-- Car 3 -->
       <div class="car-card float-anim-2">
         <div class="car-image-box">
-          <span class="car-badge">Performance</span>
+          <span class="car-badge" data-i18n="badge_performance">Performance</span>
           <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80" alt="Sport Sedan">
         </div>
         <div class="car-details">
           <h3>Phantom Cruiser</h3>
-          <p>Aerodynamic carbon fiber body, adaptive air suspension, dynamic control.</p>
+          <p data-i18n="car3_desc">Aerodynamic carbon fiber body, adaptive air suspension, dynamic control.</p>
           <div class="car-price">$98,500</div>
-          <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Inquire Now</a>
+          <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" data-i18n="btn_inquire">Inquire Now</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Motorbike Dealership Section -->
+  <!-- Motorbike Section -->
   <section id="motorbikes">
-    <h2 class="section-title float-anim-1"> My dream of Motorbike</h2>
-    <div class="car-grid">
-      <!-- Bike 1 -->
+    <h2 class="section-title float-anim-1" data-i18n="section_bikes">My dream Motorbike</h2>
+    <div class="car-grid auto-swap-grid" id="bikeGrid">
       <div class="car-card float-anim-2">
         <div class="car-image-box">
-          <span class="car-badge">Superbike</span>
+          <span class="car-badge" data-i18n="badge_superbike">Superbike</span>
           <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80" alt="Sport Motorbike">
         </div>
         <div class="car-details">
           <h3>Panigale V4 Sport</h3>
-          <p>1103cc V4 engine delivering 214 HP, aerodynamic winglets, and race chassis.</p>
+          <p data-i18n="bike1_desc">1103cc V4 engine delivering 214 HP, aerodynamic winglets, and race chassis.</p>
           <div class="car-price">$24,900</div>
-          <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Inquire Now</a>
+          <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" data-i18n="btn_inquire">Inquire Now</a>
         </div>
       </div>
 
-      <!-- Bike 2 -->
       <div class="car-card float-anim-4">
         <div class="car-image-box">
-          <span class="car-badge">Adventure</span>
+          <span class="car-badge" data-i18n="badge_adventure">Adventure</span>
           <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=800&q=80" alt="Adventure Motorbike">
         </div>
         <div class="car-details">
           <h3>GS 1250 Explorer</h3>
-          <p>Boxer dual engine built for long-distance touring, terrain control, and luggage capacity.</p>
+          <p data-i18n="bike2_desc">Boxer dual engine built for long-distance touring, terrain control, and luggage capacity.</p>
           <div class="car-price">$19,500</div>
-          <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Inquire Now</a>
+          <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" data-i18n="btn_inquire">Inquire Now</a>
         </div>
       </div>
 
-      <!-- Bike 3 -->
       <div class="car-card float-anim-3">
         <div class="car-image-box">
-          <span class="car-badge">Cruiser</span>
+          <span class="car-badge" data-i18n="badge_cruiser">Cruiser</span>
           <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80" alt="Modern Cruiser Bike">
         </div>
         <div class="car-details">
           <h3>Iron 1200 Custom</h3>
-          <p>Classic V-Twin pulse with modern matte styling and high-rise handlebars.</p>
+          <p data-i18n="bike3_desc">Classic V-Twin pulse with modern matte styling and high-rise handlebars.</p>
           <div class="car-price">$14,800</div>
-          <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Inquire Now</a>
+          <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" data-i18n="btn_inquire">Inquire Now</a>
         </div>
       </div>
     </div>
@@ -161,68 +208,68 @@
 
   <!-- Skills Section -->
   <section id="skills">
-    <h2 class="section-title float-anim-3">Technical Expertise</h2>
+    <h2 class="section-title float-anim-3" data-i18n="section_skills">Technical Expertise</h2>
     <div class="skills-grid">
       <div class="card float-anim-1">
         <i class="fa-solid fa-code icon-bounce"></i>
-        <h3>Frontend Development</h3>
-        <p>Creating responsive, high-performance user interfaces using modern HTML5, CSS3, and JavaScript frameworks.</p>
+        <h3 data-i18n="skill1_title">Frontend Development</h3>
+        <p data-i18n="skill1_desc">Creating responsive, high-performance user interfaces using modern HTML5, CSS3, and JavaScript frameworks.</p>
       </div>
       <div class="card float-anim-2">
         <i class="fa-solid fa-layer-group icon-bounce"></i>
-        <h3>Backend Architecture</h3>
-        <p>Building secure server-side applications, API endpoints, and managing efficient database schemas.</p>
+        <h3 data-i18n="skill2_title">Backend Architecture</h3>
+        <p data-i18n="skill2_desc">Building secure server-side applications, API endpoints, and managing efficient database schemas.</p>
       </div>
       <div class="card float-anim-4">
         <i class="fa-solid fa-mobile-screen-button icon-bounce"></i>
-        <h3>Responsive Design</h3>
-        <p>Ensuring web layouts adapt fluidly across all modern screens, from smartphones to large desktop displays.</p>
+        <h3 data-i18n="skill3_title">Responsive Design</h3>
+        <p data-i18n="skill3_desc">Ensuring web layouts adapt fluidly across all modern screens, from smartphones to large desktop displays.</p>
       </div>
     </div>
   </section>
 
   <!-- Education Section -->
   <section id="education">
-    <h2 class="section-title float-anim-2">Education Background</h2>
+    <h2 class="section-title float-anim-2" data-i18n="section_education">Education Background</h2>
     <div class="timeline">
       <div class="timeline-item float-anim-1">
-        <div class="timeline-date">Higher Education</div>
+        <div class="timeline-date" data-i18n="edu1_type">Higher Education</div>
         <h3>Passerelles Numériques Cambodia (PNC)</h3>
-        <p style="color: var(--text-muted); margin-top: 0.3rem;">
+        <p style="color: var(--text-muted); margin-top: 0.3rem;" data-i18n="edu1_desc">
           Specializing in Web Programming with hands-on practice in modern software engineering principles and full-stack development.
         </p>
       </div>
       <div class="timeline-item float-anim-3">
-        <div class="timeline-date">Secondary Education</div>
+        <div class="timeline-date" data-i18n="edu2_type">Secondary Education</div>
         <h3>Hun Sen Oddar Mean Chey high school</h3>
-        <p style="color: var(--text-muted); margin-top: 0.3rem;">
-          I spend 3 years in this school and I have learned a lot from this school, and this school provide me the knowledge that can help me continue at university.
+        <p style="color: var(--text-muted); margin-top: 0.3rem;" data-i18n="edu2_desc">
+          I spent 3 years in this school and learned a lot. This school provided me with knowledge to help me continue to university.
         </p>
       </div>
       <div class="timeline-item float-anim-2">
-        <div class="timeline-date">Secondary Education</div>
+        <div class="timeline-date" data-i18n="edu3_type">Secondary Education</div>
         <h3>Techor Sen high school</h3>
-        <p style="color: var(--text-muted); margin-top: 0.3rem;">
-          I used to spend 3 years in this school. I used to learn there since I was 13 years old until 15 years old, and it made me feel very interested.
+        <p style="color: var(--text-muted); margin-top: 0.3rem;" data-i18n="edu3_desc">
+          I spent 3 years in this school from age 13 to 15. It was an inspiring experience where I made many friends and adapted to a larger school environment.
         </p>
       </div>
       <div class="timeline-item float-anim-4">
-        <div class="timeline-date">Secondary Education</div>
+        <div class="timeline-date" data-i18n="edu4_type">Primary Education</div>
         <h3>Kok Ampil primary school</h3>
-        <p style="color: var(--text-muted); margin-top: 0.3rem;">
-          I used to study in this school for 6 years, and this school is very important for me. I got a lot of knowledge from this school.
+        <p style="color: var(--text-muted); margin-top: 0.3rem;" data-i18n="edu4_desc">
+          I studied at this school for 6 years. It is very important to me, and I gained a lot of foundational knowledge here.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Dedicated Contact Page Section -->
+  <!-- Contact Section -->
   <section id="contact-section">
-    <h2 class="section-title float-anim-1">Contact Me</h2>
+    <h2 class="section-title float-anim-1" data-i18n="section_contact">Contact Me</h2>
     <div class="contact-grid">
       <div class="contact-info float-anim-2">
-        <h3>Get in Touch</h3>
-        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Reach out directly on Telegram for quick inquiries or web development projects.</p>
+        <h3 data-i18n="contact_heading">Get in Touch</h3>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;" data-i18n="contact_subheading">Reach out directly on Telegram for quick inquiries or web development projects.</p>
         
         <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="info-item-link">
           <div class="info-item">
@@ -237,15 +284,15 @@
         <div class="info-item">
           <i class="fa-solid fa-location-dot icon-bounce"></i>
           <div>
-            <strong>Showroom Location</strong>
-            <p style="color: var(--text-muted);">Phnom Penh, Cambodia</p>
+            <strong data-i18n="location_title">Location</strong>
+            <p style="color: var(--text-muted);" data-i18n="location_value">Phnom Penh, Cambodia</p>
           </div>
         </div>
       </div>
 
       <div class="contact-form-box float-anim-3">
-        <p style="margin-bottom: 1.2rem; color: var(--text-muted);">Click the button below to message me directly on Telegram:</p>
-        <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary pulse-btn" style="width: 100%; text-align: center; display: block;">
+        <p style="margin-bottom: 1.2rem; color: var(--text-muted);" data-i18n="telegram_prompt">Click the button below to message me directly on Telegram:</p>
+        <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary pulse-btn" style="width: 100%; text-align: center; display: block;" data-i18n="btn_open_telegram">
           <i class="fa-brands fa-telegram" style="margin-right: 8px;"></i> Open Telegram Chat
         </a>
       </div>
@@ -256,32 +303,310 @@
   <footer>
     <div class="social-links float-anim-1">
       <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-telegram"></i></a>
-      <a href="#"><i class="fa-brands fa-github"></i></a>
+      <a href="https://github.com/soyan11" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i></a>
       <a href="#"><i class="fa-brands fa-linkedin"></i></a>
     </div>
-    <p>&copy; 2026 Web Developer Portfolio. Designed for professionalism and performance.</p>
+    <p data-i18n="footer_text">&copy; 2026 Web Developer Portfolio. Designed for professionalism and performance.</p>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Profile Image Switcher -->
   <script>
-    // 3D Profile Card Tilt Script
-    const card = document.getElementById('profileCard');
-    if (card) {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        card.style.animationPlayState = 'paused';
-        card.style.transform = `rotateY(${x / 12}deg) rotateX(${-y / 12}deg) translateY(-8px)`;
-      });
+    document.addEventListener('DOMContentLoaded', () => {
+      const profileImg = document.getElementById('profile-img');
+      const profilePhotos = [
+        "profile.png",
+        "photo_2026-04-27_22-35-55.jpg"
+      ];
+      let currentPhotoIndex = 0;
 
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'rotateY(0deg) rotateX(0deg)';
-        card.style.animationPlayState = 'running';
+      setInterval(() => {
+        if (!profileImg) return;
+
+        profileImg.classList.add('img-fade-out');
+
+        setTimeout(() => {
+          currentPhotoIndex = (currentPhotoIndex + 1) % profilePhotos.length;
+          profileImg.src = profilePhotos[currentPhotoIndex];
+          profileImg.classList.remove('img-fade-out');
+        }, 1500);
+      }, 5000);
+    });
+  </script>
+
+  <!-- Auto-Swap Engine for Cards -->
+  <script>
+    function startAutoSwap() {
+      const grids = document.querySelectorAll('.auto-swap-grid');
+
+      setInterval(() => {
+        grids.forEach(grid => {
+          const cards = grid.children;
+          if (cards.length > 1) {
+            const firstCard = cards[0];
+
+            firstCard.classList.add('card-slide-out');
+
+            setTimeout(() => {
+              grid.appendChild(firstCard);
+              firstCard.classList.remove('card-slide-out');
+              firstCard.classList.add('card-slide-in');
+
+              void firstCard.offsetWidth;
+
+              firstCard.classList.remove('card-slide-in');
+            }, 3500);
+          }
+        });
+      }, 10000);
+    }
+
+    document.addEventListener('DOMContentLoaded', startAutoSwap);
+  </script>
+
+  <!-- Script to dismiss Welcome/Login Screen -->
+  <script>
+    function enterSite() {
+      const overlay = document.getElementById('welcome-overlay');
+      if (overlay) {
+        overlay.classList.add('welcome-hidden');
+      }
+    }
+  </script>
+
+  <!-- Dynamic Heading Text Swap Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const heroHeading = document.querySelector('.hero-content h1');
+      if (heroHeading) {
+        heroHeading.addEventListener('click', () => {
+          heroHeading.textContent = 'ជុច​ សុយ៉ាន';
+        });
+      }
+    });
+  </script>
+
+  <!-- Particle Engine -->
+  <script>
+    const dCanvas = document.getElementById('dust-canvas');
+    const dCtx = dCanvas.getContext('2d');
+    let dWidth, dHeight, dustParticles = [];
+
+    function resizeDust() {
+      dWidth = dCanvas.width = window.innerWidth;
+      dHeight = dCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeDust);
+    resizeDust();
+
+    class DustParticle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * dWidth;
+        this.y = dHeight + Math.random() * 20;
+        this.vx = (Math.random() - 0.2) * 2;
+        this.vy = -(Math.random() * 1.5 + 0.5);
+        this.size = Math.random() * 2 + 0.5;
+        this.alpha = Math.random() * 0.5 + 0.1;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.y < -10 || this.x > dWidth + 10) {
+          this.reset();
+        }
+      }
+      draw() {
+        dCtx.beginPath();
+        dCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        dCtx.fillStyle = `rgba(249, 115, 22, ${this.alpha})`;
+        dCtx.fill();
+      }
+    }
+
+    for (let i = 0; i < 60; i++) dustParticles.push(new DustParticle());
+
+    function animateDust() {
+      dCtx.clearRect(0, 0, dWidth, dHeight);
+      dustParticles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateDust);
+    }
+    animateDust();
+  </script>
+
+  <!-- Theme & Language Controller Script -->
+  <script>
+    let particleColor = 'rgba(59, 130, 246, 0.4)';
+
+    function updateThemeUI(theme) {
+      const themeIcon = document.getElementById('theme-icon');
+
+      if (theme === 'light') {
+        document.body.classList.add('light-mode');
+        themeIcon.className = 'fa-solid fa-sun';
+        particleColor = 'rgba(37, 99, 235, 0.5)';
+      } else {
+        document.body.classList.remove('light-mode');
+        themeIcon.className = 'fa-solid fa-moon';
+        particleColor = 'rgba(59, 130, 246, 0.4)';
+      }
+    }
+
+    function toggleTheme() {
+      const currentTheme = localStorage.getItem('site_theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('site_theme', newTheme);
+      updateThemeUI(newTheme);
+    }
+
+    const savedTheme = localStorage.getItem('site_theme') || 'dark';
+    updateThemeUI(savedTheme);
+
+    const translations = {
+      en: {
+        nav_about: "About",
+        nav_cars: "Car Showroom",
+        nav_bikes: "Motorbikes",
+        nav_skills: "Skills",
+        nav_education: "Education",
+        nav_contact: "Contact",
+        hero_tagline: "Web Developer",
+        hero_name: "CHOUCH SOYAN",
+        hero_description: "Passionate Web Programmer dedicated to modern web standards, precise styling, and reliable functionality.",
+        btn_touch: "Get in Touch",
+        btn_skills: "View Skills",
+        section_cars: "My dream cars",
+        badge_electric: "Electric",
+        badge_hybrid: "Hybrid",
+        badge_performance: "Performance",
+        car1_desc: "Full autonomous capability, dual-motor AWD with 450-mile electric range.",
+        car2_desc: "Twin-turbo hybrid powertrain producing 670 HP with custom leather interior.",
+        car3_desc: "Aerodynamic carbon fiber body, adaptive air suspension, dynamic control.",
+        btn_inquire: "Inquire Now",
+        section_bikes: "My dream Motorbike",
+        badge_superbike: "Superbike",
+        badge_adventure: "Adventure",
+        badge_cruiser: "Cruiser",
+        bike1_desc: "1103cc V4 engine delivering 214 HP, aerodynamic winglets, and race chassis.",
+        bike2_desc: "Boxer dual engine built for long-distance touring, terrain control, and luggage capacity.",
+        bike3_desc: "Classic V-Twin pulse with modern matte styling and high-rise handlebars.",
+        section_skills: "Technical Expertise",
+        skill1_title: "Frontend Development",
+        skill1_desc: "Creating responsive, high-performance user interfaces using modern HTML5, CSS3, and JavaScript frameworks.",
+        skill2_title: "Backend Architecture",
+        skill2_desc: "Building secure server-side applications, API endpoints, and managing efficient database schemas.",
+        skill3_title: "Responsive Design",
+        skill3_desc: "Ensuring web layouts adapt fluidly across all modern screens, from smartphones to large desktop displays.",
+        section_education: "Education Background",
+        edu1_type: "Higher Education",
+        edu1_desc: "Specializing in Web Programming with hands-on practice in modern software engineering principles and full-stack development.",
+        edu2_type: "Secondary Education",
+        edu2_desc: "I spent 3 years in this school and learned a lot. This school provided me with knowledge to help me continue to university.",
+        edu3_type: "Secondary Education",
+        edu3_desc: "I spent 3 years in this school from age 13 to 15. It was an inspiring experience where I made many friends and adapted to a larger school environment.",
+        edu4_type: "Primary Education",
+        edu4_desc: "I studied at this school for 6 years. It is very important to me, and I gained a lot of foundational knowledge here.",
+        section_contact: "Contact Me",
+        contact_heading: "Get in Touch",
+        contact_subheading: "Reach out directly on Telegram for quick inquiries or web development projects.",
+        location_title: "Location",
+        location_value: "Phnom Penh, Cambodia",
+        telegram_prompt: "Click the button below to message me directly on Telegram:",
+        btn_open_telegram: "Open Telegram Chat",
+        footer_text: "© 2026 Web Developer Portfolio. Designed for professionalism and performance."
+      },
+      km: {
+        nav_about: "អំពីខ្ញុំ",
+        nav_cars: "ហាងលក់រថយន្ត",
+        nav_bikes: "ម៉ូតូ",
+        nav_skills: "ជំនាញ",
+        nav_education: "ការសិក្សា",
+        nav_contact: "ទំនាក់ទំនង",
+        hero_tagline: "អ្នកអភិវឌ្ឍន៍វេបសាយ",
+        hero_name: "ជុច​ សុយ៉ាន",
+        hero_description: "អ្នកសរសេរកម្មវិធីវេបសាយដែលមានទំនួលខុសត្រូវ ផ្តោតលើស្តង់ដារទំនើប រចនាយ៉ាងផ្ចិតផ្ចង់ និងមានប្រសិទ្ធភាពខ្ពស់។",
+        btn_touch: "ទាក់ទងមកខ្ញុំ",
+        btn_skills: "មើលជំនាញ",
+        section_cars: "ឡានក្នុងក្ដីស្រម៉ៃ",
+        badge_electric: "អគ្គិសនី",
+        badge_hybrid: "ហាយប្រ៊ីដ",
+        badge_performance: "កម្លាំងខ្លាំង",
+        car1_desc: "ប្រព័ន្ធបើកបរស្វ័យប្រវត្តិ ម៉ូទ័រពីរ AWD បើកបរបាន ៤៥០ ម៉ាយល៍។",
+        car2_desc: "ម៉ាស៊ីន Hybrid Twin-Turbo កម្លាំង ៦៧០ សេះ ជាមួយនឹងពូកស្បែកប្រណិត។",
+        car3_desc: "គ្រោងឆ្អឹង Carbon Fiber សម្រួលខ្យល់ ប្រព័ន្ធបូមអាកាស បញ្ជាយ៉ាងរលូន។",
+        btn_inquire: "សាកសួរព័ត៌មាន",
+        section_bikes: "ម៉ូតូ ក្នុងក្ដីស្រម៉ៃ",
+        badge_superbike: "ស៊ុបពើបៃ",
+        badge_adventure: "ផ្សងព្រេង",
+        badge_cruiser: "គ្រូស៊ើ",
+        bike1_desc: "ម៉ាស៊ីន 1103cc V4 កម្លាំង ២១៤ សេះ រចនាបែបប្រកួតប្រជែង។",
+        bike2_desc: "ម៉ាស៊ីន Boxer សម្រាប់ធ្វើដំណើរផ្លូវឆ្ងាយ ធន់ និងផ្ទុកអីវ៉ាន់បានច្រើន។",
+        bike3_desc: "រចនាប័ទ្ម V-Twin បុរាណ រួមផ្សំជាមួយភាពទាន់សម័យ និងចង្កូតខ្ពស់។",
+        section_skills: "ជំនាញបច្ចេកវិទ្យា",
+        skill1_title: "ការអភិវឌ្ឍ Frontend",
+        skill1_desc: "បង្កើតផ្ទាំងកម្មវិធីទាក់ទាញ លឿន និងដំណើរការស្អាតលើគ្រប់ឧបករណ៍ដោយប្រើ HTML5, CSS3, និង JS។",
+        skill2_title: "រចនាសម្ព័ន្ធ Backend",
+        skill2_desc: "បង្កើតប្រព័ន្ធម៉ាស៊ីនបម្រើដែលមានសុវត្ថិភាព API និងគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ។",
+        skill3_title: "ការរចនា Responsive",
+        skill3_desc: "ធានាថាគេហទំព័រសម្របខ្លួនបានល្អលើគ្រប់ទំហំអេក្រង់ ចាប់ពីទូរស័ព្ទដៃរហូតដល់កុំព្យូទ័រ។",
+        section_education: "ប្រវត្តិការសិក្សា",
+        edu1_type: "ឧត្តមសិក្សា",
+        edu1_desc: "ឯកទេសខាងការសរសេរកម្មវិធីវេបសាយ នៅអង្គការ Passerelles Numériques Cambodia (PNC)។",
+        edu2_type: "មធ្យមសិក្សា",
+        edu2_desc: "ខ្ញុំបានសិក្សានៅវិទ្យាល័យ ហ៊ុន សែន ឧត្តរមានជ័យ រយៈពេល ៣ ឆ្នាំ ហើយទទួលបានចំណេះដឹងយ៉ាងច្រើន។",
+        edu3_type: "អនុវិទ្យាល័យ",
+        edu3_desc: "ខ្ញុំបានសិក្សានៅវិទ្យាល័យ តេជោ សែន រយៈពេល ៣ ឆ្នាំ (អាយុ ១៣ ដល់ ១៥ ឆ្នាំ)។",
+        edu4_type: "បឋមសិក្សា",
+        edu4_desc: "ខ្ញុំបានសិក្សានៅសាលាបឋមសិក្សា គោកអំពិល រយៈពេល ៦ ឆ្នាំ ដែលជាគ្រឹះយ៉ាងសំខាន់សម្រាប់ខ្ញុំ។",
+        section_contact: "ទំនាក់ទំនងខ្ញុំ",
+        contact_heading: "ផ្ញើសារមកកាន់ខ្ញុំ",
+        contact_subheading: "ទាក់ទងមកកាន់ខ្ញុំផ្ទាល់តាម Telegram សម្រាប់ការសាកសួរ ឬគម្រោងអភិវឌ្ឍន៍វេបសាយ។",
+        location_title: "ទីតាំង",
+        location_value: "រាជធានីភ្នំពេញ កម្ពុជា",
+        telegram_prompt: "ចុចប៊ូតុងខាងក្រោមដើម្បីផ្ញើសារមកខ្ញុំតាម Telegram ដោយផ្ទាល់:",
+        btn_open_telegram: "បើកការឆាត Telegram",
+        footer_text: "© 2026 បណ្តុំស្នាដៃអ្នកអភិវឌ្ឍន៍វេបសាយ។ រចនាឡើងដើម្បីភាពអាជីព និងប្រសិទ្ធភាព।"
+      }
+    };
+
+    let currentLang = localStorage.getItem('site_lang') || 'en';
+
+    function updateLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('site_lang', lang);
+      
+      if (lang === 'km') {
+        document.body.classList.add('km-font');
+        document.getElementById('lang-label').textContent = 'English';
+      } else {
+        document.body.classList.remove('km-font');
+        document.getElementById('lang-label').textContent = 'ខ្មែរ';
+      }
+
+      document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+          element.textContent = translations[lang][key];
+        }
       });
     }
 
-    // Canvas Background Animation
+    function toggleLanguage() {
+      const newLang = currentLang === 'en' ? 'km' : 'en';
+      updateLanguage(newLang);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateLanguage(currentLang);
+    });
+  </script>
+
+  <!-- Background Particle Canvas Script -->
+  <script>
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let width, height, particles = [];
@@ -310,7 +635,7 @@
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(59, 130, 246, 0.4)';
+        ctx.fillStyle = particleColor;
         ctx.fill();
       }
     }
@@ -330,7 +655,7 @@
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(59, 130, 246, ${0.12 - dist / 1300})`;
+            ctx.strokeStyle = particleColor.replace('0.4', (0.12 - dist / 1300).toString()).replace('0.5', (0.15 - dist / 1300).toString());
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }
