@@ -170,6 +170,116 @@
       opacity: 0;
       transform: scale(0.98);
     }
+
+    /* ACTIVITIES SECTION STYLES */
+    .activities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .activity-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .activity-card:hover {
+      transform: translateY(-5px);
+      border-color: #f97316;
+      box-shadow: 0 10px 25px rgba(249, 115, 22, 0.15);
+    }
+
+    .activity-icon {
+      font-size: 2rem;
+      color: #f97316;
+      margin-bottom: 1rem;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(249, 115, 22, 0.1);
+      border-radius: 12px;
+    }
+
+    .activity-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .activity-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted, #94a3b8);
+      line-height: 1.5;
+    }
+
+    /* MOBILE NAVIGATION & DROPDOWN MENU */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        right: 1.5rem;
+        width: 220px;
+        background: rgba(15, 23, 42, 0.95);
+        border: 1px solid rgba(249, 115, 22, 0.3);
+        backdrop-filter: blur(12px);
+        border-radius: 12px;
+        padding: 1rem;
+        flex-direction: column;
+        gap: 0.8rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+      }
+
+      .nav-links.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .nav-links li {
+        width: 100%;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 0.5rem 0.8rem;
+        border-radius: 6px;
+      }
+
+      .nav-links a:hover {
+        background: rgba(249, 115, 22, 0.15);
+      }
+    }
   </style>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -222,14 +332,21 @@
     
     <nav>
       <div class="logo">Persona<span>.</span></div>
-      <ul class="nav-links">
+
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+        <i class="fa-solid fa-bars" id="menu-icon"></i>
+      </button>
+
+      <ul class="nav-links" id="nav-links">
         <li><a href="features.html" data-i18n="nav_GlobalFeatures">Globalfeatures</a></li>
         <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
+        <li><a href="#activities" data-i18n="nav_activities">Activities</a></li>
+        <li><a href="game.html" data-i18n="nav_game">Game</a></li>
         <li><a href="pricing.html" data-i18n="nav_Portfolio">Portfolio</a></li>
         <li><a href="#education" data-i18n="nav_education">Education</a></li>
         <li><a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" data-i18n="nav_contact">Contact</a></li>
       </ul>
-
+      
       <div class="nav-controls">
         <button id="theme-toggle-btn" class="ctrl-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
           <i id="theme-icon" class="fa-solid fa-moon"></i>
@@ -403,6 +520,71 @@
     </div>
   </section>
 
+  <section id="activities">
+    <h2 class="section-title float-anim-1" data-i18n="section_activities">My Daily Activities</h2>
+    <div class="activities-grid">
+      <div class="activity-card float-anim-1">
+        <div class="activity-icon"><i class="fa-solid fa-laptop-code"></i></div>
+        <h3 data-i18n="act1_title">Web Development</h3>
+        <p data-i18n="act1_desc">Writing clean HTML, CSS, and JavaScript code every day to practice building interactive web pages.</p>
+      </div>
+
+      <div class="activity-card float-anim-2">
+        <div class="activity-icon"><i class="fa-solid fa-book-open"></i></div>
+        <h3 data-i18n="act2_title">Learning Tech & English</h3>
+        <p data-i18n="act2_desc">Studying web frameworks, practicing English technical vocabulary, and reviewing programming logic.</p>
+      </div>
+
+      <div class="activity-card float-anim-3">
+        <div class="activity-icon"><i class="fa-solid fa-gamepad"></i></div>
+        <h3 data-i18n="act3_title">Gaming</h3>
+        <p data-i18n="act3_desc">Playing online games during free time to relax, sharpen strategy skills, and connect with friends.</p>
+      </div>
+
+      <div class="activity-card float-anim-4">
+        <div class="activity-icon"><i class="fa-solid fa-music"></i></div>
+        <h3 data-i18n="act4_title">Listening to Music</h3>
+        <p data-i18n="act4_desc">Listening to favorite tracks while coding or relaxing to keep energy and creativity high.</p>
+      </div>
+
+      <div class="activity-card float-anim-1">
+        <div class="activity-icon"><i class="fa-solid fa-dumbbell"></i></div>
+        <h3 data-i18n="act5_title">Exercise & Workout</h3>
+        <p data-i18n="act5_desc">Doing daily physical exercises to maintain energy, health, and balance sitting at the desk.</p>
+      </div>
+
+      <div class="activity-card float-anim-2">
+        <div class="activity-icon"><i class="fa-solid fa-bug"></i></div>
+        <h3 data-i18n="act6_title">Debugging Code</h3>
+        <p data-i18n="act6_desc">Troubleshooting bugs, analyzing console errors, and solving coding challenges in my projects.</p>
+      </div>
+
+      <div class="activity-card float-anim-3">
+        <div class="activity-icon"><i class="fa-brands fa-telegram"></i></div>
+        <h3 data-i18n="act7_title">Social Networking</h3>
+        <p data-i18n="act7_desc">Staying in touch with class peers, friends, and technical communities on Telegram.</p>
+      </div>
+
+      <div class="activity-card float-anim-4">
+        <div class="activity-icon"><i class="fa-solid fa-compass"></i></div>
+        <h3 data-i18n="act8_title">Exploring Tech Trends</h3>
+        <p data-i18n="act8_desc">Browsing developer news, new web tools, UI design trends, and modern software innovations.</p>
+      </div>
+
+      <div class="activity-card float-anim-1">
+        <div class="activity-icon"><i class="fa-solid fa-people-group"></i></div>
+        <h3 data-i18n="act9_title">Group Work & Projects</h3>
+        <p data-i18n="act9_desc">Collaborating with school teammates on technical assignments and full-stack web solutions.</p>
+      </div>
+
+      <div class="activity-card float-anim-2">
+        <div class="activity-icon"><i class="fa-solid fa-motorcycle"></i></div>
+        <h3 data-i18n="act10_title">Riding & Exploring</h3>
+        <p data-i18n="act10_desc">Taking outdoor motor rides around Phnom Penh city to unwind after intense study sessions.</p>
+      </div>
+    </div>
+  </section>
+
   <section id="contact-section">
     <h2 class="section-title float-anim-1" data-i18n="section_contact">Contact Me</h2>
     <div class="contact-grid">
@@ -489,13 +671,13 @@
 
         let color;
         if (progress < 0.25) {
-          color = `rgba(255, 230, 100, ${alpha * 0.8})`; // Bright Yellow Core
+          color = `rgba(255, 230, 100, ${alpha * 0.8})`; 
         } else if (progress < 0.6) {
-          color = `rgba(249, 115, 22, ${alpha * 0.7})`;  // Intense Orange
+          color = `rgba(249, 115, 22, ${alpha * 0.7})`;  
         } else if (progress < 0.85) {
-          color = `rgba(239, 68, 68, ${alpha * 0.5})`;   // Deep Red
+          color = `rgba(239, 68, 68, ${alpha * 0.5})`;   
         } else {
-          color = `rgba(50, 50, 50, ${alpha * 0.2})`;    // Rising Smoke
+          color = `rgba(50, 50, 50, ${alpha * 0.2})`;    
         }
 
         fCtx.fillStyle = color;
@@ -521,21 +703,25 @@
     }
     animateFire();
 
-    // 3-SECOND TIMER TO FADE OUT OVERLAY (PREVENTS 404 ERROR)
-    let timeLeft = 3;
-    const timerElem = document.getElementById('countdown-timer');
+    if (sessionStorage.getItem('has_entered_site')) {
+      const redirectOverlay = document.getElementById('redirect-overlay');
+      if (redirectOverlay) redirectOverlay.style.display = 'none';
+    } else {
+      let timeLeft = 3;
+      const timerElem = document.getElementById('countdown-timer');
 
-    const countdownInterval = setInterval(() => {
-      timeLeft--;
-      if (timerElem) timerElem.textContent = timeLeft;
-      if (timeLeft <= 0) {
-        clearInterval(countdownInterval);
-        const overlay = document.getElementById('redirect-overlay');
-        if (overlay) {
-          overlay.classList.add('fade-out');
+      const countdownInterval = setInterval(() => {
+        timeLeft--;
+        if (timerElem) timerElem.textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(countdownInterval);
+          const overlay = document.getElementById('redirect-overlay');
+          if (overlay) {
+            overlay.classList.add('fade-out');
+          }
         }
-      }
-    }, 1000);
+      }, 1000);
+    }
   </script>
 
   <script>
@@ -596,7 +782,18 @@
       if (overlay) {
         overlay.classList.add('welcome-hidden');
       }
+      sessionStorage.setItem('has_entered_site', 'true');
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('has_entered_site')) {
+        const welcomeOverlay = document.getElementById('welcome-overlay');
+        if (welcomeOverlay) {
+          welcomeOverlay.classList.add('welcome-hidden');
+          welcomeOverlay.style.display = 'none';
+        }
+      }
+    });
   </script>
 
   <script>
@@ -605,6 +802,33 @@
       if (heroHeading) {
         heroHeading.addEventListener('click', () => {
           heroHeading.textContent = 'ជុច​ សុយ៉ាន';
+        });
+      }
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuToggle = document.getElementById('menu-toggle');
+      const navLinks = document.getElementById('nav-links');
+      const menuIcon = document.getElementById('menu-icon');
+
+      if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', () => {
+          navLinks.classList.toggle('active');
+          
+          if (navLinks.classList.contains('active')) {
+            menuIcon.className = 'fa-solid fa-xmark';
+          } else {
+            menuIcon.className = 'fa-solid fa-bars';
+          }
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+          link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            menuIcon.className = 'fa-solid fa-bars';
+          });
         });
       }
     });
@@ -697,6 +921,8 @@
         nav_cars: "Car Showroom",
         nav_bikes: "Motorbikes",
         nav_skills: "Skills",
+        nav_activities: "Activities",
+        nav_game: "Game",
         nav_education: "Education",
         nav_contact: "Contact",
         hero_tagline: "Web Developer",
@@ -735,6 +961,27 @@
         edu3_desc: "I spent 3 years in this school from age 13 to 15. It was an inspiring experience where I made many friends and adapted to a larger school environment.",
         edu4_type: "Primary Education",
         edu4_desc: "I studied at this school for 6 years. It is very important to me, and I gained a lot of foundational knowledge here.",
+        section_activities: "My Daily Activities",
+        act1_title: "Web Development",
+        act1_desc: "Writing clean HTML, CSS, and JavaScript code every day to practice building interactive web pages.",
+        act2_title: "Learning Tech & English",
+        act2_desc: "Studying web frameworks, practicing English technical vocabulary, and reviewing programming logic.",
+        act3_title: "Gaming",
+        act3_desc: "Playing online games during free time to relax, sharpen strategy skills, and connect with friends.",
+        act4_title: "Listening to Music",
+        act4_desc: "Listening to favorite tracks while coding or relaxing to keep energy and creativity high.",
+        act5_title: "Exercise & Workout",
+        act5_desc: "Doing daily physical exercises to maintain energy, health, and balance sitting at the desk.",
+        act6_title: "Debugging Code",
+        act6_desc: "Troubleshooting bugs, analyzing console errors, and solving coding challenges in my projects.",
+        act7_title: "Social Networking",
+        act7_desc: "Staying in touch with class peers, friends, and technical communities on Telegram.",
+        act8_title: "Exploring Tech Trends",
+        act8_desc: "Browsing developer news, new web tools, UI design trends, and modern software innovations.",
+        act9_title: "Group Work & Projects",
+        act9_desc: "Collaborating with school teammates on technical assignments and full-stack web solutions.",
+        act10_title: "Riding & Exploring",
+        act10_desc: "Taking outdoor motor rides around Phnom Penh city to unwind after intense study sessions.",
         section_contact: "Contact Me",
         contact_heading: "Get in Touch",
         contact_subheading: "Reach out directly on Telegram for quick inquiries or web development projects.",
@@ -751,6 +998,8 @@
         nav_cars: "ឡានក្នុងក្ដីស្រម៉ៃ",
         nav_bikes: "ម៉ូតូ",
         nav_skills: "ជំនាញ",
+        nav_activities: "សកម្មភាព",
+        nav_game: "ហ្គេម",
         nav_education: "ការសិក្សា",
         nav_contact: "ទំនាក់ទំនង",
         hero_tagline: "អ្នកអភិវឌ្ឍន៍វេបសាយ",
@@ -789,6 +1038,27 @@
         edu3_desc: "ខ្ញុំបានសិក្សានៅវិទ្យាល័យ តេជោ សែន រយៈពេល ៣ ឆ្នាំ (អាយុ ១៣ ដល់ ១៥ ឆ្នាំ)។",
         edu4_type: "បឋមសិក្សា",
         edu4_desc: "ខ្ញុំបានសិក្សានៅសាលាបឋមសិក្សា គោកអំពិល រយៈពេល ៦ ឆ្នាំ ដែលជាគ្រឹះយ៉ាងសំខាន់សម្រាប់ខ្ញុំ។",
+        section_activities: "សកម្មភាពប្រចាំថ្ងៃ",
+        act1_title: "ការអភិវឌ្ឍវេបសាយ",
+        act1_desc: "សរសេរកូដ HTML, CSS, និង JS រាល់ថ្ងៃដើម្បីហាត់រចនាទំព័រវេបសាយឱ្យកាន់តែស្អាត។",
+        act2_title: "រៀនបច្ចេកវិទ្យា និងភាសាអង់គ្លេស",
+        act2_desc: "សិក្សា Web Frameworks ថ្មីៗ អនុវត្តពាក្យបច្ចេកទេស និងរំលឹកកូដ។",
+        act3_title: "លេងហ្គេម",
+        act3_desc: "លេងហ្គេមតាមអ៊ីនធឺណិតពេលទំនេរដើម្បីលំហែកាយ បង្កើនការគិត និងទំនាក់ទំនងមិត្តភក្តិ។",
+        act4_title: "ស្តាប់តន្ត្រី",
+        act4_desc: "ស្តាប់បទចម្រៀងដែលចូលចិត្តពេលសរសេរកូដ ដើម្បីបង្កើនអារម្មណ៍ស្រស់ថ្លា។",
+        act5_title: "ហាត់ប្រាណ",
+        act5_desc: "ធ្វើលំហាត់ប្រាណប្រចាំថ្ងៃដើម្បីសុខភាពមាំមួន និងរក្សាកម្លាំង។",
+        act6_title: "ដោះស្រាយកូដ (Debugging)",
+        act6_desc: "ស្វែងរក និងដោះស្រាយបញ្ហាកូដ error ផ្សេងៗក្នុងគម្រោង portfolio។",
+        act7_title: "ទំនាក់ទំនងសង្គម",
+        act7_desc: "ទំនាក់ទំនងជាមួយមិត្តរួមថ្នាក់ និងក្រុមអ្នកសរសេរកូដតាម Telegram។",
+        act8_title: "តាមដានបច្ចេកវិទ្យាថ្មីៗ",
+        act8_desc: "មើលព័ត៌មាន Developer, Tool ថ្មីៗ និងការរចនា UI/UX ទំនើបៗ។",
+        act9_title: "ធ្វើការងារក្រុម",
+        act9_desc: "សហការជាមួយមិត្តរួមថ្នាក់ដើម្បីធ្វើកិច្ចការសាលា និងគម្រោងវេបសាយ។",
+        act10_title: "ជិះម៉ូតូលំហែកាយ",
+        act10_desc: "ជិះម៉ូតូមើលទិដ្ឋភាពជុំវិញរាជធានីភ្នំពេញដើម្បីរំសាយអារម្មណ៍បន្ទាប់ពីរៀន។",
         section_contact: "ទំនាក់ទំនងខ្ញុំ",
         contact_heading: "ផ្ញើសារមកកាន់ខ្ញុំ",
         contact_subheading: "ទាក់ទងមកកាន់ខ្ញុំផ្ទាល់តាម Telegram សម្រាប់ការសាកសួរ ឬគម្រោងអភិវឌ្ឍន៍វេបសាយ។",
@@ -805,19 +1075,16 @@
     function updateLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('site_lang', lang);
-      
-      if (lang === 'km') {
-        document.body.classList.add('km-font');
-        document.getElementById('lang-label').textContent = 'English';
-      } else {
-        document.body.classList.remove('km-font');
-        document.getElementById('lang-label').textContent = 'ខ្មែរ';
+
+      const langLabel = document.getElementById('lang-label');
+      if (langLabel) {
+        langLabel.textContent = lang === 'en' ? 'ខ្មែរ' : 'English';
       }
 
-      document.querySelectorAll('[data-i18n]').forEach(element => {
-        const key = element.getAttribute('data-i18n');
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
         if (translations[lang] && translations[lang][key]) {
-          element.textContent = translations[lang][key];
+          el.textContent = translations[lang][key];
         }
       });
     }
@@ -831,65 +1098,6 @@
       updateLanguage(currentLang);
     });
   </script>
-
-  <script>
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height, particles = [];
-
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.4;
-        this.vy = (Math.random() - 0.5) * 0.4;
-        this.radius = Math.random() * 1.5 + 1;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if (this.x < 0 || this.x > width) this.vx *= -1;
-        if (this.y < 0 || this.y > height) this.vy *= -1;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = particleColor;
-        ctx.fill();
-      }
-    }
-
-    for (let i = 0; i < 65; i++) particles.push(new Particle());
-
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 130) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = particleColor.replace('0.4', (0.12 - dist / 1300).toString()).replace('0.5', (0.15 - dist / 1300).toString());
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-          }
-        }
-      }
-      requestAnimationFrame(animate);
-    }
-    animate();
-  </script>
 </body>
+
 </html>
