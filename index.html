@@ -13,6 +13,105 @@
   <link rel="stylesheet" href="./style.css">
 
   <style>
+    /* REDIRECT OVERLAY - HIGH QUALITY FIRE ANIMATION */
+    #redirect-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #090a0f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+
+    #redirect-overlay.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    #fire-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .redirect-card {
+      position: relative;
+      z-index: 2;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(249, 115, 22, 0.3);
+      backdrop-filter: blur(16px);
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 0 40px rgba(249, 115, 22, 0.25), 0 0 80px rgba(239, 68, 68, 0.15);
+      animation: firePulse 2s infinite alternate ease-in-out;
+    }
+
+    @keyframes firePulse {
+      0% {
+        box-shadow: 0 0 30px rgba(249, 115, 22, 0.2), 0 0 60px rgba(239, 68, 68, 0.1);
+      }
+      100% {
+        box-shadow: 0 0 50px rgba(249, 115, 22, 0.45), 0 0 100px rgba(239, 68, 68, 0.25);
+      }
+    }
+
+    .fire-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #ff9d00, #ff4500, #ff0055);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .redirect-card p {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .timer-badge {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #f97316;
+      margin-bottom: 1.2rem;
+    }
+
+    .redirect-progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .redirect-progress-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #f97316, #ef4444, #eab308);
+      border-radius: 10px;
+      animation: fillProgress 3s linear forwards;
+    }
+
+    @keyframes fillProgress {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
     /* PROFILE IMAGE ONLY - EXACT FIT RECTANGLE BORDER */
     .profile-card {
       position: relative;
@@ -82,6 +181,18 @@
 </head>
 
 <body>
+
+  <div id="redirect-overlay">
+    <canvas id="fire-canvas"></canvas>
+    <div class="redirect-card">
+      <div class="fire-title"><i class="fa-solid fa-fire-flame-curved"></i> Welcome to Soyan</div>
+      <p>Entering the site in a moment...</p>
+      <div class="timer-badge">Please wait <span id="countdown-timer">3</span>s</div>
+      <div class="redirect-progress-bar">
+        <div class="redirect-progress-fill"></div>
+      </div>
+    </div>
+  </div>
 
   <div class="bg-orb orb-1"></div>
   <div class="bg-orb orb-2"></div>
@@ -335,6 +446,97 @@
     </div>
     <p data-i18n="footer_text">&copy; 2026 Web Developer Portfolio. Designed for professionalism and performance.</p>
   </footer>
+
+  <script>
+    const fireCanvas = document.getElementById('fire-canvas');
+    const fCtx = fireCanvas.getContext('2d');
+    let fWidth, fHeight, fireParticles = [];
+
+    function resizeFire() {
+      fWidth = fireCanvas.width = window.innerWidth;
+      fHeight = fireCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeFire);
+    resizeFire();
+
+    class FireParticle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * fWidth;
+        this.y = fHeight + Math.random() * 50;
+        this.vx = (Math.random() - 0.5) * 2;
+        this.vy = -(Math.random() * 4 + 2);
+        this.size = Math.random() * 24 + 10;
+        this.life = 0;
+        this.maxLife = Math.random() * 60 + 40;
+      }
+      update() {
+        this.x += this.vx + (Math.random() - 0.5) * 1.5;
+        this.y += this.vy;
+        this.size *= 0.96;
+        this.life++;
+        if (this.life >= this.maxLife || this.size <= 0.5) {
+          this.reset();
+        }
+      }
+      draw() {
+        const progress = this.life / this.maxLife;
+        const alpha = 1 - progress;
+        fCtx.beginPath();
+        fCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+
+        let color;
+        if (progress < 0.25) {
+          color = `rgba(255, 230, 100, ${alpha * 0.8})`; // Bright Yellow Core
+        } else if (progress < 0.6) {
+          color = `rgba(249, 115, 22, ${alpha * 0.7})`;  // Intense Orange
+        } else if (progress < 0.85) {
+          color = `rgba(239, 68, 68, ${alpha * 0.5})`;   // Deep Red
+        } else {
+          color = `rgba(50, 50, 50, ${alpha * 0.2})`;    // Rising Smoke
+        }
+
+        fCtx.fillStyle = color;
+        fCtx.fill();
+      }
+    }
+
+    for (let i = 0; i < 180; i++) {
+      fireParticles.push(new FireParticle());
+    }
+
+    function animateFire() {
+      fCtx.fillStyle = 'rgba(9, 10, 15, 0.2)';
+      fCtx.fillRect(0, 0, fWidth, fHeight);
+      
+      fCtx.globalCompositeOperation = 'lighter';
+      fireParticles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      fCtx.globalCompositeOperation = 'source-over';
+      requestAnimationFrame(animateFire);
+    }
+    animateFire();
+
+    // 3-SECOND TIMER TO FADE OUT OVERLAY (PREVENTS 404 ERROR)
+    let timeLeft = 3;
+    const timerElem = document.getElementById('countdown-timer');
+
+    const countdownInterval = setInterval(() => {
+      timeLeft--;
+      if (timerElem) timerElem.textContent = timeLeft;
+      if (timeLeft <= 0) {
+        clearInterval(countdownInterval);
+        const overlay = document.getElementById('redirect-overlay');
+        if (overlay) {
+          overlay.classList.add('fade-out');
+        }
+      }
+    }, 1000);
+  </script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
