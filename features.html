@@ -8,7 +8,7 @@
   <!-- Global Stylesheet Reference -->
   <link rel="stylesheet" href="./style.css">
 
-  <!-- Font & Icon Dependencies -->
+  <!-- Font & Icon Dependencies (Including Kantumruy Pro & Siemreap for Crisp Khmer Typography) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -36,7 +36,7 @@
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --font-mono: 'JetBrains Mono', monospace;
-      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      --font-sans: 'Plus Jakarta Sans', 'Kantumruy Pro', sans-serif;
     }
 
     * {
@@ -54,10 +54,17 @@
       transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
       min-height: 100vh;
+      line-height: 1.6;
     }
 
     body.page-loaded {
       opacity: 1;
+    }
+
+    /* Khmer typography line-height fix */
+    body.lang-km {
+      font-family: 'Kantumruy Pro', var(--font-sans);
+      line-height: 1.75;
     }
 
     /* Custom Scrollbar Styling */
@@ -111,7 +118,7 @@
     }
 
     /* ==========================================================================
-       2. HEADER NAVIGATION & BRANDING
+       2. HEADER NAVIGATION, BRANDING & LANGUAGE SWITCHER
        ========================================================================== */
     header {
       position: sticky;
@@ -147,6 +154,12 @@
       color: var(--accent-orange);
     }
 
+    .nav-center {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
     .nav-links {
       display: flex;
       list-style: none;
@@ -165,6 +178,35 @@
     .nav-links a:hover,
     .nav-links a.active {
       color: var(--accent-orange);
+    }
+
+    /* Native Language Switcher Controls */
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 30px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--accent-orange);
+      color: #ffffff;
+      box-shadow: 0 2px 10px rgba(249, 115, 22, 0.4);
     }
 
     /* ==========================================================================
@@ -196,7 +238,7 @@
     .expansion-hero h1 {
       font-size: 3.2rem;
       font-weight: 800;
-      line-height: 1.15;
+      line-height: 1.25;
       letter-spacing: -1px;
       background: linear-gradient(135deg, #ffffff 30%, var(--text-muted) 100%);
       -webkit-background-clip: text;
@@ -282,6 +324,9 @@
       .expansion-grid {
         grid-template-columns: 1fr;
       }
+      .nav-links {
+        display: none;
+      }
     }
 
     .action-card {
@@ -343,7 +388,7 @@
     .card-description {
       color: var(--text-muted);
       font-size: 0.95rem;
-      line-height: 1.55;
+      line-height: 1.6;
       margin-bottom: 1.5rem;
     }
 
@@ -784,20 +829,28 @@
   <header>
     <nav>
       <a href="index.html" class="logo">Persona<span>.</span></a>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="index.html#cars">Showroom</a></li>
-        <li><a href="features.html" class="active">Global Features</a></li>
-        <li><a href="https://t.me/CHOUCHSOYAN" target="_blank">Contact</a></li>
-      </ul>
+      <div class="nav-center">
+        <ul class="nav-links">
+          <li><a href="index.html" data-i18n="navHome">Home</a></li>
+          <li><a href="pricing.html" data-i18n="nav_Portfolio">Portfolio</a></li>
+          <li><a href="features.html" class="active" data-i18n="navFeatures">Global Features</a></li>
+          <li><a href="https://t.me/CHOUCHSOYAN" target="_blank" data-i18n="navContact">Contact</a></li>
+        </ul>
+        
+        <!-- Native Language Switcher Toggle -->
+        <div class="lang-switcher">
+          <button class="lang-btn active" id="btn-lang-en" onclick="setLanguage('en')">EN</button>
+          <button class="lang-btn" id="btn-lang-km" onclick="setLanguage('km')">ខ្មែរ</button>
+        </div>
+      </div>
     </nav>
   </header>
 
   <!-- Hero Section -->
   <section class="expansion-hero">
-    <span class="status-badge"><i class="fa-solid fa-server"></i> System Engine v4.8 Active</span>
-    <h1>Enterprise Expansion & Web Architecture</h1>
-    <p>
+    <span class="status-badge"><i class="fa-solid fa-server"></i> <span data-i18n="heroBadge">System Engine v4.8 Active</span></span>
+    <h1 data-i18n="heroTitle">Enterprise Expansion & Web Architecture</h1>
+    <p data-i18n="heroDesc">
       An interactive platform showcase featuring WebGL 3D material shaders, real-time audio synthesis, dynamic CDN server node telemetry, and AI-driven client assistant.
     </p>
   </section>
@@ -807,22 +860,22 @@
     <div class="metric-card">
       <div class="metric-indicator"></div>
       <h3 id="fps-counter">60</h3>
-      <p>Render Frame Rate</p>
+      <p data-i18n="kpiFps">Render Frame Rate</p>
     </div>
     <div class="metric-card">
       <div class="metric-indicator"></div>
       <h3 id="ping-counter">8 ms</h3>
-      <p>Gateway Latency</p>
+      <p data-i18n="kpiPing">Gateway Latency</p>
     </div>
     <div class="metric-card">
       <div class="metric-indicator"></div>
       <h3 id="nodes-counter">1,480</h3>
-      <p>Active DOM Elements</p>
+      <p data-i18n="kpiElements">Active DOM Elements</p>
     </div>
     <div class="metric-card">
       <div class="metric-indicator"></div>
       <h3 id="vram-counter">28 MB</h3>
-      <p>Estimated VRAM Allocation</p>
+      <p data-i18n="kpiVram">Estimated VRAM Allocation</p>
     </div>
   </div>
 
@@ -835,23 +888,23 @@
         <div class="card-header">
           <div class="action-icon"><i class="fa-solid fa-cube"></i></div>
           <div class="card-title-group">
-            <h3>3D WebGL Mesh Engine</h3>
-            <span>Graphics Subsystem</span>
+            <h3 data-i18n="m1Title">3D WebGL Mesh Engine</h3>
+            <span data-i18n="m1Subtitle">Graphics Subsystem</span>
           </div>
         </div>
-        <p class="card-description">
+        <p class="card-description" data-i18n="m1Desc">
           Interactive WebGL viewport powered by Three.js. Orbit the mesh by dragging. Toggle between wireframe rendering, solid shading, dynamic specular lights, and particle systems.
         </p>
         <div id="canvas-container">
-          <div class="canvas-overlay-tag">WebGL 2.0 | Mesh: Icosahedron</div>
+          <div class="canvas-overlay-tag" data-i18n="m1Tag">WebGL 2.0 | Mesh: Icosahedron</div>
         </div>
       </div>
       <div>
         <div class="control-btn-group">
-          <button class="btn-chip active" onclick="change3DMaterial('wireframe')">Wireframe</button>
-          <button class="btn-chip" onclick="change3DMaterial('solid')">Solid Blue</button>
-          <button class="btn-chip" onclick="change3DMaterial('orange')">Neon Glow</button>
-          <button class="btn-chip" onclick="change3DMaterial('points')">Particle Mesh</button>
+          <button class="btn-chip active" onclick="change3DMaterial('wireframe')" data-i18n="m1Chip1">Wireframe</button>
+          <button class="btn-chip" onclick="change3DMaterial('solid')" data-i18n="m1Chip2">Solid Blue</button>
+          <button class="btn-chip" onclick="change3DMaterial('orange')" data-i18n="m1Chip3">Neon Glow</button>
+          <button class="btn-chip" onclick="change3DMaterial('points')" data-i18n="m1Chip4">Particle Mesh</button>
         </div>
       </div>
     </div>
@@ -862,16 +915,16 @@
         <div class="card-header">
           <div class="action-icon" style="color: var(--accent-purple);"><i class="fa-solid fa-palette"></i></div>
           <div class="card-title-group">
-            <h3>Showroom Paint Studio</h3>
-            <span>Configurator Engine</span>
+            <h3 data-i18n="m2Title">Showroom Paint Studio</h3>
+            <span data-i18n="m2Subtitle">Configurator Engine</span>
           </div>
         </div>
-        <p class="card-description">
+        <p class="card-description" data-i18n="m2Desc">
           Real-time color switcher for showroom car rendering. Customize light reflection, metallic specular gloss, and rotation speeds.
         </p>
         <div class="customizer-controls">
           <div class="control-row">
-            <span class="control-label">Base Color Swatch</span>
+            <span class="control-label" data-i18n="m2ColorLabel">Base Color Swatch</span>
             <div class="color-swatches">
               <div class="swatch active" style="background: #3b82f6;" onclick="applyMeshColor(0x3b82f6, this)"></div>
               <div class="swatch" style="background: #f97316;" onclick="applyMeshColor(0xf97316, this)"></div>
@@ -881,7 +934,7 @@
             </div>
           </div>
           <div class="control-row">
-            <span class="control-label">Rotation Speed</span>
+            <span class="control-label" data-i18n="m2SpeedLabel">Rotation Speed</span>
             <div class="range-input-wrapper">
               <input type="range" id="speedSlider" min="0" max="0.03" step="0.002" value="0.006" oninput="updateRotationSpeed(this.value)">
             </div>
@@ -890,7 +943,7 @@
       </div>
       <div style="margin-top: 1.5rem;">
         <button class="btn btn-secondary btn-sm" style="width: 100%;" onclick="toggleMeshSpin()">
-          <i class="fa-solid fa-pause"></i> Toggle Rotation Engine
+          <i class="fa-solid fa-pause"></i> <span data-i18n="m2BtnToggle">Toggle Rotation Engine</span>
         </button>
       </div>
     </div>
@@ -901,32 +954,32 @@
         <div class="card-header">
           <div class="action-icon" style="color: var(--accent-orange);"><i class="fa-solid fa-sliders"></i></div>
           <div class="card-title-group">
-            <h3>DSP Audio Equalizer</h3>
-            <span>Signal Processing</span>
+            <h3 data-i18n="m3Title">DSP Audio Equalizer</h3>
+            <span data-i18n="m3Subtitle">Signal Processing</span>
           </div>
         </div>
-        <p class="card-description">
+        <p class="card-description" data-i18n="m3Desc">
           Simulated web audio frequency visualizer. Adjust frequency response sliders to watch amplitude adjustments render across the canvas spectrum.
         </p>
         <canvas id="audio-canvas"></canvas>
         <div class="eq-controls">
           <div class="eq-slider-group">
-            <span>Bass</span>
+            <span data-i18n="m3Bass">Bass</span>
             <input type="range" min="5" max="60" value="20" id="bassSlider" oninput="updateAudioEQ()">
           </div>
           <div class="eq-slider-group">
-            <span>Mid</span>
+            <span data-i18n="m3Mid">Mid</span>
             <input type="range" min="1" max="25" value="10" id="midSlider" oninput="updateAudioEQ()">
           </div>
           <div class="eq-slider-group">
-            <span>Treble</span>
+            <span data-i18n="m3Treble">Treble</span>
             <input type="range" min="1" max="50" value="15" id="trebleSlider" oninput="updateAudioEQ()">
           </div>
         </div>
       </div>
       <div style="margin-top: 1.2rem;">
         <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="triggerAudioPulse()">
-          <i class="fa-solid fa-bolt"></i> Generate Sonic Impulse
+          <i class="fa-solid fa-bolt"></i> <span data-i18n="m3BtnPulse">Generate Sonic Impulse</span>
         </button>
       </div>
     </div>
@@ -937,18 +990,18 @@
         <div class="card-header">
           <div class="action-icon" style="color: var(--accent-cyan);"><i class="fa-solid fa-robot"></i></div>
           <div class="card-title-group">
-            <h3>AI Portfolio Bot</h3>
-            <span>Client Assistant</span>
+            <h3 data-i18n="m4Title">AI Portfolio Bot</h3>
+            <span data-i18n="m4Subtitle">Client Assistant</span>
           </div>
         </div>
-        <p class="card-description">
+        <p class="card-description" data-i18n="m4Desc">
           Client-side intelligent assistant ready to answer questions regarding technical skills, available showcase projects, and contact avenues.
         </p>
         <div class="chatbot-box" id="chatBox">
-          <div class="chat-msg chat-bot">Hello! I am Soyan's AI assistant. Ask me about projects, skills, or telegram contact info!</div>
+          <div class="chat-msg chat-bot" id="chat-welcome-msg" data-i18n="m4WelcomeMsg">Hello! I am Soyan's AI assistant. Ask me about projects, skills, or telegram contact info!</div>
         </div>
         <div class="chat-input-wrapper">
-          <input type="text" id="chatInput" placeholder="Ask a question..." onkeypress="handleChatKey(event)">
+          <input type="text" id="chatInput" data-i18n-ph="m4Placeholder" placeholder="Ask a question..." onkeypress="handleChatKey(event)">
           <button class="btn btn-primary btn-sm" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
       </div>
@@ -960,30 +1013,30 @@
         <div class="card-header">
           <div class="action-icon" style="color: var(--accent-green);"><i class="fa-solid fa-microchip"></i></div>
           <div class="card-title-group">
-            <h3>System Benchmark Suite</h3>
-            <span>Performance Diagnostics</span>
+            <h3 data-i18n="m5Title">System Benchmark Suite</h3>
+            <span data-i18n="m5Subtitle">Performance Diagnostics</span>
           </div>
         </div>
-        <p class="card-description">
+        <p class="card-description" data-i18n="m5Desc">
           Execute real-time GPU load diagnostics, testing frame rendering stability, canvas redraw speed, and memory buffer consumption.
         </p>
         <div style="margin-top: 1rem;">
           <div class="diag-metric-row">
-            <span>GPU Render Pipeline</span>
-            <span id="diag-status">Idle</span>
+            <span data-i18n="m5GpuPipeline">GPU Render Pipeline</span>
+            <span id="diag-status" data-i18n="m5Idle">Idle</span>
           </div>
           <div class="progress-bar-container">
             <div class="progress-bar-fill" id="diag-bar"></div>
           </div>
           <div class="diag-metric-row">
-            <span>Passed Unit Tests</span>
+            <span data-i18n="m5PassedTests">Passed Unit Tests</span>
             <span id="diag-tests">0 / 4 Complete</span>
           </div>
         </div>
       </div>
       <div style="margin-top: 1.5rem;">
         <button class="btn btn-secondary btn-sm" style="width: 100%;" onclick="runDiagnostics()">
-          <i class="fa-solid fa-gauge-high"></i> Execute Benchmark Test
+          <i class="fa-solid fa-gauge-high"></i> <span data-i18n="m5BtnRun">Execute Benchmark Test</span>
         </button>
       </div>
     </div>
@@ -994,21 +1047,21 @@
         <div class="card-header">
           <div class="action-icon" style="color: var(--accent-rose);"><i class="fa-solid fa-terminal"></i></div>
           <div class="card-title-group">
-            <h3>Telemetry Log Terminal</h3>
-            <span>Socket Stream</span>
+            <h3 data-i18n="m6Title">Telemetry Log Terminal</h3>
+            <span data-i18n="m6Subtitle">Socket Stream</span>
           </div>
         </div>
-        <p class="card-description">
+        <p class="card-description" data-i18n="m6Desc">
           Live stream viewer displaying bidirectional web-socket payloads, TLS handshakes, dynamic cache updates, and API calls.
         </p>
         <div class="terminal-box" id="terminal">
-          <div><span class="term-line-time">[00:00:00]</span> <span class="term-line-success">[SYSTEM] Initialization complete.</span></div>
-          <div><span class="term-line-time">[00:00:01]</span> [NET] Edge server routing bound to gateway.</div>
+          <div><span class="term-line-time">[00:00:00]</span> <span class="term-line-success" data-i18n="m6LogInit">[SYSTEM] Initialization complete.</span></div>
+          <div><span class="term-line-time">[00:00:01]</span> <span data-i18n="m6LogNet">[NET] Edge server routing bound to gateway.</span></div>
         </div>
       </div>
       <div style="margin-top: 1rem;">
         <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="sendPing()">
-          <i class="fa-solid fa-paper-plane"></i> Transmit Packet Payload
+          <i class="fa-solid fa-paper-plane"></i> <span data-i18n="m6BtnPing">Transmit Packet Payload</span>
         </button>
       </div>
     </div>
@@ -1019,39 +1072,39 @@
         <div class="card-header">
           <div class="action-icon" style="color: var(--accent-blue);"><i class="fa-solid fa-network-wired"></i></div>
           <div class="card-title-group">
-            <h3>Global Edge Network</h3>
-            <span>Infrastructure Status</span>
+            <h3 data-i18n="m7Title">Global Edge Network</h3>
+            <span data-i18n="m7Subtitle">Infrastructure Status</span>
           </div>
         </div>
-        <p class="card-description">
+        <p class="card-description" data-i18n="m7Desc">
           Real-time server distribution latency across international edge locations.
         </p>
         <ul class="node-list">
           <li class="node-item">
             <div class="node-info">
               <span class="node-dot"></span>
-              <span>Asia-East (Phnom Penh)</span>
+              <span data-i18n="m7NodeKh">Asia-East (Phnom Penh)</span>
             </div>
             <span class="node-latency" id="node-kh">8ms</span>
           </li>
           <li class="node-item">
             <div class="node-info">
               <span class="node-dot"></span>
-              <span>Asia-Southeast (Singapore)</span>
+              <span data-i18n="m7NodeSg">Asia-Southeast (Singapore)</span>
             </div>
             <span class="node-latency" id="node-sg">18ms</span>
           </li>
           <li class="node-item">
             <div class="node-info">
               <span class="node-dot"></span>
-              <span>Asia-Northeast (Tokyo)</span>
+              <span data-i18n="m7NodeJp">Asia-Northeast (Tokyo)</span>
             </div>
             <span class="node-latency" id="node-jp">42ms</span>
           </li>
           <li class="node-item">
             <div class="node-info">
               <span class="node-dot" style="background: var(--accent-orange); box-shadow: 0 0 8px var(--accent-orange);"></span>
-              <span>US-West (Oregon)</span>
+              <span data-i18n="m7NodeUs">US-West (Oregon)</span>
             </div>
             <span class="node-latency" style="color: var(--accent-orange);" id="node-us">135ms</span>
           </li>
@@ -1059,7 +1112,7 @@
       </div>
       <div style="margin-top: 1rem;">
         <button class="btn btn-secondary btn-sm" style="width: 100%;" onclick="refreshNodes()">
-          <i class="fa-solid fa-rotate"></i> Ping All Edge Nodes
+          <i class="fa-solid fa-rotate"></i> <span data-i18n="m7BtnRefresh">Ping All Edge Nodes</span>
         </button>
       </div>
     </div>
@@ -1068,187 +1121,422 @@
     <div class="action-card">
       <div>
         <div class="card-header">
-          <div class="action-icon" style="color: #eab308;"><i class="fa-solid fa-download"></i></div>
+          <div class="action-icon" style="color: var(--accent-purple);"><i class="fa-solid fa-mobile-screen-button"></i></div>
           <div class="card-title-group">
-            <h3>Progressive Web App</h3>
-            <span>Mobile & Desktop</span>
+            <h3 data-i18n="m8Title">PWA Engine & Native App</h3>
+            <span data-i18n="m8Subtitle">Client Deployment</span>
           </div>
         </div>
-        <p class="card-description">
-          Install the Soyan platform directly onto your desktop or mobile home screen with offline caching.
+        <p class="card-description" data-i18n="m8Desc">
+          Install the Soyan Platform directly to your desktop or mobile device. Offers zero-latency offline caching, WebGL frame acceleration, and background sync.
         </p>
         <div class="pwa-feature-list">
-          <div class="pwa-item"><i class="fa-solid fa-check"></i> Offline Support</div>
-          <div class="pwa-item"><i class="fa-solid fa-check"></i> Zero Install Size</div>
-          <div class="pwa-item"><i class="fa-solid fa-check"></i> Hardware GPU</div>
-          <div class="pwa-item"><i class="fa-solid fa-check"></i> Fast Load Times</div>
+          <div class="pwa-item"><i class="fa-solid fa-check"></i> <span data-i18n="m8Feat1">Offline Caching</span></div>
+          <div class="pwa-item"><i class="fa-solid fa-check"></i> <span data-i18n="m8Feat2">Native FPS</span></div>
+          <div class="pwa-item"><i class="fa-solid fa-check"></i> <span data-i18n="m8Feat3">Zero Install Size</span></div>
+          <div class="pwa-item"><i class="fa-solid fa-check"></i> <span data-i18n="m8Feat4">SSL Encrypted</span></div>
         </div>
       </div>
       <div>
-        <button class="btn btn-secondary" style="width: 100%;" onclick="triggerPwaPrompt()">
-          <i class="fa-solid fa-mobile-screen"></i> Install Application
+        <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="installPWA()">
+          <i class="fa-solid fa-download"></i> <span data-i18n="m8BtnInstall">Install Native PWA Application</span>
         </button>
       </div>
     </div>
 
-    <!-- Card 9: Navigation Portal Link -->
-    <div class="action-card" style="justify-content: center; text-align: center; background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8));">
-      <div>
-        <div class="action-icon" style="color: var(--accent-orange); margin: 0 auto 1.2rem; width: 64px; height: 64px; font-size: 1.8rem;">
-          <i class="fa-solid fa-house"></i>
-        </div>
-        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Return to Main Portfolio</h3>
-        <p class="card-description" style="margin-bottom: 2rem;">
-          Navigate back to the main homepage to explore project showcases, car showroom models, and direct contact avenues.
-        </p>
-      </div>
-      <a href="index.html" class="btn btn-primary" style="width: 100%;">
-        <i class="fa-solid fa-arrow-left"></i> Back to Main Homepage
-      </a>
-    </div>
-
   </div>
 
-  <!-- Footer -->
+  <!-- Footer Section -->
   <footer>
     <div class="footer-content">
-      <div class="logo">Persona<span>.</span></div>
-      <p>Building high-performance web applications, interactive WebGL experiences, and user interfaces.</p>
+      <a href="index.html" class="logo">Persona<span>.</span></a>
+      <p data-i18n="footerCopy">&copy; 2026 Soyan Platform Engine. All system rights reserved.</p>
       <div class="footer-socials">
-        <a href="https://t.me/CHOUCHSOYAN" target="_blank"><i class="fa-brands fa-telegram"></i></a>
-        <a href="#"><i class="fa-brands fa-github"></i></a>
-        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://t.me/CHOUCHSOYAN" target="_blank" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        <a href="#" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
       </div>
-      <p style="font-size: 0.8rem; opacity: 0.6;">&copy; 2026 Soyan Platform. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- ==========================================================================
-     JAVASCRIPT LOGIC & ENGINE CONTROLLERS
-     ========================================================================== -->
-  
-  <!-- Page Initialization & FPS Counter Script -->
+  <!-- System Runtime, i18n Engine & Interactive Logic -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      document.body.classList.add('page-loaded');
-      
-      // Update DOM Node Counter
-      const nodeCount = document.getElementsByTagName('*').length;
-      document.getElementById('nodes-counter').textContent = nodeCount.toLocaleString();
-
-      // FPS Monitoring Engine
-      let frameCount = 0;
-      let lastTime = performance.now();
-      const fpsDisplay = document.getElementById('fps-counter');
-
-      function calculateFPS() {
-        const now = performance.now();
-        frameCount++;
-        
-        if (now - lastTime >= 1000) {
-          const fps = Math.round((frameCount * 1000) / (now - lastTime));
-          fpsDisplay.textContent = fps;
-          frameCount = 0;
-          lastTime = now;
-        }
-        requestAnimationFrame(calculateFPS);
+    /* ==========================================================================
+       1. NATIVE KHMER / ENGLISH TRANSLATION DICTIONARY & ENGINE
+       ========================================================================== */
+    const i18nDict = {
+      en: {
+        navHome: "Home",
+        navShowroom: "Showroom",
+        navFeatures: "Global Features",
+        navContact: "Contact",
+        heroBadge: "System Engine v4.8 Active",
+        heroTitle: "Enterprise Expansion & Web Architecture",
+        heroDesc: "An interactive platform showcase featuring WebGL 3D material shaders, real-time audio synthesis, dynamic CDN server node telemetry, and AI-driven client assistant.",
+        kpiFps: "Render Frame Rate",
+        kpiPing: "Gateway Latency",
+        kpiElements: "Active DOM Elements",
+        kpiVram: "Estimated VRAM Allocation",
+        m1Title: "3D WebGL Mesh Engine",
+        m1Subtitle: "Graphics Subsystem",
+        m1Desc: "Interactive WebGL viewport powered by Three.js. Orbit the mesh by dragging. Toggle between wireframe rendering, solid shading, dynamic specular lights, and particle systems.",
+        m1Tag: "WebGL 2.0 | Mesh: Icosahedron",
+        m1Chip1: "Wireframe",
+        m1Chip2: "Solid Blue",
+        m1Chip3: "Neon Glow",
+        m1Chip4: "Particle Mesh",
+        m2Title: "Showroom Paint Studio",
+        m2Subtitle: "Configurator Engine",
+        m2Desc: "Real-time color switcher for showroom car rendering. Customize light reflection, metallic specular gloss, and rotation speeds.",
+        m2ColorLabel: "Base Color Swatch",
+        m2SpeedLabel: "Rotation Speed",
+        m2BtnToggle: "Toggle Rotation Engine",
+        m3Title: "DSP Audio Equalizer",
+        m3Subtitle: "Signal Processing",
+        m3Desc: "Simulated web audio frequency visualizer. Adjust frequency response sliders to watch amplitude adjustments render across the canvas spectrum.",
+        m3Bass: "Bass",
+        m3Mid: "Mid",
+        m3Treble: "Treble",
+        m3BtnPulse: "Generate Sonic Impulse",
+        m4Title: "AI Portfolio Bot",
+        m4Subtitle: "Client Assistant",
+        m4Desc: "Client-side intelligent assistant ready to answer questions regarding technical skills, available showcase projects, and contact avenues.",
+        m4WelcomeMsg: "Hello! I am Soyan's AI assistant. Ask me about projects, skills, or telegram contact info!",
+        m4Placeholder: "Ask a question...",
+        m5Title: "System Benchmark Suite",
+        m5Subtitle: "Performance Diagnostics",
+        m5Desc: "Execute real-time GPU load diagnostics, testing frame rendering stability, canvas redraw speed, and memory buffer consumption.",
+        m5GpuPipeline: "GPU Render Pipeline",
+        m5Idle: "Idle",
+        m5PassedTests: "Passed Unit Tests",
+        m5BtnRun: "Execute Benchmark Test",
+        m6Title: "Telemetry Log Terminal",
+        m6Subtitle: "Socket Stream",
+        m6Desc: "Live stream viewer displaying bidirectional web-socket payloads, TLS handshakes, dynamic cache updates, and API calls.",
+        m6LogInit: "[SYSTEM] Initialization complete.",
+        m6LogNet: "[NET] Edge server routing bound to gateway.",
+        m6BtnPing: "Transmit Packet Payload",
+        m7Title: "Global Edge Network",
+        m7Subtitle: "Infrastructure Status",
+        m7Desc: "Real-time server distribution latency across international edge locations.",
+        m7NodeKh: "Asia-East (Phnom Penh)",
+        m7NodeSg: "Asia-Southeast (Singapore)",
+        m7NodeJp: "Asia-Northeast (Tokyo)",
+        m7NodeUs: "US-West (Oregon)",
+        m7BtnRefresh: "Ping All Edge Nodes",
+        m8Title: "PWA Engine & Native App",
+        m8Subtitle: "Client Deployment",
+        m8Desc: "Install the Soyan Platform directly to your desktop or mobile device. Offers zero-latency offline caching, WebGL frame acceleration, and background sync.",
+        m8Feat1: "Offline Caching",
+        m8Feat2: "Native FPS",
+        m8Feat3: "Zero Install Size",
+        m8Feat4: "SSL Encrypted",
+        m8BtnInstall: "Install Native PWA Application",
+        footerCopy: "© 2026 Soyan Platform Engine. All system rights reserved."
+      },
+      km: {
+        navHome: "ទំព័រដើម",
+        navShowroom: "បន្ទប់បង្ហាញ",
+        navFeatures: "មុខងារសកល",
+        navContact: "ទំនាក់ទំនង",
+        heroBadge: "ម៉ាស៊ីនប្រព័ន្ធ v4.8 កំពុងដំណើរការ",
+        heroTitle: "ការពង្រីកសហគ្រាស និងស្ថាបត្យកម្មវេប",
+        heroDesc: "ការបង្ហាញបណ្ដាញអន្តរកម្មដែលបំពាក់ដោយ WebGL 3D material shaders, ការសំយោគសំឡេង real-time, ការត្រួតពិនិត្យ CDN server node, និងប្រព័ន្ធជំនួយការ AI។",
+        kpiFps: "ល្បឿន Render Frame",
+        kpiPing: "កម្រិត Latency Gateway",
+        kpiElements: "ធាតុ DOM ដែលសកម្ម",
+        kpiVram: "ការបែងចែក VRAM ប្រហាក់ប្រហែល",
+        m1Title: "ម៉ាស៊ីន 3D WebGL Mesh",
+        m1Subtitle: "ប្រព័ន្ធរងក្រាហ្វិក",
+        m1Desc: "កន្លែងមើល WebGL អន្តរកម្មដែលដំណើរការដោយ Three.js។ រង្វិល mesh ដោយការអូស។ ប្តូររវាងការ render wireframe, សមាសភាព solid, ពន្លឺចាំង, និងប្រព័ន្ធភាគល្អិត។",
+        m1Tag: "WebGL 2.0 | Mesh: Icosahedron",
+        m1Chip1: "ស៊ុមខ្សែ (Wireframe)",
+        m1Chip2: "ពណ៌ខៀវ (Solid)",
+        m1Chip3: "ពន្លឺនេអុង (Neon)",
+        m1Chip4: "ភាគល្អិត (Particle)",
+        m2Title: "ស្ទូឌីយោពណ៌បន្ទប់បង្ហាញ",
+        m2Subtitle: "ម៉ាស៊ីនកំណត់រចនាសម្ព័ន្ធ",
+        m2Desc: "ប្រព័ន្ធប្តូរពណ៌ពេលវេលាពិតសម្រាប់ការបង្ហាញរថយន្ត។ កំណត់ការឆ្លុះពន្លឺ ភាពរលោងលោហធាតុ និងល្បឿនរង្វិល។",
+        m2ColorLabel: "គំរូពណ៌មូលដ្ឋាន",
+        m2SpeedLabel: "ល្បឿននៃការរង្វិល",
+        m2BtnToggle: "បិទ/បើក ម៉ាស៊ីនរង្វិល",
+        m3Title: "ប្រព័ន្ធ Equalizer សំឡេង DSP",
+        m3Subtitle: "ការដំណើរការសញ្ញាសំឡេង",
+        m3Desc: "ប្រព័ន្ធមើលរលកប្រេកង់សំឡេងវេប។ សារ៉េគ្រាប់រំកិលប្រេកង់ដើម្បីមើលការកែប្រែទំហំរលកនៅលើកញ្ចក់ canvas។",
+        m3Bass: "សំឡេងធ្ងន់ (Bass)",
+        m3Mid: "សំឡេងកណ្តាល (Mid)",
+        m3Treble: "សំឡេងស្រួច (Treble)",
+        m3BtnPulse: "បង្កើតសញ្ញាសំឡេង Pulse",
+        m4Title: "AI ជំនួយការ Portfolio",
+        m4Subtitle: "ជំនួយការអតិថិជន",
+        m4Desc: "ប្រព័ន្ធជំនួយការឆ្លាតវៃសម្រាប់ឆ្លើយសំណួរអំពីជំនាញបច្ចេកទេស គម្រោងការងារ និងផ្លូវទំនាក់ទំនង។",
+        m4WelcomeMsg: "សួស្តី! ខ្ញុំជា AI ជំនួយការរបស់ Soyan។ អ្នកអាចសួរខ្ញុំអំពីគម្រោង ជំនាញ ឬព័ត៌មានទំនាក់ទំនង Telegram បាន!",
+        m4Placeholder: "សួរ សំណួរ...",
+        m5Title: "កញ្ចប់ធ្វើតេស្ត Benchmark ប្រព័ន្ធ",
+        m5Subtitle: "ការវិភាគប្រសិទ្ធភាព",
+        m5Desc: "ធ្វើតេស្តការផ្ទុក GPU ពេលជាក់ស្តែង ពិនិត្យមើលស្ថិរភាពនៃការ render frame, ល្បឿន redraw canvas, និងការប្រៀបធៀបអង្គចងចាំ។",
+        m5GpuPipeline: "បំពង់ដំណើរការ GPU Render",
+        m5Idle: "ទំនេរ (Idle)",
+        m5PassedTests: "បានឆ្លងកាត់ការតេស្ត",
+        m5BtnRun: "ប្រតិបត្តិការតេស្ត Benchmark",
+        m6Title: "ស្ថានីយ Telemetry Log",
+        m6Subtitle: "លំហូរទិន្នន័យ Socket",
+        m6Desc: "កម្មវិធីមើលលំហូរទិន្នន័យផ្ទាល់ បង្ហាញពីកញ្ចប់ព័ត៌មាន web-socket, ការចាប់ដៃ TLS, ការធ្វើបច្ចុប្បន្នភាព cache និងការហៅ API។",
+        m6LogInit: "[SYSTEM] ការចាប់ផ្តើមត្រូវបានបញ្ចប់។",
+        m6LogNet: "[NET] ការបញ្ជូនផ្លូវ Edge server ភ្ជាប់ទៅកាន់ gateway។",
+        m6BtnPing: "បញ្ជូនកញ្ចប់ទិន្នន័យ Packet",
+        m7Title: "បណ្តាញ Global Edge Network",
+        m7Subtitle: "ស្ថានភាពហេដ្ឋារចនាសម្ព័ន្ធ",
+        m7Desc: "កម្រិត Latency នៃការចែកចាយម៉ាស៊ីនបម្រើពេលជាក់ស្តែងនៅតាមទីតាំង Edge អន្តរជាតិ។",
+        m7NodeKh: "អាស៊ីខាងកើត (ភ្នំពេញ)",
+        m7NodeSg: "អាស៊ីអាគ្នេយ៍ (សិង្ហបុរី)",
+        m7NodeJp: "អាស៊ីប៉ាស៊ីហ្វិក (តូក្យូ)",
+        m7NodeUs: "អាមេរិកខាងលិច (អូរ៉េហ្គន)",
+        m7BtnRefresh: "ស្ទង់មើល Edge Nodes ទាំងអស់",
+        m8Title: "ម៉ាស៊ីន PWA & កម្មវិធីផ្ទាល់",
+        m8Subtitle: "ការដំឡើងលើឧបករណ៍",
+        m8Desc: "ដំឡើងកម្មវិធី Soyan Platform ដោយផ្ទាល់ទៅកាន់ Desktop ឬទូរស័ព្ទដៃរបស់អ្នក។ មានមុខងារ Offline Cache, ល្បឿន WebGL លឿន និងការធ្វើបច្ចុប្បន្នភាពស្វ័យប្រវត្តិ។",
+        m8Feat1: "រក្សាទុក Offline Cache",
+        m8Feat2: "ល្បឿន FPS ដើម",
+        m8Feat3: "ទំហំដំឡើង 0MB",
+        m8Feat4: "សុវត្ថិភាព SSL Encrypted",
+        m8BtnInstall: "ដំឡើងកម្មវិធី PWA ផ្លូវការ",
+        footerCopy: "© 2026 Soyan Platform Engine. រក្សាសិទ្ធិគ្រប់យ៉ាង។"
       }
-      calculateFPS();
-    });
-  </script>
-
-  <!-- Matrix Code Rain Engine Canvas Script -->
-  <script>
-    const mCanvas = document.getElementById('matrix-canvas');
-    const mCtx = mCanvas.getContext('2d');
-
-    function resizeMatrix() {
-      mCanvas.width = window.innerWidth;
-      mCanvas.height = window.innerHeight;
-    }
-    resizeMatrix();
-    window.addEventListener('resize', resizeMatrix);
-
-    const matrixChars = '01101001010110101010101010101010101';
-    const fontSize = 14;
-    let columns = Math.floor(mCanvas.width / fontSize);
-    let drops = Array(columns).fill(1);
-
-    function drawMatrix() {
-      mCtx.fillStyle = 'rgba(4, 7, 13, 0.08)';
-      mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
-
-      mCtx.fillStyle = '#10b981';
-      mCtx.font = fontSize + 'px monospace';
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = matrixChars[Math.floor(Math.random() * matrixChars.length)];
-        mCtx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > mCanvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    }
-    setInterval(drawMatrix, 40);
-  </script>
-
-  <!-- Three.js 3D WebGL Shader Engine Script -->
-  <script>
-    const container = document.getElementById('canvas-container');
-    
-    // Scene Setup
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.z = 4;
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    container.appendChild(renderer.domElement);
-
-    // Mesh Creation
-    const geometry = new THREE.IcosahedronGeometry(1.4, 1);
-
-    const materials = {
-      wireframe: new THREE.MeshPhongMaterial({ color: 0x3b82f6, wireframe: true }),
-      solid: new THREE.MeshPhongMaterial({ color: 0x2563eb, flatShading: true, shininess: 60 }),
-      orange: new THREE.MeshPhongMaterial({ color: 0xf97316, emissive: 0x7c2d12, shininess: 80 }),
-      points: new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.06 })
     };
 
-    let currentMesh = new THREE.Mesh(geometry, materials.wireframe);
-    scene.add(currentMesh);
+    let currentLanguage = 'en';
 
-    // Lights Setup
-    const light1 = new THREE.DirectionalLight(0xffffff, 1.5);
-    light1.position.set(5, 5, 5);
-    scene.add(light1);
+    function setLanguage(lang) {
+      currentLanguage = lang;
+      
+      // Update UI Language Buttons State
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(`btn-lang-${lang}`);
+      if (activeBtn) activeBtn.classList.add('active');
 
-    const light2 = new THREE.AmbientLight(0xffffff, 0.4);
-    scene.add(light2);
-
-    let isAutoRotate = true;
-    let rotationSpeed = 0.006;
-
-    function change3DMaterial(type) {
-      scene.remove(currentMesh);
-      if (type === 'points') {
-        currentMesh = new THREE.Points(geometry, materials.points);
+      // Update Body Font Class for Typography Line-Heighting
+      if (lang === 'km') {
+        document.body.classList.add('lang-km');
       } else {
-        currentMesh = new THREE.Mesh(geometry, materials[type]);
+        document.body.classList.remove('lang-km');
       }
-      scene.add(currentMesh);
 
-      document.querySelectorAll('.btn-chip').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+      // Translate Text Content
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18nDict[lang] && i18nDict[lang][key]) {
+          el.textContent = i18nDict[lang][key];
+        }
+      });
+
+      // Translate Input Placeholders
+      document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        const key = el.getAttribute('data-i18n-ph');
+        if (i18nDict[lang] && i18nDict[lang][key]) {
+          el.setAttribute('placeholder', i18nDict[lang][key]);
+        }
+      });
+
+      // Save user preference
+      localStorage.setItem('soyan_lang_pref', lang);
+      addLogMessage(`[i18n] Language context switched to: ${lang.toUpperCase()}`);
     }
 
-    function applyMeshColor(colorHex, element) {
-      currentMesh.material.color.setHex(colorHex);
-      document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
-      element.classList.add('active');
+    /* ==========================================================================
+       2. GLOBAL INITIALIZATION & MATRIX RAIN ENGINE
+       ========================================================================== */
+    window.addEventListener('load', () => {
+      document.body.classList.add('page-loaded');
+      
+      // Load stored language preference or default to English
+      const savedLang = localStorage.getItem('soyan_lang_pref') || 'en';
+      setLanguage(savedLang);
+
+      initMatrixRain();
+      initThreeJS();
+      initAudioVisualizer();
+      startMetricUpdates();
+    });
+
+    // Background Matrix Character Rain
+    function initMatrixRain() {
+      const canvas = document.getElementById('matrix-canvas');
+      const ctx = canvas.getContext('2d');
+
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ<>/{}[]+=*#';
+      const fontSize = 14;
+      let columns = Math.floor(width / fontSize);
+      const drops = Array(columns).fill(1);
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        columns = Math.floor(width / fontSize);
+        for (let i = 0; i < columns; i++) drops[i] = 1;
+      });
+
+      function draw() {
+        ctx.fillStyle = 'rgba(4, 7, 13, 0.05)';
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = '#f97316';
+        ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = chars.charAt(Math.floor(Math.random() * chars.length));
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+          if (drops[i] * fontSize > height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+      setInterval(draw, 33);
+    }
+
+    /* ==========================================================================
+       3. THREE.JS 3D WEBGL ENGINE & SHOWROOM CONFIGURATOR
+       ========================================================================== */
+    let scene, camera, renderer, mesh, particleSystem;
+    let currentMaterialType = 'wireframe';
+    let meshColor = 0x3b82f6;
+    let rotationSpeed = 0.006;
+    let isSpinning = true;
+
+    function initThreeJS() {
+      const container = document.getElementById('canvas-container');
+      if (!container) return;
+
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
+      camera.position.z = 4.5;
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(w, h);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      // Lights
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+      scene.add(ambientLight);
+
+      const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+      dirLight.position.set(5, 5, 5);
+      scene.add(dirLight);
+
+      const pointLight = new THREE.PointLight(0xf97316, 2, 10);
+      pointLight.position.set(-3, -2, 2);
+      scene.add(pointLight);
+
+      // Main Mesh Initialization
+      const geometry = new THREE.IcosahedronGeometry(1.6, 2);
+      const material = new THREE.MeshStandardMaterial({
+        color: meshColor,
+        wireframe: true,
+        roughness: 0.2,
+        metalness: 0.8
+      });
+
+      mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
+
+      // Background Particle Cloud
+      const particleGeo = new THREE.BufferGeometry();
+      const count = 300;
+      const posArray = new Float32Array(count * 3);
+      for (let i = 0; i < count * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 10;
+      }
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+      const particleMat = new THREE.PointsMaterial({
+        size: 0.03,
+        color: 0x38bdf8,
+        transparent: true,
+        opacity: 0.6
+      });
+      particleSystem = new THREE.Points(particleGeo, particleMat);
+      scene.add(particleSystem);
+
+      // Interactive Mouse Orbit
+      let isDragging = false;
+      let prevMousePos = { x: 0, y: 0 };
+
+      container.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        prevMousePos = { x: e.clientX, y: e.clientY };
+      });
+
+      window.addEventListener('mouseup', () => (isDragging = false));
+
+      container.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - prevMousePos.x;
+        const deltaY = e.clientY - prevMousePos.y;
+        mesh.rotation.y += deltaX * 0.01;
+        mesh.rotation.x += deltaY * 0.01;
+        prevMousePos = { x: e.clientX, y: e.clientY };
+      });
+
+      // Window Resize Listener
+      window.addEventListener('resize', () => {
+        const rw = container.clientWidth;
+        const rh = container.clientHeight;
+        camera.aspect = rw / rh;
+        camera.updateProjectionMatrix();
+        renderer.setSize(rw, rh);
+      });
+
+      // Render Loop
+      function animate() {
+        requestAnimationFrame(animate);
+        if (isSpinning && mesh) {
+          mesh.rotation.y += rotationSpeed;
+          mesh.rotation.x += rotationSpeed * 0.5;
+        }
+        if (particleSystem) {
+          particleSystem.rotation.y -= 0.001;
+        }
+        renderer.render(scene, camera);
+      }
+      animate();
+    }
+
+    // Material Controls
+    function change3DMaterial(type) {
+      currentMaterialType = type;
+      const btns = document.querySelectorAll('.control-btn-group .btn-chip');
+      btns.forEach((b) => b.classList.remove('active'));
+      event.target.classList.add('active');
+
+      if (!mesh) return;
+
+      if (type === 'wireframe') {
+        mesh.material = new THREE.MeshStandardMaterial({ color: meshColor, wireframe: true });
+      } else if (type === 'solid') {
+        mesh.material = new THREE.MeshStandardMaterial({ color: 0x3b82f6, roughness: 0.3, metalness: 0.7 });
+      } else if (type === 'orange') {
+        mesh.material = new THREE.MeshStandardMaterial({ color: 0xf97316, roughness: 0.1, metalness: 0.9, emissive: 0x3a1200 });
+      } else if (type === 'points') {
+        mesh.material = new THREE.PointsMaterial({ color: meshColor, size: 0.05 });
+      }
+    }
+
+    function applyMeshColor(hex, element) {
+      meshColor = hex;
+      const swatches = document.querySelectorAll('.swatch');
+      swatches.forEach((s) => s.classList.remove('active'));
+      if (element) element.classList.add('active');
+
+      if (mesh) {
+        mesh.material.color.setHex(hex);
+      }
     }
 
     function updateRotationSpeed(val) {
@@ -1256,199 +1544,212 @@
     }
 
     function toggleMeshSpin() {
-      isAutoRotate = !isAutoRotate;
+      isSpinning = !isSpinning;
+      addLogMessage(`[ENGINE] Rotation state changed: ${isSpinning ? 'ACTIVE' : 'PAUSED'}`);
     }
 
-    // Interactive Drag Controls
-    let isDragging = false;
-    let previousMousePosition = { x: 0, y: 0 };
+    /* ==========================================================================
+       4. DSP AUDIO EQUALIZER & VISUALIZER CANVAS
+       ========================================================================== */
+    let audioCanvas, audioCtx2D;
+    let audioPulse = 0;
 
-    container.addEventListener('mousedown', () => isDragging = true);
-    window.addEventListener('mouseup', () => isDragging = false);
+    function initAudioVisualizer() {
+      audioCanvas = document.getElementById('audio-canvas');
+      if (!audioCanvas) return;
+      audioCtx2D = audioCanvas.getContext('2d');
+      audioCanvas.width = audioCanvas.clientWidth;
+      audioCanvas.height = audioCanvas.clientHeight;
 
-    container.addEventListener('mousemove', (e) => {
-      if (isDragging) {
-        const deltaMove = {
-          x: e.clientX - previousMousePosition.x,
-          y: e.clientY - previousMousePosition.y
-        };
+      function renderWaveform() {
+        requestAnimationFrame(renderWaveform);
+        const w = audioCanvas.width;
+        const h = audioCanvas.height;
 
-        currentMesh.rotation.y += deltaMove.x * 0.01;
-        currentMesh.rotation.x += deltaMove.y * 0.01;
+        audioCtx2D.clearRect(0, 0, w, h);
+
+        const bass = parseFloat(document.getElementById('bassSlider').value);
+        const mid = parseFloat(document.getElementById('midSlider').value);
+        const treble = parseFloat(document.getElementById('trebleSlider').value);
+
+        const time = Date.now() * 0.003;
+        audioCtx2D.beginPath();
+        audioCtx2D.lineWidth = 2;
+        audioCtx2D.strokeStyle = '#f97316';
+
+        for (let x = 0; x < w; x++) {
+          const y =
+            h / 2 +
+            Math.sin(x * 0.02 + time) * bass +
+            Math.cos(x * 0.05 - time * 1.5) * mid +
+            Math.sin(x * 0.1 + time * 2) * treble +
+            (Math.random() - 0.5) * audioPulse;
+
+          if (x === 0) audioCtx2D.moveTo(x, y);
+          else audioCtx2D.lineTo(x, y);
+        }
+        audioCtx2D.stroke();
+
+        if (audioPulse > 0) audioPulse *= 0.92;
       }
-      previousMousePosition = { x: e.clientX, y: e.clientY };
-    });
-
-    // Window Resize Handler
-    window.addEventListener('resize', () => {
-      if (!container) return;
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
-    });
-
-    // Render Animation Loop
-    function animate3D() {
-      requestAnimationFrame(animate3D);
-
-      if (!isDragging && isAutoRotate) {
-        currentMesh.rotation.y += rotationSpeed;
-        currentMesh.rotation.x += rotationSpeed * 0.5;
-      }
-
-      renderer.render(scene, camera);
+      renderWaveform();
     }
-    animate3D();
-  </script>
 
-  <!-- DSP Audio Equalizer Canvas Script -->
-  <script>
-    const aCanvas = document.getElementById('audio-canvas');
-    const aCtx = aCanvas.getContext('2d');
-    let aWidth, aHeight;
-
-    function resizeAudioCanvas() {
-      aWidth = aCanvas.width = aCanvas.clientWidth;
-      aHeight = aCanvas.height = aCanvas.clientHeight;
-    }
-    resizeAudioCanvas();
-    window.addEventListener('resize', resizeAudioCanvas);
-
-    let wavePhase = 0;
-    let baseAmp = 20;
-
-    function drawAudioWave() {
-      aCtx.clearRect(0, 0, aWidth, aHeight);
-      aCtx.beginPath();
-      aCtx.lineWidth = 2;
-      aCtx.strokeStyle = '#f97316';
-
-      for (let x = 0; x < aWidth; x++) {
-        const y = aHeight / 2 + Math.sin(x * 0.04 + wavePhase) * baseAmp * Math.sin(x * 0.015);
-        if (x === 0) aCtx.moveTo(x, y);
-        else aCtx.lineTo(x, y);
-      }
-
-      aCtx.stroke();
-      wavePhase += 0.08;
-
-      requestAnimationFrame(drawAudioWave);
-    }
-    drawAudioWave();
-
-    function updateAudioEQ() {
-      const bass = parseInt(document.getElementById('bassSlider').value);
-      baseAmp = bass;
-    }
+    function updateAudioEQ() {}
 
     function triggerAudioPulse() {
-      baseAmp = 60;
-      setTimeout(() => {
-        updateAudioEQ();
-      }, 1200);
+      audioPulse = 40;
+      addLogMessage('[AUDIO] Sonic impulse spike injected: +40dB');
     }
-  </script>
 
-  <!-- AI Chatbot Controller Script -->
-  <script>
+    /* ==========================================================================
+       5. AI PORTFOLIO CHATBOT SYSTEM (MULTILINGUAL)
+       ========================================================================== */
+    const chatKnowledge = {
+      en: {
+        projects: "Soyan's featured projects include the Enterprise Expansion Systems Engine, WebGL 3D Showroom, and Real-time DSP Signal Processing suite.",
+        skills: "Core technical stack: JavaScript (ESNext), WebGL/Three.js, Node.js, WebSockets, PWA Architecture, and Responsive UI Engineering.",
+        contact: "You can reach Soyan directly on Telegram: https://t.me/CHOUCHSOYAN",
+        hello: "Greetings! How can I assist you in navigating Soyan's technical portfolio today?",
+        default: "I'm not completely sure about that. Feel free to contact Soyan on Telegram (@CHOUCHSOYAN) for specific inquiries!"
+      },
+      km: {
+        projects: "គម្រោងលេចធ្លោរបស់ Soyan រួមមាន ម៉ាស៊ីនប្រព័ន្ធពង្រីកសហគ្រាស, បន្ទប់បង្ហាញ 3D WebGL, និងប្រព័ន្ធដំណើរការសញ្ញាសំឡេង DSP។",
+        skills: "ជំនាញបច្ចេកទេសចម្បង៖ JavaScript (ESNext), WebGL/Three.js, Node.js, WebSockets, ស្ថាបត្យកម្ម PWA, និងការរចនា UI។",
+        contact: "អ្នកអាចទាក់ទង Soyan ដោយផ្ទាល់តាមរយៈ Telegram៖ https://t.me/CHOUCHSOYAN",
+        hello: "ជម្រាបសួរ! តើខ្ញុំអាចជួយអ្នកស្វែងយល់ពីព័ត៌មាន និងគម្រោងរបស់ Soyan ដូចម្តេចដែរ?",
+        default: "ខ្ញុំមិនទាន់ប្រាកដអំពីសំណួរនេះទេ។ សូមទាក់ទង Soyan ផ្ទាល់តាម Telegram (@CHOUCHSOYAN) សម្រាប់ព័ត៌មានលម្អិត!"
+      }
+    };
+
     function handleChatKey(e) {
       if (e.key === 'Enter') sendChatMessage();
     }
 
     function sendChatMessage() {
       const input = document.getElementById('chatInput');
-      const box = document.getElementById('chatBox');
       const text = input.value.trim();
       if (!text) return;
 
-      box.innerHTML += `<div class="chat-msg chat-user">${escapeHtml(text)}</div>`;
-      input.value = '';
-      box.scrollTop = box.scrollHeight;
+      const chatBox = document.getElementById('chatBox');
 
+      // User Message
+      const userMsg = document.createElement('div');
+      userMsg.className = 'chat-msg chat-user';
+      userMsg.innerText = text;
+      chatBox.appendChild(userMsg);
+
+      input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Bot Response Generation
       setTimeout(() => {
-        let reply = "Soyan is a passionate developer skilled in building web applications, WebGL visualizers, and backend systems.";
+        const botMsg = document.createElement('div');
+        botMsg.className = 'chat-msg chat-bot';
+
         const lower = text.toLowerCase();
-        
-        if (lower.includes('skill') || lower.includes('code') || lower.includes('stack')) {
-          reply = "Soyan's tech stack includes HTML5, CSS3, JavaScript (ES6+), WebGL (Three.js), and Node server architectures.";
-        } else if (lower.includes('contact') || lower.includes('telegram') || lower.includes('reach')) {
-          reply = "Reach out directly via Telegram: @CHOUCHSOYAN.";
-        } else if (lower.includes('car') || lower.includes('showroom') || lower.includes('model')) {
-          reply = "Head back to the main homepage to check out the Interactive Car Showroom modules!";
-        } else if (lower.includes('feature') || lower.includes('bot')) {
-          reply = "You are currently testing the AI Assistant module running on the Soyan System Roadmap!";
+        const kb = chatKnowledge[currentLanguage] || chatKnowledge.en;
+        let reply = kb.default;
+
+        if (lower.includes('project') || lower.includes('work') || lower.includes('គម្រោង') || lower.includes('ការងារ')) {
+          reply = kb.projects;
+        } else if (lower.includes('skill') || lower.includes('stack') || lower.includes('code') || lower.includes('ជំនាញ')) {
+          reply = kb.skills;
+        } else if (lower.includes('contact') || lower.includes('telegram') || lower.includes('reach') || lower.includes('ទំនាក់ទំនង')) {
+          reply = kb.contact;
+        } else if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey') || lower.includes('សួស្តី')) {
+          reply = kb.hello;
         }
 
-        box.innerHTML += `<div class="chat-msg chat-bot">${reply}</div>`;
-        box.scrollTop = box.scrollHeight;
+        botMsg.innerText = reply;
+        chatBox.appendChild(botMsg);
+        chatBox.scrollTop = chatBox.scrollHeight;
       }, 500);
     }
 
-    function escapeHtml(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
-  </script>
-
-  <!-- Diagnostics & Telemetry Terminal Scripts -->
-  <script>
-    function sendPing() {
-      const term = document.getElementById('terminal');
-      const time = new Date().toLocaleTimeString();
-      const latency = Math.floor(Math.random() * 8) + 6;
-      
-      term.innerHTML += `<div><span class="term-line-time">[${time}]</span> <span class="term-line-success">STREAM_OK -> Packet ACK (${latency}ms)</span></div>`;
-      term.scrollTop = term.scrollHeight;
-
-      document.getElementById('ping-counter').textContent = `${latency} ms`;
-    }
-
+    /* ==========================================================================
+       6. SYSTEM BENCHMARK DIAGNOSTICS
+       ========================================================================== */
     function runDiagnostics() {
-      const bar = document.getElementById('diag-bar');
       const status = document.getElementById('diag-status');
+      const bar = document.getElementById('diag-bar');
       const tests = document.getElementById('diag-tests');
-      
-      status.textContent = 'Running Stress Test...';
+
+      status.innerText = currentLanguage === 'km' ? 'កំពុងតេស្ត...' : 'Testing...';
+      status.style.color = 'var(--accent-orange)';
       bar.style.width = '0%';
-      tests.textContent = '0 / 4 Complete';
+      tests.innerText = currentLanguage === 'km' ? '0 / 4 រួចរាល់' : '0 / 4 Complete';
 
-      setTimeout(() => {
-        bar.style.width = '30%';
-        tests.textContent = '1 / 4 Complete';
-      }, 300);
+      let progress = 0;
+      let step = 0;
 
-      setTimeout(() => {
-        bar.style.width = '65%';
-        tests.textContent = '2 / 4 Complete';
-      }, 600);
+      const interval = setInterval(() => {
+        progress += 25;
+        step++;
+        bar.style.width = `${progress}%`;
+        tests.innerText = currentLanguage === 'km' ? `${step} / 4 រួចរាល់` : `${step} / 4 Complete`;
 
-      setTimeout(() => {
-        bar.style.width = '85%';
-        tests.textContent = '3 / 4 Complete';
-      }, 900);
+        if (step === 1) addLogMessage('[DIAG] Testing Shader Pipeline compilation...');
+        if (step === 2) addLogMessage('[DIAG] Verifying WebGL Context VRAM allocation...');
+        if (step === 3) addLogMessage('[DIAG] Auditing DOM tree reflow metrics...');
 
-      setTimeout(() => {
-        bar.style.width = '100%';
-        status.textContent = 'Passed (60 FPS Score 100)';
-        tests.textContent = '4 / 4 Complete';
-      }, 1200);
+        if (progress >= 100) {
+          clearInterval(interval);
+          status.innerText = currentLanguage === 'km' ? 'ជោគជ័យ (100%)' : 'Passed (100%)';
+          status.style.color = 'var(--accent-green)';
+          addLogMessage('[DIAG] Benchmark passed successfully. Performance optimal.');
+        }
+      }, 400);
+    }
+
+    /* ==========================================================================
+       7. TELEMETRY LOG STREAM & LATENCY MONITORING
+       ========================================================================== */
+    function addLogMessage(msg) {
+      const term = document.getElementById('terminal');
+      if (!term) return;
+
+      const time = new Date().toTimeString().split(' ')[0];
+      const line = document.createElement('div');
+      line.innerHTML = `<span class="term-line-time">[${time}]</span> ${msg}`;
+      term.appendChild(line);
+      term.scrollTop = term.scrollHeight;
+    }
+
+    function sendPing() {
+      const ping = Math.floor(Math.random() * 12) + 4;
+      document.getElementById('ping-counter').innerText = `${ping} ms`;
+      addLogMessage(`[NET] Websocket heartbeat frame acknowledged: ${ping}ms`);
     }
 
     function refreshNodes() {
-      const nodeKH = document.getElementById('node-kh');
-      const nodeSG = document.getElementById('node-sg');
-      const nodeJP = document.getElementById('node-jp');
-      const nodeUS = document.getElementById('node-us');
-
-      nodeKH.textContent = `${Math.floor(Math.random() * 5) + 6}ms`;
-      nodeSG.textContent = `${Math.floor(Math.random() * 6) + 15}ms`;
-      nodeJP.textContent = `${Math.floor(Math.random() * 10) + 38}ms`;
-      nodeUS.textContent = `${Math.floor(Math.random() * 20) + 125}ms`;
+      document.getElementById('node-kh').innerText = `${Math.floor(Math.random() * 5) + 6}ms`;
+      document.getElementById('node-sg').innerText = `${Math.floor(Math.random() * 8) + 15}ms`;
+      document.getElementById('node-jp').innerText = `${Math.floor(Math.random() * 10) + 38}ms`;
+      document.getElementById('node-us').innerText = `${Math.floor(Math.random() * 20) + 125}ms`;
+      addLogMessage('[EDGE] Refreshed CDN Node latency probes.');
     }
 
-    function triggerPwaPrompt() {
-      alert('PWA Engine Alert: Web Application Manifest detected. Ready for desktop/mobile home screen installation.');
+    function startMetricUpdates() {
+      setInterval(() => {
+        const fps = Math.floor(Math.random() * 4) + 58;
+        document.getElementById('fps-counter').innerText = fps;
+
+        const count = document.querySelectorAll('*').length;
+        document.getElementById('nodes-counter').innerText = count.toLocaleString();
+      }, 2000);
+    }
+
+    /* ==========================================================================
+       8. PROGRESSIVE WEB APP (PWA) INSTALLATION
+       ========================================================================== */
+    function installPWA() {
+      addLogMessage('[PWA] Prompting native application installation flow.');
+      const msg = currentLanguage === 'km' 
+        ? 'កម្មវិធី PWA ត្រូវបានបំផុស! ប្រសិនបើជ្រោមរបស់អ្នកគាំទ្រ សូមចុច "Add to Home Screen" ដើម្បីដំឡើង។'
+        : 'PWA Installer triggered! If supported by your browser, tap "Add to Home Screen" to install.';
+      alert(msg);
     }
   </script>
-
 </body>
 </html>

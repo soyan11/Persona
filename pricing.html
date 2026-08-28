@@ -33,7 +33,73 @@
       overflow-x: hidden;
       position: relative;
     }
+    /* Navigation */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 1rem 1.2rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+}
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-right > div {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-right > div a {
+  display: inline-block;
+}
+
+nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+nav a:hover,
+nav a.active {
+  color: var(--text-main);
+}
+
+nav a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--accent-pink),
+    var(--accent-purple)
+  );
+  border-radius: 2px;
+  animation: pulse-line 2s infinite ease-in-out;
+}
+
+@keyframes pulse-line {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scaleX(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
     /* Mouse Trail Canvas */
     #bg-canvas {
       position: fixed;
@@ -538,19 +604,43 @@
 
   <div class="container">
     <!-- Navbar -->
-    <nav class="reveal active">
-      <div class="brand-logo" data-i18n="brandLogo"><i class="fa-solid fa-arrows-spin"></i> Social Growth</div>
-      <div class="nav-right">
-        <div>
-          <a href="index.html" data-i18n="navHome">Home</a>
-          <a href="portfolio.html" class="active" data-i18n="navPortfolio">Portfolio</a>
-        </div>
-        <button class="lang-btn" id="langToggle">
-          <i class="fa-solid fa-globe"></i>
-          <span id="langLabel">ភាសាខ្មែរ</span>
-        </button>
-      </div>
-    </nav>
+    <!-- Navbar -->
+<nav class="reveal active">
+
+  <!-- Brand / Logo -->
+  <div class="brand-logo" data-i18n="brandLogo">
+    <i class="fa-solid fa-arrows-spin"></i>
+    Social Growth
+  </div>
+
+  <!-- Navigation Right -->
+  <div class="nav-right">
+
+    <!-- Navigation Links -->
+    <div>
+      <a href="index.html" data-i18n="navHome">Home</a>
+
+      <a href="portfolio.html"
+         class="active"
+         data-i18n="navPortfolio">
+        Portfolio
+      </a>
+
+      <a href="features.html"
+         data-i18n="nav_GlobalFeatures">
+        Globalfeatures
+      </a>
+    </div>
+
+    <!-- Language Button -->
+    <button class="lang-btn" id="langToggle">
+      <i class="fa-solid fa-globe"></i>
+      <span id="langLabel">ភាសាខ្មែរ</span>
+    </button>
+
+  </div>
+
+</nav>
 
     <!-- Continuous Scrolling Social Ticker -->
     <div class="ticker-wrap reveal">

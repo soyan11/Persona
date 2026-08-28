@@ -10,11 +10,8 @@
     content="Welcome to Soyan's personal portfolio. Discover my skills, projects, experience, and web development work.">
   <meta name="robots" content="index, follow">
 
-  <!-- External CSS -->
   <link rel="stylesheet" href="./style.css">
- 
 
-  <!-- Custom Override Styles for Profile & Welcome Overlay -->
   <style>
     /* PROFILE IMAGE ONLY - EXACT FIT RECTANGLE BORDER */
     .profile-card {
@@ -76,23 +73,19 @@
     }
   </style>
 
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
 
 <body>
 
-  <!-- Ambient Background Glowing Lights -->
   <div class="bg-orb orb-1"></div>
   <div class="bg-orb orb-2"></div>
 
-  <!-- Fullscreen Welcome Page Portal Overlay -->
   <div id="welcome-overlay">
     <canvas id="dust-canvas"></canvas>
 
@@ -107,12 +100,9 @@
     </div>
   </div>
 
-  <!-- Dynamic Particle Canvas Background -->
   <canvas id="bg-canvas"></canvas>
 
-  <!-- Navigation Bar with Video Background & Lightning Border -->
   <header>
-    <!-- Video element covering only the navbar header -->
     <video class="nav-video-bg" autoplay loop muted playsinline>
       <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-network-nodes-in-motion-41559-large.mp4" type="video/mp4">
       Your browser does not support HTML5 video.
@@ -122,10 +112,9 @@
     <nav>
       <div class="logo">Persona<span>.</span></div>
       <ul class="nav-links">
-       
-        <li><a href="features.html">Globalfeatures</a></li>
+        <li><a href="features.html" data-i18n="nav_GlobalFeatures">Globalfeatures</a></li>
         <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
-        <a href="pricing.html" >Portfolio</a>
+        <li><a href="pricing.html" data-i18n="nav_Portfolio">Portfolio</a></li>
         <li><a href="#education" data-i18n="nav_education">Education</a></li>
         <li><a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" data-i18n="nav_contact">Contact</a></li>
       </ul>
@@ -141,12 +130,11 @@
     </nav>
   </header>
 
-  <!-- Hero Section -->
   <section class="hero" id="about">
     <div class="hero-content">
       <span class="tagline float-anim-1" data-i18n="hero_tagline">Web Developer</span>
       <h1 class="float-anim-2" data-i18n="hero_name" style="cursor: pointer; user-select: none;">CHOUCH SOYAN</h1>
-      <p class="float-anim-3" data-i18n="hero_description">Passionate Web Programmer dedicated to modern web standards, precise styling, and reliable functionality.</p>
+      <p class="float-anim-3" data-i18n="hero_description">I was born in Oddar Mean Chey Province and My birthday on june 17 2008</p>
       <div class="hero-buttons float-anim-4">
         <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-i18n="btn_touch">Get in Touch</a>
         <a href="#skills" class="btn btn-secondary" data-i18n="btn_skills">View Skills</a>
@@ -161,7 +149,6 @@
     </div>
   </section>
 
-  <!-- Modern Car Section -->
   <section id="cars">
     <h2 class="section-title float-anim-2" data-i18n="section_cars">My dream cars</h2>
     <div class="car-grid auto-swap-grid" id="carGrid">
@@ -206,7 +193,6 @@
     </div>
   </section>
 
-  <!-- Motorbike Section -->
   <section id="motorbikes">
     <h2 class="section-title float-anim-1" data-i18n="section_bikes">My dream Motorbike</h2>
     <div class="car-grid auto-swap-grid" id="bikeGrid">
@@ -251,7 +237,6 @@
     </div>
   </section>
 
-  <!-- Skills Section -->
   <section id="skills">
     <h2 class="section-title float-anim-3" data-i18n="section_skills">Technical Expertise</h2>
     <div class="skills-grid">
@@ -273,7 +258,6 @@
     </div>
   </section>
 
-  <!-- Education Section -->
   <section id="education">
     <h2 class="section-title float-anim-2" data-i18n="section_education">Education Background</h2>
     <div class="timeline">
@@ -308,7 +292,6 @@
     </div>
   </section>
 
-  <!-- Contact Section -->
   <section id="contact-section">
     <h2 class="section-title float-anim-1" data-i18n="section_contact">Contact Me</h2>
     <div class="contact-grid">
@@ -344,7 +327,6 @@
     </div>
   </section>
 
-  <!-- Footer -->
   <footer>
     <div class="social-links float-anim-1">
       <a href="https://t.me/CHOUCHSOYAN" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-telegram"></i></a>
@@ -354,7 +336,6 @@
     <p data-i18n="footer_text">&copy; 2026 Web Developer Portfolio. Designed for professionalism and performance.</p>
   </footer>
 
-  <!-- Profile Image Switcher -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const profileImg = document.getElementById('profile-img');
@@ -378,7 +359,6 @@
     });
   </script>
 
-  <!-- Auto-Swap Engine for Cards -->
   <script>
     function startAutoSwap() {
       const grids = document.querySelectorAll('.auto-swap-grid');
@@ -408,7 +388,6 @@
     document.addEventListener('DOMContentLoaded', startAutoSwap);
   </script>
 
-  <!-- Script to dismiss Welcome Screen -->
   <script>
     function enterSite() {
       const overlay = document.getElementById('welcome-overlay');
@@ -418,7 +397,6 @@
     }
   </script>
 
-  <!-- Dynamic Heading Text Swap Script -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const heroHeading = document.querySelector('.hero-content h1');
@@ -430,7 +408,6 @@
     });
   </script>
 
-  <!-- Particle Engine -->
   <script>
     const dCanvas = document.getElementById('dust-canvas');
     const dCtx = dCanvas.getContext('2d');
@@ -483,7 +460,6 @@
     animateDust();
   </script>
 
-  <!-- Theme & Language Controller Script -->
   <script>
     let particleColor = 'rgba(59, 130, 246, 0.4)';
 
@@ -513,8 +489,8 @@
 
     const translations = {
       en: {
-        nav_Portfolio:"Portfolio",
-        nav_Globalfeatures:"Globalfeatures",
+        nav_Portfolio: "Portfolio",
+        nav_GlobalFeatures: "Globalfeatures",
         nav_about: "About",
         nav_cars: "Car Showroom",
         nav_bikes: "Motorbikes",
@@ -523,7 +499,7 @@
         nav_contact: "Contact",
         hero_tagline: "Web Developer",
         hero_name: "CHOUCH SOYAN",
-        hero_description: "Passionate Web Programmer dedicated to modern web standards, precise styling, and reliable functionality.",
+        hero_description: "I was born in Oddar Mean Chey Province and My birthday on june 17 2008",
         btn_touch: "Get in Touch",
         btn_skills: "View Skills",
         section_cars: "My dream cars",
@@ -567,17 +543,17 @@
         footer_text: "© 2026 Web Developer Portfolio. Designed for professionalism and performance."
       },
       km: {
-        nav_Portfolio:"ផលប័ត្រ",
-        nav_GlobalFeatures:"លក្ខណៈពិសេសសកល",
+        nav_Portfolio: "ផលប័ត្រ",
+        nav_GlobalFeatures: "លក្ខណៈពិសេសសកល",
         nav_about: "អំពីខ្ញុំ",
-        nav_cars: "ហាងលក់រថយន្ត",
+        nav_cars: "ឡានក្នុងក្ដីស្រម៉ៃ",
         nav_bikes: "ម៉ូតូ",
         nav_skills: "ជំនាញ",
         nav_education: "ការសិក្សា",
         nav_contact: "ទំនាក់ទំនង",
         hero_tagline: "អ្នកអភិវឌ្ឍន៍វេបសាយ",
         hero_name: "ជុច​ សុយ៉ាន",
-        hero_description: "អ្នកសរសេរកម្មវិធីវេបសាយដែលមានទំនួលខុសត្រូវ ផ្តោតលើស្តង់ដារទំនើប រចនាយ៉ាងផ្ចិតផ្ចង់ និងមានប្រសិទ្ធភាពខ្ពស់។",
+        hero_description: "ខ្ញុំកើតនៅខេត្តឧត្តរមានជ័យ ហើយថ្ងៃខែឆ្នាំកំណើតរបស់ខ្ញុំគឺ ថ្ងៃទី ១៧ ខែមិថុនា ឆ្នាំ ២០០៨",
         btn_touch: "ទាក់ទងមកខ្ញុំ",
         btn_skills: "មើលជំនាញ",
         section_cars: "ឡានក្នុងក្ដីស្រម៉ៃ",
@@ -638,7 +614,7 @@
 
       document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
-        if (translations[lang][key]) {
+        if (translations[lang] && translations[lang][key]) {
           element.textContent = translations[lang][key];
         }
       });
@@ -654,7 +630,6 @@
     });
   </script>
 
-  <!-- Background Particle Canvas Script -->
   <script>
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
