@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELITE ATHLETE | High-Action Football & Volleyball Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js for 3D Background & Visuals -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#FFB703',
+                        cyan: '#00B4D8',
+                        darkBg: '#080C14',
+                        cardBg: '#101726'
+                    },
+                    fontFamily: {
+                        en: ['Inter', 'sans-serif'],
+                        km: ['Kantumruy Pro', 'Battambang', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Kantumruy+Pro:wght@400;600;700&display=swap');
+        
+        body {
+            background-color: #080C14;
+            color: #F8FAFC;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 3D Canvas Background */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Custom Glassmorphism Cards */
+        .glass-card {
+            background: rgba(16, 23, 38, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 183, 3, 0.4);
+            box-shadow: 0 0 30px rgba(255, 183, 3, 0.15);
+        }
+
+        /* Neon Glow Utility */
+        .glow-gold {
+            box-shadow: 0 0 25px rgba(255, 183, 3, 0.35);
+        }
+        
+        .glow-cyan {
+            box-shadow: 0 0 25px rgba(0, 180, 216, 0.35);
+        }
+
+        /* Language-specific Display Rules */
+        [data-lang="km"] { display: none; }
+        .lang-km [data-lang="en"] { display: none; }
+        .lang-km [data-lang="km"] { display: block; }
+        .lang-km { font-family: 'Kantumruy Pro', sans-serif; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- 3D Canvas Element for Interactive Background -->
+    <div id="canvas-container"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-gold to-orange-500 flex items-center justify-center font-black text-black text-xl shadow-lg shadow-gold/20">
+                    ⚡
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-wider text-white">PRO ATHLETE</h1>
+                    <p class="text-xs text-gold font-semibold uppercase tracking-widest" data-lang="en">Performance Hub</p>
+                    <p class="text-xs text-gold font-semibold uppercase tracking-widest" data-lang="km">មជ្ឈមណ្ឌលសមត្ថភាព</p>
+                </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="flex items-center space-x-4">
+                <!-- Sound Toggle -->
+                <button onclick="toggleSound()" id="sound-btn" class="p-2.5 rounded-xl bg-slate-800/80 text-slate-300 hover:text-gold hover:bg-slate-700 transition">
+                    <i data-lucide="volume-2" class="w-5 h-5"></i>
+                </button>
+
+                <!-- Bilingual Switcher -->
+                <div class="bg-slate-900 p-1 rounded-xl border border-slate-700 flex items-center">
+                    <button onclick="setLanguage('en')" id="btn-en" class="px-3 py-1.5 text-xs font-extrabold rounded-lg transition-all bg-gold text-black shadow-md">EN</button>
+                    <button onclick="setLanguage('km')" id="btn-km" class="px-3 py-1.5 text-xs font-extrabold rounded-lg transition-all text-slate-400 hover:text-white">ខ្មែរ</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-10 space-y-16">
+
+        <!-- HERO SECTION -->
+        <section class="relative rounded-3xl overflow-hidden glass-card p-8 md:p-14 border border-slate-700/50">
+            <div class="absolute -right-20 -top-20 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-20 -bottom-20 w-96 h-96 bg-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-3xl space-y-6">
+                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-bold uppercase tracking-wider">
+                    <span class="w-2 h-2 rounded-full bg-gold animate-ping"></span>
+                    <span data-lang="en">Dual-Sport Athlete Showcase</span>
+                    <span data-lang="km">ការបង្ហាញសមត្ថភាពកីឡាពីរប្រភេទ</span>
+                </div>
+                
+                <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-none text-white">
+                    <span data-lang="en">POWER. PRECISION. <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-gold via-orange-400 to-cyan">DOMINANCE.</span></span>
+                    <span data-lang="km">ថាមពល។ ភាពច្បាស់លាស់។ <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-gold via-orange-400 to-cyan">ឧត្តមភាព។</span></span>
+                </h1>
+
+                <p class="text-slate-300 text-lg md:text-xl font-normal leading-relaxed" data-lang="en">
+                    Combining elite athletic explosive power on the football pitch with high-flying vertical spikes on the volleyball court. Inspired by world-class benchmarks.
+                </p>
+                <p class="text-slate-300 text-lg md:text-xl font-normal leading-relaxed" data-lang="km">
+                    រួមបញ្ចូលគ្នានូវថាមពលស្ទុះដ៏ខ្លាំងក្លាលើទីលានបាល់ទាត់ ជាមួយនឹងការលោតវាយបាល់យ៉ាងខ្ពស់លើទីលានបាល់ទះ។ ទទួលបានបម្រែបម្រួលពីកីឡាករកំពូលៗលើពិភពលោក។
+                </p>
+
+                <div class="flex flex-wrap gap-4 pt-4">
+                    <a href="#stats" onclick="playSound()" class="px-8 py-4 rounded-xl bg-gradient-to-r from-gold to-orange-500 text-black font-extrabold tracking-wide uppercase shadow-lg shadow-gold/20 hover:scale-105 transition-all">
+                        <span data-lang="en">Explore Performance Matrix</span>
+                        <span data-lang="km">មើលតារាងសមត្ថភាព</span>
+                    </a>
+                    <a href="#logs" onclick="playSound()" class="px-8 py-4 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan text-white font-extrabold tracking-wide uppercase hover:bg-slate-700 transition-all">
+                        <span data-lang="en">View Match Logs</span>
+                        <span data-lang="km">មើលកំណត់ត្រាការប្រកួត</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- HIGH-ACTION SPORT CARDS -->
+        <section class="grid md:grid-cols-2 gap-8">
+            
+            <!-- Football Showcase Card -->
+            <div class="glass-card rounded-3xl p-8 space-y-6 relative overflow-hidden group hover:border-gold/50 transition-all duration-500">
+                <div class="flex justify-between items-start">
+                    <div class="p-4 rounded-2xl bg-gold/10 text-gold border border-gold/30">
+                        <i data-lucide="trophy" class="w-8 h-8"></i>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-slate-800 text-xs font-bold text-slate-300 border border-slate-700">FOOTBALL</span>
+                </div>
+
+                <div class="space-y-2">
+                    <h2 class="text-2xl font-black text-white" data-lang="en">Football Mastery & Strike Power</h2>
+                    <h2 class="text-2xl font-black text-white" data-lang="km">ជំនាញបាល់ទាត់ និងថាមពលស៊ុត</h2>
+                    <p class="text-slate-400 text-sm" data-lang="en">Modeled on explosive wing acceleration, physical aerial headers, and clinical knuckleball shots.</p>
+                    <p class="text-slate-400 text-sm" data-lang="km">ផ្តោតលើល្បឿនស្ទុះតាមស្លាប ការតែតបាល់លើអាកាស និងការស៊ុតបញ្ចូលទីយ៉ាងច្បាស់លាស់។</p>
+                </div>
+
+                <ul class="space-y-3 text-sm text-slate-300">
+                    <li class="flex items-center space-x-3">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-gold flex-shrink-0"></i>
+                        <span data-lang="en"><strong>Explosive Burst:</strong> 0-30 km/h sprint acceleration to beat press defense lines.</span>
+                        <span data-lang="km"><strong>ល្បឿនស្ទុះ៖</strong> ការសន្ទុះល្បឿនយ៉ាងរហ័សដើម្បីជម្រុះខ្សែការពារ។</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-gold flex-shrink-0"></i>
+                        <span data-lang="en"><strong>Clinical Finishing:</strong> High-velocity long-range strikes inside and outside the 18-yard box.</span>
+                        <span data-lang="km"><strong>ការស៊ុតបញ្ចូលទី៖</strong> ការស៊ុតបាល់ថាមពលខ្ពស់ពីចម្ងាយយ៉ាងច្បាស់លាស់។</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-gold flex-shrink-0"></i>
+                        <span data-lang="en"><strong>Aerial Dominance:</strong> Precise hang-time vertical leap to win contested headers.</span>
+                        <span data-lang="km"><strong>សមត្ថភាពលើអាកាស៖</strong> ការលោតតែតបាល់យកឈ្នះលើខ្សែការពារ។</span>
+                    </li>
+                </ul>
+
+                <!-- Visual Action Banner -->
+                <div class="relative h-48 rounded-2xl overflow-hidden bg-slate-900 border border-slate-800">
+                    <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80" alt="Football Strike" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80">
+                    <div class="absolute inset-0 bg-gradient-to-t from-darkBg via-transparent to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center text-xs font-bold text-white">
+                        <span>TOP STRIKE SPEED</span>
+                        <span class="text-gold font-mono">112 KM/H</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Volleyball Showcase Card -->
+            <div class="glass-card rounded-3xl p-8 space-y-6 relative overflow-hidden group hover:border-cyan/50 transition-all duration-500">
+                <div class="flex justify-between items-start">
+                    <div class="p-4 rounded-2xl bg-cyan/10 text-cyan border border-cyan/30">
+                        <i data-lucide="zap" class="w-8 h-8"></i>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-slate-800 text-xs font-bold text-slate-300 border border-slate-700">VOLLEYBALL</span>
+                </div>
+
+                <div class="space-y-2">
+                    <h2 class="text-2xl font-black text-white" data-lang="en">High-Flying Volleyball Precision</h2>
+                    <h2 class="text-2xl font-black text-white" data-lang="km">ជំនាញបាល់ទះ និងការលោតស៊ុតពីលើអាកាស</h2>
+                    <p class="text-slate-400 text-sm" data-lang="en">Built around vertical jump metrics, sharp angle spike snaps, and fast reaction platform digs.</p>
+                    <p class="text-slate-400 text-sm" data-lang="km">ផ្តោតលើកម្ពស់នៃការលោត ការវាយបាល់ផ្តាច់កាត់រ៉ាវបាំង និងការការពារបាល់យ៉ាងរហ័ស។</p>
+                </div>
+
+                <ul class="space-y-3 text-sm text-slate-300">
+                    <li class="flex items-center space-x-3">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-cyan flex-shrink-0"></i>
+                        <span data-lang="en"><strong>Jump Spike Penetration:</strong> Kinetic energy conversion for over-the-block kills.</span>
+                        <span data-lang="km"><strong>ការវាយបាល់ផ្តាច់៖</strong> ការបញ្ចេញថាមពលលោតវាយបាល់រំលងរ៉ាវបាំង។</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-cyan flex-shrink-0"></i>
+                        <span data-lang="en"><strong>Heavy Jump Serve:</strong> Topspin serve mechanics designed to break defense lines.</span>
+                        <span data-lang="km"><strong>ការលោតសេវាធ្ងន់៖</strong> ការលោតសេវាថាមពលខ្ពស់ដើម្បីបំផ្លាញការទទួលបាល់។</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-cyan flex-shrink-0"></i>
+                        <span data-lang="en"><strong>Reflex Digging:</strong> Sub-0.3 second reaction timing for court coverage.</span>
+                        <span data-lang="km"><strong>ប្រតិកម្មការពារ៖</strong> ការសង្គ្រោះបាល់ល្បឿនលឿនក្រោម ០.៣ វិនាទី។</span>
+                    </li>
+                </ul>
+
+                <!-- Visual Action Banner -->
+                <div class="relative h-48 rounded-2xl overflow-hidden bg-slate-900 border border-slate-800">
+                    <img src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&w=800&q=80" alt="Volleyball Spike" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80">
+                    <div class="absolute inset-0 bg-gradient-to-t from-darkBg via-transparent to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center text-xs font-bold text-white">
+                        <span>MAX VERTICAL REACH</span>
+                        <span class="text-cyan font-mono">355 CM</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- DYNAMIC STATS DASHBOARD -->
+        <section id="stats" class="glass-card rounded-3xl p-8 space-y-8">
+            <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 border-b border-slate-800 pb-6">
+                <div>
+                    <h2 class="text-3xl font-black text-white" data-lang="en">Athletic Performance Metrics</h2>
+                    <h2 class="text-3xl font-black text-white" data-lang="km">តារាងសមត្ថភាពកាយសម្បទា</h2>
+                    <p class="text-slate-400 text-sm" data-lang="en">Real-time stat tracking and biomechanical output measurement.</p>
+                    <p class="text-slate-400 text-sm" data-lang="km">ការតាមដានទិន្នន័យសមត្ថភាព និងការវាស់វែងកម្លាំងកាយសម្បទា។</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="updateStats('all')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white transition">ALL</button>
+                    <button onclick="updateStats('football')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-gold hover:text-black text-xs font-bold text-white transition">FOOTBALL</button>
+                    <button onclick="updateStats('volleyball')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-cyan hover:text-black text-xs font-bold text-white transition">VOLLEYBALL</button>
+                </div>
+            </div>
+
+            <!-- Stat Counters Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-800 text-center space-y-2">
+                    <span class="text-slate-400 text-xs font-extrabold uppercase" data-lang="en">Goals / Spikes</span>
+                    <span class="text-slate-400 text-xs font-extrabold uppercase" data-lang="km">គ្រាប់បាល់ / ការវាយបញ្ចូល</span>
+                    <div id="stat-goals" class="text-4xl md:text-5xl font-black text-gold font-mono">148</div>
+                </div>
+
+                <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-800 text-center space-y-2">
+                    <span class="text-slate-400 text-xs font-extrabold uppercase" data-lang="en">Assist / Set Rate</span>
+                    <span class="text-slate-400 text-xs font-extrabold uppercase" data-lang="km">ការបញ្ជូនបាល់ឱ្យស៊ុត</span>
+                    <div id="stat-assists" class="text-4xl md:text-5xl font-black text-cyan font-mono">89%</div>
+                </div>
+
+                <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-800 text-center space-y-2">
+                    <span class="text-slate-400 text-xs font-extrabold uppercase" data-lang="en">Max Vertical Jump</span>
+                    <span class="text-slate-400 text-xs font-extrabold uppercase" data-lang="km">កម្ពស់លោតអតិបរមា</span>
+                    <div id="stat-jump" class="text-4xl md:text-5xl font-black text-white font-mono">92 cm</div>
+                </div>
+
+                <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-800 text-center space-y-2">
+                    <span class="text-slate-400 text-xs font-extrabold uppercase" data-lang="en">Sprint Pace (30m)</span>
+                    <span class="text-slate-400 text-xs font-extrabold uppercase" data-lang="km">ល្បឿនស្ទុះ (៣០ម៉ែត្រ)</span>
+                    <div id="stat-speed" class="text-4xl md:text-5xl font-black text-orange-400 font-mono">3.8s</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE MATCH LOG SYSTEM -->
+        <section id="logs" class="glass-card rounded-3xl p-8 space-y-6">
+            <h2 class="text-3xl font-black text-white" data-lang="en">Recent Match Performance Log</h2>
+            <h2 class="text-3xl font-black text-white" data-lang="km">កំណត់ត្រាការប្រកួតថ្មីៗ</h2>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-800 text-slate-400 text-xs uppercase font-extrabold">
+                            <th class="py-4 px-4">Sport</th>
+                            <th class="py-4 px-4">Opponent / Tournament</th>
+                            <th class="py-4 px-4">Result</th>
+                            <th class="py-4 px-4">Key Performance Output</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 text-sm font-semibold">
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="py-4 px-4"><span class="px-2.5 py-1 rounded-md bg-gold/10 text-gold font-bold text-xs">Football</span></td>
+                            <td class="py-4 px-4 text-white">Championship League Semi-Final</td>
+                            <td class="py-4 px-4 text-emerald-400 font-bold">WIN (3 - 1)</td>
+                            <td class="py-4 px-4 text-slate-300">2 Goals (1 Free Kick), 1 Assist</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="py-4 px-4"><span class="px-2.5 py-1 rounded-md bg-cyan/10 text-cyan font-bold text-xs">Volleyball</span></td>
+                            <td class="py-4 px-4 text-white">National Invitational Tournament</td>
+                            <td class="py-4 px-4 text-emerald-400 font-bold">WIN (3 - 0)</td>
+                            <td class="py-4 px-4 text-slate-300">18 Kill Spikes, 4 Ace Serves</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="py-4 px-4"><span class="px-2.5 py-1 rounded-md bg-gold/10 text-gold font-bold text-xs">Football</span></td>
+                            <td class="py-4 px-4 text-white">Regional Super Cup</td>
+                            <td class="py-4 px-4 text-emerald-400 font-bold">WIN (2 - 0)</td>
+                            <td class="py-4 px-4 text-slate-300">1 Goal, 4 Key Passes Created</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ADDED MODULE 1: SKILL RADAR MATRIX & PROFILER -->
+        <section class="glass-card rounded-3xl p-8 space-y-8">
+            <div class="border-b border-slate-800 pb-4">
+                <h2 class="text-3xl font-black text-white" data-lang="en">Athletic Capability Matrix</h2>
+                <h2 class="text-3xl font-black text-white" data-lang="km">រ៉ាដាកម្រិតជំនាញ និងកាយសម្បទា</h2>
+                <p class="text-slate-400 text-sm" data-lang="en">Granular score breakdown based on technical scouting metrics.</p>
+                <p class="text-slate-400 text-sm" data-lang="km">ការបែងចែកពិន្ទុជំនាញលម្អិតយោងតាមការវាយតម្លៃពីគ្រូបង្វឹក។</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Football Skills Bar Matrix -->
+                <div class="space-y-4 bg-slate-900/50 p-6 rounded-2xl border border-slate-800">
+                    <h3 class="text-lg font-bold text-gold flex items-center space-x-2">
+                        <i data-lucide="target" class="w-5 h-5"></i>
+                        <span>FOOTBALL TECHNICAL SCORES</span>
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-300 mb-1">
+                                <span>Shot Velocity & Curve</span>
+                                <span class="text-gold font-mono">94 / 100</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-gold to-orange-500 rounded-full" style="width: 94%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-300 mb-1">
+                                <span>Sprint Acceleration (0-30m)</span>
+                                <span class="text-gold font-mono">96 / 100</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-gold to-orange-500 rounded-full" style="width: 96%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-300 mb-1">
+                                <span>Tactical Position & Pressing</span>
+                                <span class="text-gold font-mono">88 / 100</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-gold to-orange-500 rounded-full" style="width: 88%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Volleyball Skills Bar Matrix -->
+                <div class="space-y-4 bg-slate-900/50 p-6 rounded-2xl border border-slate-800">
+                    <h3 class="text-lg font-bold text-cyan flex items-center space-x-2">
+                        <i data-lucide="activity" class="w-5 h-5"></i>
+                        <span>VOLLEYBALL TECHNICAL SCORES</span>
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-300 mb-1">
+                                <span>Vertical Spike Elevation</span>
+                                <span class="text-cyan font-mono">98 / 100</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-cyan to-blue-500 rounded-full" style="width: 98%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-300 mb-1">
+                                <span>Jump Serve Power</span>
+                                <span class="text-cyan font-mono">91 / 100</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-cyan to-blue-500 rounded-full" style="width: 91%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-300 mb-1">
+                                <span>Block Reading & Reaction</span>
+                                <span class="text-cyan font-mono">90 / 100</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-cyan to-blue-500 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADDED MODULE 2: HIGH-ACTION VIDEO HIGHLIGHTS SYSTEM -->
+        <section class="glass-card rounded-3xl p-8 space-y-6">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <div>
+                    <h2 class="text-3xl font-black text-white" data-lang="en">Match Highlight Reels</h2>
+                    <h2 class="text-3xl font-black text-white" data-lang="km">វីដេអូសកម្មភាពលេចធ្លោ</h2>
+                    <p class="text-slate-400 text-sm" data-lang="en">Watch explosive game footage and technical drill executions.</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Video Reel 1 -->
+                <div class="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-gold transition group">
+                    <div class="relative h-44 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <button onclick="openVideoModal('Football Strike Highlights', 'https://www.youtube.com/embed/dQw4w9WgXcQ')" class="absolute inset-0 m-auto w-12 h-12 rounded-full bg-gold/90 text-black flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                            <i data-lucide="play" class="w-6 h-6 fill-black ml-1"></i>
+                        </button>
+                    </div>
+                    <div class="p-4 space-y-1">
+                        <span class="text-xs font-bold text-gold">FOOTBALL</span>
+                        <h4 class="font-bold text-white text-sm">30-Yard Free Kick & Curve Goal</h4>
+                    </div>
+                </div>
+
+                <!-- Video Reel 2 -->
+                <div class="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan transition group">
+                    <div class="relative h-44 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1592656094267-764a45160876?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <button onclick="openVideoModal('Volleyball Spike Kills', 'https://www.youtube.com/embed/dQw4w9WgXcQ')" class="absolute inset-0 m-auto w-12 h-12 rounded-full bg-cyan/90 text-black flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                            <i data-lucide="play" class="w-6 h-6 fill-black ml-1"></i>
+                        </button>
+                    </div>
+                    <div class="p-4 space-y-1">
+                        <span class="text-xs font-bold text-cyan">VOLLEYBALL</span>
+                        <h4 class="font-bold text-white text-sm">355cm Vertical Jump Kill Spike</h4>
+                    </div>
+                </div>
+
+                <!-- Video Reel 3 -->
+                <div class="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-orange-400 transition group">
+                    <div class="relative h-44 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <button onclick="openVideoModal('Athletic Conditioning Drills', 'https://www.youtube.com/embed/dQw4w9WgXcQ')" class="absolute inset-0 m-auto w-12 h-12 rounded-full bg-orange-500/90 text-black flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                            <i data-lucide="play" class="w-6 h-6 fill-black ml-1"></i>
+                        </button>
+                    </div>
+                    <div class="p-4 space-y-1">
+                        <span class="text-xs font-bold text-orange-400">TRAINING</span>
+                        <h4 class="font-bold text-white text-sm">Explosive Agility Ladder & Plyometrics</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADDED MODULE 3: ATHLETIC TRAINING SCHEDULE LOG -->
+        <section class="glass-card rounded-3xl p-8 space-y-6">
+            <h2 class="text-3xl font-black text-white" data-lang="en">Weekly Conditioning & Training Plan</h2>
+            <h2 class="text-3xl font-black text-white" data-lang="km">កាលវិភាគហ្វឹកហាត់ប្រចាំសប្តាហ៍</h2>
+
+            <div class="grid md:grid-cols-4 gap-4 text-sm">
+                <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2">
+                    <span class="px-2 py-1 bg-gold/10 text-gold text-xs font-bold rounded">MON & WED</span>
+                    <h4 class="font-extrabold text-white">Football Tactical & Shooting</h4>
+                    <p class="text-xs text-slate-400">Wing acceleration drills, knuckleball finishing, high-tempo 7v7 press games.</p>
+                </div>
+
+                <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2">
+                    <span class="px-2 py-1 bg-cyan/10 text-cyan text-xs font-bold rounded">TUE & THU</span>
+                    <h4 class="font-extrabold text-white">Volleyball Jump & Spiking</h4>
+                    <p class="text-xs text-slate-400">Approach jump mechanics, topspin serve trajectory, reaction platform digs.</p>
+                </div>
+
+                <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2">
+                    <span class="px-2 py-1 bg-orange-500/10 text-orange-400 text-xs font-bold rounded">FRIDAY</span>
+                    <h4 class="font-extrabold text-white">Plyometrics & Power Gym</h4>
+                    <p class="text-xs text-slate-400">Barbell back squats, box jumps (42-inch), heavy sled pushes for burst speed.</p>
+                </div>
+
+                <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 space-y-2">
+                    <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-bold rounded">WEEKEND</span>
+                    <h4 class="font-extrabold text-white">Official Matches & Recovery</h4>
+                    <p class="text-xs text-slate-400">League matches, cold plunge hydrotherapy, mobility stretching routines.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADDED MODULE 4: SCOUT & RECRUITER CONTACT PORTAL -->
+        <section class="glass-card rounded-3xl p-8 md:p-12 space-y-6 border border-gold/30">
+            <div class="max-w-2xl space-y-4">
+                <h2 class="text-3xl font-black text-white" data-lang="en">Recruiter & Scout Contact Portal</h2>
+                <h2 class="text-3xl font-black text-white" data-lang="km">ទំនាក់ទំនងគ្រូបង្វឹក និងអ្នកស្វែងរកកីឡាករ</h2>
+                <p class="text-slate-300 text-sm" data-lang="en">Interested in trials, scouting reports, or official roster availability? Send a direct message below.</p>
+            </div>
+
+            <form onsubmit="handleContactSubmit(event)" class="grid md:grid-cols-2 gap-4">
+                <input type="text" placeholder="Your Name / Organization" required class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-sm text-white focus:outline-none focus:border-gold">
+                <input type="email" placeholder="Contact Email Address" required class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-sm text-white focus:outline-none focus:border-gold">
+                <textarea placeholder="Inquiry details (Trials, Team Roster Offer, Performance Data request...)" rows="3" required class="md:col-span-2 bg-slate-900 border border-slate-800 rounded-xl p-4 text-sm text-white focus:outline-none focus:border-gold"></textarea>
+                <button type="submit" class="md:col-span-2 py-4 rounded-xl bg-gradient-to-r from-gold to-orange-500 text-black font-extrabold tracking-wider uppercase shadow-lg shadow-gold/20 hover:scale-[1.01] transition-all">
+                    Submit Inquiry to Athlete Management
+                </button>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- VIDEO PLAYER MODAL -->
+    <div id="video-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="max-w-4xl w-full bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-2xl">
+            <div class="flex justify-between items-center p-4 border-b border-slate-800">
+                <h3 id="modal-title" class="text-lg font-bold text-white">Highlight Video</h3>
+                <button onclick="closeVideoModal()" class="text-slate-400 hover:text-white p-2"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            <div class="aspect-video w-full bg-black">
+                <iframe id="modal-iframe" class="w-full h-full" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-8 text-slate-500 text-xs font-semibold border-t border-slate-800/80 mt-20">
+        <p>© 2026 ATHLETIC PERFORMANCE PROFILE. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT & 3D ENGINE -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Audio Effects Setup (Web Audio API)
+        let soundEnabled = true;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound() {
+            if (!soundEnabled) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('sound-btn');
+            btn.classList.toggle('text-gold', soundEnabled);
+            btn.classList.toggle('text-slate-500', !soundEnabled);
+        }
+
+        // Language Switcher System
+        function setLanguage(lang) {
+            playSound();
+            const body = document.body;
+            const btnEn = document.getElementById('btn-en');
+            const btnKm = document.getElementById('btn-km');
+
+            if (lang === 'km') {
+                body.classList.add('lang-km');
+                btnKm.className = "px-3 py-1.5 text-xs font-extrabold rounded-lg transition-all bg-gold text-black shadow-md";
+                btnEn.className = "px-3 py-1.5 text-xs font-extrabold rounded-lg transition-all text-slate-400 hover:text-white";
+            } else {
+                body.classList.remove('lang-km');
+                btnEn.className = "px-3 py-1.5 text-xs font-extrabold rounded-lg transition-all bg-gold text-black shadow-md";
+                btnKm.className = "px-3 py-1.5 text-xs font-extrabold rounded-lg transition-all text-slate-400 hover:text-white";
+            }
+        }
+
+        // Dynamic Dashboard Filter
+        function updateStats(type) {
+            playSound();
+            const goals = document.getElementById('stat-goals');
+            const assists = document.getElementById('stat-assists');
+            const jump = document.getElementById('stat-jump');
+            const speed = document.getElementById('stat-speed');
+
+            if (type === 'football') {
+                goals.innerText = '84';
+                assists.innerText = '92%';
+                jump.innerText = '84 cm';
+                speed.innerText = '3.7s';
+            } else if (type === 'volleyball') {
+                goals.innerText = '64';
+                assists.innerText = '86%';
+                jump.innerText = '95 cm';
+                speed.innerText = '3.9s';
+            } else {
+                goals.innerText = '148';
+                assists.innerText = '89%';
+                jump.innerText = '92 cm';
+                speed.innerText = '3.8s';
+            }
+        }
+
+        // Modal Controls
+        function openVideoModal(title, url) {
+            playSound();
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-iframe').src = url;
+            document.getElementById('video-modal').classList.remove('hidden');
+        }
+
+        function closeVideoModal() {
+            playSound();
+            document.getElementById('modal-iframe').src = '';
+            document.getElementById('video-modal').classList.add('hidden');
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            playSound();
+            alert('Inquiry sent successfully! The athlete management team will reply shorty.');
+            e.target.reset();
+        }
+
+        // Three.js 3D Background Engine
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        // Particle System
+        const particlesCount = 700;
+        const posArray = new Float32Array(particlesCount * 3);
+        const colorArray = new Float32Array(particlesCount * 3);
+
+        const color1 = new THREE.Color('#FFB703');
+        const color2 = new THREE.Color('#00B4D8');
+
+        for (let i = 0; i < particlesCount * 3; i += 3) {
+            posArray[i] = (Math.random() - 0.5) * 15;
+            posArray[i + 1] = (Math.random() - 0.5) * 15;
+            posArray[i + 2] = (Math.random() - 0.5) * 15;
+
+            const mixedColor = Math.random() > 0.5 ? color1 : color2;
+            colorArray[i] = mixedColor.r;
+            colorArray[i + 1] = mixedColor.g;
+            colorArray[i + 2] = mixedColor.b;
+        }
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.04,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.7
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        camera.position.z = 5;
+
+        // Mouse Parallax Effect
+        let mouseX = 0;
+        let mouseY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 0.5;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 0.5;
+        });
+
+        // Window Resize Listener
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Animation Loop
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+
+            particlesMesh.rotation.y = elapsedTime * 0.05;
+            particlesMesh.rotation.x = elapsedTime * 0.02;
+
+            camera.position.x += (mouseX - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY - camera.position.y) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
