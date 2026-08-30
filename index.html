@@ -2,327 +2,329 @@
 <html lang="en">
 
 <head>
- <head>
+
   <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Soyan</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soyan</title>
 
-  <link rel="icon" type="image/jpeg" href="photo_2026-04-27_22-35-55.jpg">
-  <link rel="apple-touch-icon" href="photo_2026-04-27_22-35-55.jpg">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="apple-touch-icon" href="logo.jpg">
 
-  <meta property="og:site_name" content="Soyan">
-  <meta property="og:title" content="Soyan">
-  <meta property="og:description" content="Soyan">
-  <meta property="og:image" content="https://persona-c4lu.vercel.app/photo_2026-04-27_22-35-55.jpg">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://persona-c4lu.vercel.app/">
+    <!-- THIS CONTROL THE TOP TITLE LINE IN LINK PREVIEWS -->
+    <meta property="og:site_name" content="soyan.org">
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Soyan">
-  <meta name="twitter:description" content="Soyan">
-  <meta name="twitter:image" content="https://persona-c4lu.vercel.app/photo_2026-04-27_22-35-55.jpg">
+    <meta property="og:title" content="Soyan">
+    <meta property="og:description" content="Soyan">
+    <meta property="og:image" content="https://persona-c4lu.vercel.app/logo.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://persona-c4lu.vercel.app/">
 
-  <meta name="description" content="Soyan">
-  <meta name="robots" content="index, follow">
-  <meta property="og:site_name" content="Soyan">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Soyan">
+    <meta name="twitter:description" content="Soyan">
+    <meta name="twitter:image" content="https://persona-c4lu.vercel.app/logo.jpg">
 
-  <link rel="stylesheet" href="./style.css">
+    <meta name="description" content="Soyan">
+    <meta name="robots" content="index, follow">
+
+    <link rel="stylesheet" href="./style.css">
 
 
-  <style>
-    /* REDIRECT OVERLAY - HIGH QUALITY FIRE ANIMATION */
-    #redirect-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 99999;
-      background: #090a0f;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      color: #ffffff;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
 
-    #redirect-overlay.fade-out {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    #fire-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .redirect-card {
-      position: relative;
-      z-index: 2;
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(249, 115, 22, 0.3);
-      backdrop-filter: blur(16px);
-      padding: 2.5rem 2rem;
-      border-radius: 20px;
-      text-align: center;
-      max-width: 420px;
-      width: 90%;
-      box-shadow: 0 0 40px rgba(249, 115, 22, 0.25), 0 0 80px rgba(239, 68, 68, 0.15);
-      animation: firePulse 2s infinite alternate ease-in-out;
-    }
-
-    @keyframes firePulse {
-      0% {
-        box-shadow: 0 0 30px rgba(249, 115, 22, 0.2), 0 0 60px rgba(239, 68, 68, 0.1);
-      }
-
-      100% {
-        box-shadow: 0 0 50px rgba(249, 115, 22, 0.45), 0 0 100px rgba(239, 68, 68, 0.25);
-      }
-    }
-
-    .fire-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, #ff9d00, #ff4500, #ff0055);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .redirect-card p {
-      color: #cbd5e1;
-      font-size: 0.95rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .timer-badge {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #f97316;
-      margin-bottom: 1.2rem;
-    }
-
-    .redirect-progress-bar {
-      width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .redirect-progress-fill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #f97316, #ef4444, #eab308);
-      border-radius: 10px;
-      animation: fillProgress 3s linear forwards;
-    }
-
-    @keyframes fillProgress {
-      0% {
-        width: 0%;
-      }
-
-      100% {
-        width: 100%;
-      }
-    }
-
-    /* PROFILE IMAGE ONLY - EXACT FIT RECTANGLE BORDER */
-    .profile-card {
-      position: relative;
-      display: inline-block;
-      width: 280px;
-      height: 280px;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-    }
-
-    .profile-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 16px;
-      padding: 4px;
-      background: linear-gradient(135deg, #3b82f6, #a855f7, #f97316, #3b82f6);
-      background-size: 300% 300%;
-      animation: profileBorderGlow 4s ease infinite;
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    .profile-card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 30px rgba(168, 85, 247, 0.8);
-    }
-
-    @keyframes profileBorderGlow {
-      0% {
-        background-position: 0% 50%;
-      }
-
-      50% {
-        background-position: 100% 50%;
-      }
-
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-
-    .profile-card-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .profile-card-inner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
-    }
-
-    .profile-card-inner img.img-fade-out {
-      opacity: 0;
-      transform: scale(0.98);
-    }
-
-    /* ACTIVITIES SECTION STYLES */
-    .activities-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    .activity-card {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 1.5rem;
-      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .activity-card:hover {
-      transform: translateY(-5px);
-      border-color: #f97316;
-      box-shadow: 0 10px 25px rgba(249, 115, 22, 0.15);
-    }
-
-    .activity-icon {
-      font-size: 2rem;
-      color: #f97316;
-      margin-bottom: 1rem;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(249, 115, 22, 0.1);
-      border-radius: 12px;
-    }
-
-    .activity-card h3 {
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: #fff;
-    }
-
-    .activity-card p {
-      font-size: 0.9rem;
-      color: var(--text-muted, #94a3b8);
-      line-height: 1.5;
-    }
-
-    /* MOBILE NAVIGATION & DROPDOWN MENU */
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: #ffffff;
-      font-size: 1.5rem;
-      cursor: pointer;
-      z-index: 1000;
-    }
-
-    @media (max-width: 768px) {
-      .menu-toggle {
-        display: block;
-      }
-
-      .nav-links {
-        position: absolute;
-        top: 100%;
-        right: 1.5rem;
-        width: 220px;
-        background: rgba(15, 23, 42, 0.95);
-        border: 1px solid rgba(249, 115, 22, 0.3);
-        backdrop-filter: blur(12px);
-        border-radius: 12px;
-        padding: 1rem;
+    <style>
+      /* REDIRECT OVERLAY - HIGH QUALITY FIRE ANIMATION */
+      #redirect-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: #090a0f;
+        display: flex;
         flex-direction: column;
-        gap: 0.8rem;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        color: #ffffff;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        transition: opacity 0.6s ease, visibility 0.6s ease;
+      }
 
+      #redirect-overlay.fade-out {
         opacity: 0;
         visibility: hidden;
-        transform: translateY(-10px);
-        transition: all 0.3s ease;
+        pointer-events: none;
       }
 
-      .nav-links.active {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-      }
-
-      .nav-links li {
+      #fire-canvas {
+        position: absolute;
+        inset: 0;
         width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
       }
 
-      .nav-links a {
+      .redirect-card {
+        position: relative;
+        z-index: 2;
+        background: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(249, 115, 22, 0.3);
+        backdrop-filter: blur(16px);
+        padding: 2.5rem 2rem;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 420px;
+        width: 90%;
+        box-shadow: 0 0 40px rgba(249, 115, 22, 0.25), 0 0 80px rgba(239, 68, 68, 0.15);
+        animation: firePulse 2s infinite alternate ease-in-out;
+      }
+
+      @keyframes firePulse {
+        0% {
+          box-shadow: 0 0 30px rgba(249, 115, 22, 0.2), 0 0 60px rgba(239, 68, 68, 0.1);
+        }
+
+        100% {
+          box-shadow: 0 0 50px rgba(249, 115, 22, 0.45), 0 0 100px rgba(239, 68, 68, 0.25);
+        }
+      }
+
+      .fire-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #ff9d00, #ff4500, #ff0055);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .redirect-card p {
+        color: #cbd5e1;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .timer-badge {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #f97316;
+        margin-bottom: 1.2rem;
+      }
+
+      .redirect-progress-bar {
+        width: 100%;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .redirect-progress-fill {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, #f97316, #ef4444, #eab308);
+        border-radius: 10px;
+        animation: fillProgress 3s linear forwards;
+      }
+
+      @keyframes fillProgress {
+        0% {
+          width: 0%;
+        }
+
+        100% {
+          width: 100%;
+        }
+      }
+
+      /* PROFILE IMAGE ONLY - EXACT FIT RECTANGLE BORDER */
+      .profile-card {
+        position: relative;
+        display: inline-block;
+        width: 280px;
+        height: 280px;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+      }
+
+      .profile-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        padding: 4px;
+        background: linear-gradient(135deg, #3b82f6, #a855f7, #f97316, #3b82f6);
+        background-size: 300% 300%;
+        animation: profileBorderGlow 4s ease infinite;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        z-index: 3;
+        pointer-events: none;
+      }
+
+      .profile-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0 30px rgba(168, 85, 247, 0.8);
+      }
+
+      @keyframes profileBorderGlow {
+        0% {
+          background-position: 0% 50%;
+        }
+
+        50% {
+          background-position: 100% 50%;
+        }
+
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .profile-card-inner {
+        width: 100%;
+        height: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      .profile-card-inner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
         display: block;
-        padding: 0.5rem 0.8rem;
-        border-radius: 6px;
+        transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
       }
 
-      .nav-links a:hover {
-        background: rgba(249, 115, 22, 0.15);
+      .profile-card-inner img.img-fade-out {
+        opacity: 0;
+        transform: scale(0.98);
       }
-    }
-  </style>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap"
-    rel="stylesheet">
+      /* ACTIVITIES SECTION STYLES */
+      .activities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      .activity-card {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 1.5rem;
+        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
 
-</head>
+      .activity-card:hover {
+        transform: translateY(-5px);
+        border-color: #f97316;
+        box-shadow: 0 10px 25px rgba(249, 115, 22, 0.15);
+      }
+
+      .activity-icon {
+        font-size: 2rem;
+        color: #f97316;
+        margin-bottom: 1rem;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(249, 115, 22, 0.1);
+        border-radius: 12px;
+      }
+
+      .activity-card h3 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #fff;
+      }
+
+      .activity-card p {
+        font-size: 0.9rem;
+        color: var(--text-muted, #94a3b8);
+        line-height: 1.5;
+      }
+
+      /* MOBILE NAVIGATION & DROPDOWN MENU */
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: #ffffff;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 1000;
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+        }
+
+        .nav-links {
+          position: absolute;
+          top: 100%;
+          right: 1.5rem;
+          width: 220px;
+          background: rgba(15, 23, 42, 0.95);
+          border: 1px solid rgba(249, 115, 22, 0.3);
+          backdrop-filter: blur(12px);
+          border-radius: 12px;
+          padding: 1rem;
+          flex-direction: column;
+          gap: 0.8rem;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-10px);
+          transition: all 0.3s ease;
+        }
+
+        .nav-links.active {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+        }
+
+        .nav-links li {
+          width: 100%;
+        }
+
+        .nav-links a {
+          display: block;
+          padding: 0.5rem 0.8rem;
+          border-radius: 6px;
+        }
+
+        .nav-links a:hover {
+          background: rgba(249, 115, 22, 0.15);
+        }
+      }
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap"
+      rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  </head>
 
 <body>
 
@@ -368,7 +370,7 @@
     <div class="nav-overlay"></div>
 
     <nav>
-      
+
       <div class="logo">Persona<span>.</span></div>
 
       <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
@@ -1394,26 +1396,25 @@
 
         <!-- Visual Action Banner -->
         <div class="relative w-full h-56 rounded-2xl overflow-hidden border border-amber-500/40 shadow-xl group">
-    <!-- Image -->
-    <img 
-        src="https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1200&q=80" 
-        alt="Cristiano Ronaldo Style Football Strike" 
-        class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
-    />
+          <!-- Image -->
+          <img src="https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1200&q=80"
+            alt="Cristiano Ronaldo Style Football Strike"
+            class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" />
 
-    <!-- Dark Gradient Overlay -->
-    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+          <!-- Dark Gradient Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
 
-    <!-- Stats / Text Content -->
-    <div class="relative z-10 h-full flex flex-col justify-between p-5">
-        <span class="text-xs font-black tracking-widest text-amber-400 uppercase">FOOTBALL STRIKE</span>
+          <!-- Stats / Text Content -->
+          <div class="relative z-10 h-full flex flex-col justify-between p-5">
+            <span class="text-xs font-black tracking-widest text-amber-400 uppercase">FOOTBALL STRIKE</span>
 
-        <div class="flex justify-between items-center text-xs font-bold text-white bg-slate-950/80 px-4 py-2.5 rounded-xl backdrop-blur-md border border-slate-800">
-            <span class="text-slate-300">TOP STRIKE SPEED</span>
-            <span class="text-amber-400 font-mono text-sm">112 KM/H</span>
+            <div
+              class="flex justify-between items-center text-xs font-bold text-white bg-slate-950/80 px-4 py-2.5 rounded-xl backdrop-blur-md border border-slate-800">
+              <span class="text-slate-300">TOP STRIKE SPEED</span>
+              <span class="text-amber-400 font-mono text-sm">112 KM/H</span>
+            </div>
+          </div>
         </div>
-    </div>
-</div>
       </div>
 
       <!-- Volleyball Showcase Card -->
