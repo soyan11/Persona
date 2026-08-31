@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Language Translator | Khmer, English, French</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* Color Palette Themes */
+        :root {
+            /* Moon Mode (Dark - Default) */
+            --bg-main: #020617;
+            --card-bg: rgba(15, 23, 42, 0.75);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --nav-bg: rgba(15, 23, 42, 0.85);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --input-bg: rgba(2, 6, 23, 0.7);
+            --input-readonly: rgba(2, 6, 23, 0.95);
+            --accent-color: #22d3ee;
+            --btn-bg: rgba(30, 41, 59, 0.8);
+            --btn-text: #22d3ee;
+            --matrix-char-color: #00ff66;
+        }
+
+        [data-theme="light"] {
+            /* Light Mode */
+            --bg-main: #f1f5f9;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --input-bg: rgba(241, 245, 249, 0.9);
+            --input-readonly: #e2e8f0;
+            --accent-color: #0284c7;
+            --btn-bg: #e2e8f0;
+            --btn-text: #0284c7;
+            --matrix-char-color: #059669;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Matrix Digital Rain Canvas */
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+
+        /* Top Navigation Bar */
+        .navbar {
+            background: var(--nav-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .brand-logo {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo span {
+            color: var(--accent-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent-color);
+        }
+
+        /* Theme Toggle Switcher Button */
+        .theme-toggle-btn {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: 1px solid var(--card-border);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Container Layout */
+        .trans-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 24px;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Glassmorphism Card Wrapper */
+        .trans-glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Language Select Dropdowns */
+        .trans-select {
+            background-color: var(--input-bg);
+            color: var(--accent-color);
+            border: 1px solid var(--card-border);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Text Input & Output Areas */
+        .trans-textarea {
+            width: 100%;
+            height: 220px;
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 18px;
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            outline: none;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .trans-textarea:focus {
+            border-color: var(--accent-color);
+        }
+
+        /* Audio Listen Button */
+        .listen-btn {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .listen-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Primary Action Buttons */
+        .trans-btn {
+            background: linear-gradient(135deg, #22d3ee 0%, #0284c7 100%);
+            color: #020617;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px -5px rgba(34, 211, 238, 0.4);
+        }
+
+        .trans-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .trans-swap-btn {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: 1px solid var(--card-border);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .trans-swap-btn:hover {
+            transform: rotate(180deg);
+        }
+
+        /* Outside Alert Badges */
+        .outside-alert {
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: monospace;
+        }
+
+        .outside-alert.success { background: rgba(6, 95, 70, 0.8); color: #34d399; }
+        .outside-alert.error { background: rgba(153, 27, 27, 0.8); color: #fca5a5; }
+        .outside-alert.info { background: rgba(30, 58, 138, 0.8); color: #93c5fd; }
+
+        .footer {
+            border-top: 1px solid var(--card-border);
+            padding: 24px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <canvas id="matrixCanvas"></canvas>
+
+    <header class="navbar">
+        <a href="#" class="brand-logo">
+            <i class="fa-solid fa-bolt" style="color: var(--accent-color);"></i> <span>NeuralTranslate</span>
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a  href="index.html">Home</a></li>
+                <li>
+                    <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeBtn">
+                        <i class="fa-solid fa-moon"></i> <span>Moon Mode</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="trans-container">
+        <div style="text-align: center; max-width: 650px; margin: 0 auto 36px auto;">
+            <span style="font-family: monospace; font-size: 0.8rem; font-weight: 800; color: var(--accent-color); letter-spacing: 2.5px; text-transform: uppercase;">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> AI TRANSLATION
+            </span>
+            <h1 style="font-size: 2.5rem; font-weight: 900; margin-top: 10px;">
+                Khmer, English & French
+            </h1>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 8px;">
+                Translate text with falling letter animation and speech synthesis.
+            </p>
+        </div>
+
+        <div class="trans-glass-card">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 800;">FROM</span>
+                    <select id="sourceLang" class="trans-select">
+                        <option value="en" selected>English 🇬🇧</option>
+                        <option value="km">Khmer 🇰🇭</option>
+                        <option value="fr">French 🇫🇷</option>
+                    </select>
+                </div>
+
+                <button onclick="swapLanguages()" class="trans-swap-btn" title="Swap languages">
+                    <i class="fa-solid fa-right-left"></i>
+                </button>
+
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 800;">TO</span>
+                    <select id="targetLang" class="trans-select">
+                        <option value="km" selected>Khmer 🇰🇭</option>
+                        <option value="en">English 🇬🇧</option>
+                        <option value="fr">French 🇫🇷</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px;">
+                        <label style="font-size: 0.75rem; color: var(--text-secondary); font-family: monospace; font-weight: 700;">INPUT TEXT</label>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button onclick="speakText('source')" class="listen-btn"><i class="fa-solid fa-volume-high"></i> Listen</button>
+                            <div id="sourceAlert" class="outside-alert" style="display: none;"></div>
+                        </div>
+                    </div>
+                    <textarea id="sourceText" class="trans-textarea" placeholder="Type or paste text here..."></textarea>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px;">
+                        <label style="font-size: 0.75rem; color: var(--accent-color); font-family: monospace; font-weight: 700;">TRANSLATION</label>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button onclick="speakText('target')" class="listen-btn"><i class="fa-solid fa-volume-high"></i> Listen</button>
+                            <div id="targetAlert" class="outside-alert" style="display: none;"></div>
+                        </div>
+                    </div>
+                    <textarea id="targetText" class="trans-textarea" readonly style="background: var(--input-readonly); color: var(--accent-color);" placeholder="Translation output..."></textarea>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 28px; flex-wrap: wrap; gap: 12px;">
+                <span id="transStatus" style="font-size: 0.85rem; font-family: monospace; color: var(--text-secondary);">Ready</span>
+                <button onclick="translateText()" class="trans-btn">
+                    <span>TRANSLATE NOW</span>
+                    <i class="fa-solid fa-bolt" id="btnIcon"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 NeuralTranslate Engine. All rights reserved.</p>
+    </footer>
+
+    <script>
+        /* Matrix Digital Rain Animation Script */
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Mix of English, Khmer, and French characters running down
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789កខគឃងចឆជឈញដឋឌឍណតថទធនបផពភមយរលវសហឡអ';
+        const fontSize = 16;
+        let columns = Math.floor(canvas.width / fontSize);
+        let drops = Array(columns).fill(1);
+
+        function drawMatrix() {
+            // Fade out effect for trailing characters
+            ctx.fillStyle = document.body.getAttribute('data-theme') === 'light' 
+                ? 'rgba(241, 245, 249, 0.15)' 
+                : 'rgba(2, 6, 23, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--matrix-char-color').trim();
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 45);
+
+        /* Light Mode & Moon Mode Switcher */
+        function toggleTheme() {
+            const body = document.body;
+            const themeBtn = document.getElementById('themeBtn');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                themeBtn.innerHTML = `<i class="fa-solid fa-sun"></i> <span>Light Mode</span>`;
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeBtn.innerHTML = `<i class="fa-solid fa-moon"></i> <span>Moon Mode</span>`;
+            }
+        }
+
+        /* Speech Synthesis Logic */
+        function speakText(boxType) {
+            const isSource = boxType === 'source';
+            const text = document.getElementById(isSource ? 'sourceText' : 'targetText').value.trim();
+            const langCode = document.getElementById(isSource ? 'sourceLang' : 'targetLang').value;
+
+            if (!text) {
+                showOutsideAlert(boxType, '⚠️ No text to read!', 'error');
+                return;
+            }
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                const langMap = { 'en': 'en-US', 'fr': 'fr-FR', 'km': 'km-KH' };
+                utterance.lang = langMap[langCode] || langCode;
+
+                utterance.onstart = () => showOutsideAlert(boxType, '🔊 Playing...', 'info', 0);
+                utterance.onend = () => showOutsideAlert(boxType, '✓ Finished', 'success', 2000);
+                utterance.onerror = () => showOutsideAlert(boxType, '❌ Audio Error', 'error', 3000);
+
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function showOutsideAlert(boxType, message, type = 'success', duration = 3000) {
+            const alertBox = document.getElementById(`${boxType}Alert`);
+            if (!alertBox) return;
+
+            alertBox.className = `outside-alert ${type}`;
+            alertBox.innerText = message;
+            alertBox.style.display = 'inline-block';
+
+            if (duration > 0) {
+                setTimeout(() => { alertBox.style.display = 'none'; }, duration);
+            }
+        }
+
+        /* Main Translation Logic */
+        async function translateText() {
+            const text = document.getElementById('sourceText').value.trim();
+            const sourceLang = document.getElementById('sourceLang').value;
+            const targetLang = document.getElementById('targetLang').value;
+            const targetOutput = document.getElementById('targetText');
+            const status = document.getElementById('transStatus');
+
+            if (!text) {
+                targetOutput.value = "";
+                showOutsideAlert('source', '⚠️ Type text first!', 'error');
+                return;
+            }
+
+            if (sourceLang === targetLang) {
+                targetOutput.value = text;
+                showOutsideAlert('target', 'ℹ️ Identical languages', 'info');
+                return;
+            }
+
+            showOutsideAlert('target', '⏳ Translating...', 'info', 0);
+            if (status) status.innerText = "Translating...";
+
+            try {
+                const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang}|${targetLang}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.responseData && data.responseData.translatedText) {
+                    targetOutput.value = data.responseData.translatedText;
+                    showOutsideAlert('target', '✅ Complete!', 'success', 3500);
+                    confetti({ particleCount: 30, spread: 60, origin: { y: 0.8 } });
+                    if (status) status.innerText = "Completed!";
+                }
+            } catch (err) {
+                showOutsideAlert('target', '❌ Error', 'error', 4000);
+            }
+        }
+
+        function swapLanguages() {
+            const sourceSelect = document.getElementById('sourceLang');
+            const targetSelect = document.getElementById('targetLang');
+            const temp = sourceSelect.value;
+            sourceSelect.value = targetSelect.value;
+            targetSelect.value = temp;
+
+            const sourceText = document.getElementById('sourceText');
+            const targetText = document.getElementById('targetText');
+            sourceText.value = targetText.value;
+            targetText.value = "";
+        }
+    </script>
+</body>
+</html>
